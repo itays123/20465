@@ -1,2 +1,2 @@
 par: par.c
-	gcc -g -Wall -ansi -std=90 par.c -o par
+	gcc -g -Wall -ansi -std=c90 par.c -o par
