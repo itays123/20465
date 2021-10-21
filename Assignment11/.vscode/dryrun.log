@@ -1,6 +1,7 @@
-make --dry-run --always-make --keep-going --print-directory
+make all --dry-run --keep-going --print-directory
 make: Entering directory '/home/user/Desktop/20465/Assignment11'
-make: Leaving directory '/home/user/Desktop/20465/Assignment11'
  
-make: *** No targets specified and no makefile found.  Stop.
+make: *** No rule to make target 'all'.
+ 
+make: Leaving directory '/home/user/Desktop/20465/Assignment11'
  

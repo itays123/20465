@@ -2,12 +2,13 @@
 * Program will validate a given c code sequence of parenthesis.
 */
 #include <stdio.h>
+#include <string.h>
 
 #define MAX_ROW_LEN 101
 #define FALSE 0
 #define TRUE 1
-#define START_OF_BLOCK '\{'
-#define END_OF_BLOCK '\}'
+#define START_OF_BLOCK '{'
+#define END_OF_BLOCK '}'
 
 /* Add a char to a row in a specified length.
 * Ignores white chars.
@@ -20,6 +21,10 @@ void notifyLineBalanced(int , char [], int );
 /* Prints a formatted message to the user depending on the input */
 void notifyTextBalance(int , int );
 
+/* Handles all checks for a full row, and modifies global variables accordingly 
+* Returns the result of the check. Balanced - TRUE, imbalanced (including block start/end) - FALSE*/
+int checkRow(char []);
+
 /* Checks if a line has a single { or }, and returns TRUE/FALSE*/
 int isStartOfBlock(char []);
 int isEndOfBlock(char []);
@@ -30,14 +35,28 @@ int checkLineBalance(char []);
 
 /* GLOBAL VARIABLES */
 int insideComment = FALSE; /* Handles the special case of multi-line comments */
+int blockDepth = 0; /* Handles the special case of implanced "{" and "}" lines */
+int anyImbalanced = FALSE; /* Will change to TRUE if an imbalanced line, that does not start\end a block, will be found */
 
 int main() 
 {
     char currentRow[MAX_ROW_LEN];
-    int currentRowLength;
-    int blockDepth = 0; /* Handles the special case of implanced "{" and "}" lines */
-    int anyImbalanced = FALSE; /* Will change to TRUE if an imbalanced line, that does not start\end a block, will be found */
+    int currentRowLength = 0;
+    char current;
     int currentLineBalanced;
+    int lineNum = 0;
+
+    printf("Please enter your code to check (^D to stop)\n");
+
+    while((current = getchar()) != EOF) {
+        addCharToRow(current, currentRow, currentRowLength);
+        if (currentRowLength > MAX_ROW_LEN) {
+            lineNum++;
+            currentLineBalanced = checkRow(currentRow);
+            notifyLineBalanced(lineNum, currentRow, currentLineBalanced);
+            currentRowLength = 0;
+        }
+    }
     
     notifyTextBalance(anyImbalanced, blockDepth);
     return 0;
@@ -79,9 +98,32 @@ void notifyLineBalanced(int lineNum, char line[], int isBalanced)
 void notifyTextBalance(int anyImbalanced, int blockDepth) 
 {
     if (anyImbalanced || blockDepth != 0) 
-        printf("Your code is imbalanced");
+        printf("Your code is imbalanced\n");
     else
-        printf("Your code is well balanced. Good Job!");
+        printf("Your code is well balanced. Good Job!\n");
+}
+
+/* Handles all checks for a full row, and modifies global variables accordingly
+* Returns TRUE if line is balanced, FALSE otherwise (including block start/end) */
+int checkRow(char row[]) 
+{
+    if (strlen(row) == 0) /* Empty row */
+        return TRUE;
+    if (isStartOfBlock(row)) {
+        blockDepth++;
+        return FALSE; 
+        /* Do NOT modify anyImbalanced. Distinguish between start/end of block and truly imbalanced lines */
+    }
+    if (isEndOfBlock(row)) {
+        blockDepth--;
+        return FALSE; 
+        /* Do NOT modify anyImbalanced. Distinguish between start/end of block and truly imbalanced lines */
+    }
+    if(!checkLineBalance(row)) {
+        anyImbalanced = TRUE;
+        return FALSE;
+    }
+    return TRUE;
 }
 
 /* Checks if a line has a single { in the beginning, assuming white chars are already missing */
@@ -133,9 +175,9 @@ int checkLineBalance(char row[])
                 break;
             
             /* Check parenthesis start */
-            case '\{': /* Excluding start/end of block */
-            case '\[':
-            case '\(':
+            case '{': /* Excluding start/end of block */
+            case '[':
+            case '(':
                 if (!insideComment && !insideString) {
                     parenthesisCharacters[currentPosition] = row[i];
                     currentPosition++;
@@ -143,15 +185,15 @@ int checkLineBalance(char row[])
                 break;
             
             /* Check parenthesis end */
-            case '\}': /* Excluding start/end of block */
-            case '\]':
-            case '\)':
+            case '}': /* Excluding start/end of block */
+            case ']':
+            case ')':
                 if (!insideComment && !insideString) {
-                    if (currentPosition = 0 /* No opening parenthesis at all */) 
+                    if (currentPosition == 0 /* No opening parenthesis at all */) 
                         return FALSE;
-                    if ((row[i] == '\}' && parenthesisCharacters[currentPosition-1] != '\{')
-                        || (row[i] == '\]' && parenthesisCharacters[currentPosition-1] != '\[')
-                        || (row[i] == '\)' && parenthesisCharacters[currentPosition-1] != '\('))
+                    if ((row[i] == '}' && parenthesisCharacters[currentPosition-1] != '{')
+                        || (row[i] == ']' && parenthesisCharacters[currentPosition-1] != '[')
+                        || (row[i] == ')' && parenthesisCharacters[currentPosition-1] != '('))
                         return FALSE;
                     
                     /* Everything is OK, closing bracket is matching */
