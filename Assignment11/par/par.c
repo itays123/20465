@@ -11,7 +11,6 @@
 #define END_OF_BLOCK '}'
 
 /* Add a char to a row in a specified length.
-* Ignores white chars.
 * returns the new row length. If line ends, will return 101 (max row length is 100) */
 int addCharToRow(char, char[], int);
 
@@ -44,18 +43,28 @@ int main()
     int currentRowLength = 0;
     char current;
     int currentLineBalanced;
-    int lineNum = 0;
+    int lineNum = 1;
 
     printf("Please enter your code to check (^D to stop)\n");
 
-    while((current = getchar()) != EOF) {
-        addCharToRow(current, currentRow, currentRowLength);
-        if (currentRowLength > MAX_ROW_LEN) {
-            lineNum++;
+    while((current = getchar()) != EOF) 
+    {
+        currentRowLength = addCharToRow(current, currentRow, currentRowLength);
+        if (currentRowLength > MAX_ROW_LEN) 
+        {
             currentLineBalanced = checkRow(currentRow);
             notifyLineBalanced(lineNum, currentRow, currentLineBalanced);
             currentRowLength = 0;
+            lineNum++;
         }
+    }
+
+    /* Check last line my mimiking another '\n' char */
+    addCharToRow('\n', currentRow, currentRowLength);
+    if (currentRowLength != 0) 
+    {
+        currentLineBalanced = checkRow(currentRow);
+        notifyLineBalanced(lineNum, currentRow, currentLineBalanced);
     }
     
     notifyTextBalance(anyImbalanced, blockDepth);
@@ -63,15 +72,11 @@ int main()
 }
 
 /* Add a char to a row in a specified length.
-* Ignores white chars.
-* returns the new row length. If line ends, will return 101 (max row length is 100) */
+* returns the new row length. If line ends, will return 102 (max row length is 101) */
 int addCharToRow(char ch, char row[], int rowLength) 
 {
     switch (ch)
     {
-    case ' ':
-    case '\t':
-        return rowLength; /* Ignoring white char functionality - return everything as is */
     
     case '\n':
         row[rowLength] = '\0'; 
@@ -86,7 +91,7 @@ int addCharToRow(char ch, char row[], int rowLength)
 /* Prints a formatted message to the user */
 void notifyLineBalanced(int lineNum, char line[], int isBalanced) 
 {
-    printf("Line %d: `%s` - ", lineNum, line);
+    printf("\nLine %d: `%s` - ", lineNum, line);
     if (isBalanced)
         puts("balanced.");
     else
