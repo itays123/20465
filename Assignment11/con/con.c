@@ -2,15 +2,25 @@
 * Program will recieve a string from the user and contract it
 */
 #include <stdio.h>
+#include <ctype.h>
 #define MAX_STR_LENGTH 81 /* 80 characters + '\0' */
 #define MIN_SEQUENCE_LENGTH 3
 #define DASH '-'
+#define TRUE 1
+#define FALSE 0
 
 /* a function that contracts the string in the first parameter and places the contracted string in the second */
 void contract(char [], char []);
 
 /* a function that adds a given sequence to a string and returns the new string length */
 int addSequenceToString(char [], int , int , char , char );
+
+/* Checks if two given chars are next to each other in the Ascii table, 
+* and are both the same type (number, big letter, small letter etc.) */
+int isInSameSequence(char , char );
+
+/* Replaces the '\n' character of a string with a '\0' character */
+void removeEnterCharAtEndOfLine(char []);
 
 int main() 
 {
@@ -19,10 +29,11 @@ int main()
 
     printf("\nPlease enter a string to contract: \n");
     fgets(inputStr, MAX_STR_LENGTH, stdin);
+    removeEnterCharAtEndOfLine(inputStr);
     contract(inputStr, contractedStr);
 
-    printf("\nContracted the string - %s", inputStr);
-    printf("\n to string - %s \n", contractedStr);
+    printf("\nContracted the string: \"%s\"", inputStr);
+    printf("\nTo: \"%s\" \n", contractedStr);
 
     return 0;
 }
@@ -40,7 +51,7 @@ void contract(char s1[], char s2[])
     for (i=1; s1[i]; i++) {
         prev = curr;
         curr = s1[i];
-        if (curr != prev + 1) {
+        if (!isInSameSequence(prev,curr)) {
             /* current char is NOT in the same sequence as the char before. Meaning, a sequence has ended */
             s2Length = addSequenceToString(s2, s2Length, i-sequenceStartIdx, s1[sequenceStartIdx], prev);
             sequenceStartIdx = i;
@@ -77,4 +88,27 @@ int addSequenceToString(char str[], int strLength, int sequenceLength, char star
 
     return strLength;
 
+}
+
+/* Checks if two given chars are next to each other in the Ascii table, 
+* and are both the same type (number, big letter, small letter etc.) 
+* Returns a boolean value (0 or 1) */
+int isInSameSequence(char prev, char curr) 
+{
+    /* Check if prev and curr are alphanumeric characters with a difference of 1 in their codes */
+    if (!isalnum(prev) || !isalnum(curr) || prev + 1 != curr)
+        return FALSE;
+    
+    /* prev and curr's codes match, but it doesn't mean they belong in the same sequence 
+    * For instance, Z (96) and a (97) will not belong in the same sequence */
+   return (isdigit(prev) && isdigit(curr)) || (isupper(prev) && isupper(curr)) || (islower(prev) && islower(curr));
+}
+
+/* Replaces the '\n' character of a string with a '\0' character */
+void removeEnterCharAtEndOfLine(char str[]) 
+{
+    int i = 0;
+    while (str[i] && str[i] != '\n')
+        i++;
+    str[i] = '\0';
 }

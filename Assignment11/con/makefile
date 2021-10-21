@@ -1,2 +1,2 @@
 con: con.c
-	gcc -g -Wall -ansi -std=c90 con.c -o con
+	gcc -g -Wall -ansi -std=c90 -pedantic con.c -o con
