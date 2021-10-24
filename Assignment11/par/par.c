@@ -6,6 +6,7 @@
 * - Any quotation mark will have a matching one in the same line.
 */
 #include <stdio.h>
+#include <ctype.h>
 #include <string.h>
 
 #define MAX_ROW_LEN 101
@@ -28,9 +29,8 @@ void notifyTextBalance(int , int );
 * Returns the result of the check. Balanced - TRUE, imbalanced (including block start/end) - FALSE*/
 int checkRow(char []);
 
-/* Checks if a line has a single { or }, and returns TRUE/FALSE*/
-int isStartOfBlock(char []);
-int isEndOfBlock(char []);
+/* Checks if a line has only a character and white chars, and returns TRUE/FALSE*/
+int lineContainsOnly(char [], char );
 
 /* Checks if a line is balanced. 
 * Returns TRUE if line is balanced, FALSE otherwise (excluding block start/end) */
@@ -95,7 +95,7 @@ int addCharToRow(char ch, char row[], int rowLength)
 /* Prints a formatted message to the user */
 void notifyLineBalanced(int lineNum, char line[], int isBalanced) 
 {
-    printf("\nLine %d: `%s` - ", lineNum, line);
+    printf("\n\t> Line %d: `%s` - ", lineNum, line);
     if (isBalanced)
         puts("balanced.");
     else
@@ -118,37 +118,46 @@ int checkRow(char row[])
 {
     if (strlen(row) == 0) /* Empty row */
         return TRUE;
-    if (isStartOfBlock(row)) {
+    if (lineContainsOnly(row, START_OF_BLOCK)) 
+    {
         blockDepth++;
         return FALSE; 
         /* Do NOT modify anyImbalanced. Distinguish between start/end of block and truly imbalanced lines */
     }
-    if (isEndOfBlock(row)) {
+    if (lineContainsOnly(row, END_OF_BLOCK))
+    {
         blockDepth--;
         return FALSE; 
         /* Do NOT modify anyImbalanced. Distinguish between start/end of block and truly imbalanced lines */
     }
-    if(!checkLineBalance(row)) {
+    if(!checkLineBalance(row)) 
+    {
         anyImbalanced = TRUE;
         return FALSE;
     }
     return TRUE;
 }
 
-/* Checks if a line has a single { in the beginning, assuming white chars are already missing */
-int isStartOfBlock(char row[]) 
+/* Checks if a line has only a character and white chars, and returns TRUE/FALSE*/
+int lineContainsOnly(char line[], char ch)
 {
-    if (row[0] == START_OF_BLOCK)
-        return TRUE;
-    return FALSE;
-}
+    int i=0;
 
-/* Checks if a line has a single } in the beginning, assuming white chars are already missing */
-int isEndOfBlock(char row[]) 
-{
-    if (row[0] == END_OF_BLOCK)
-        return TRUE;
-    return FALSE;
+    /* Skip white chars in the beginning */
+    while (isspace(line[i]))
+        i++;
+    
+    if (strlen(line) < i) /* Skipped entire line, char not found */
+        return FALSE;
+    
+    if (line[i] != ch) /* There is a charcater that isn't a white char and isn't the specified character */
+        return FALSE;
+    
+    for(i++; line[i]; i++)
+        if (!isspace(line[i])) /* if after the character was found there is another non-white char */
+            return FALSE;
+    
+    return TRUE;
 }
 
 /* Checks if a line is balanced. 
