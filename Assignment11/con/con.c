@@ -98,17 +98,11 @@ void addSequenceToString(char str[], int sequenceLength, char start, char end)
 }
 
 /* Checks if two given chars are next to each other in the Ascii table, 
-* and are both the same type (number, big letter, small letter etc.) 
+* and are both alphanumeric (checked using ctype.h's isalnum function)
 * Returns a boolean value (0 or 1) */
 int isInSameSequence(char prev, char curr) 
 {
-    /* Check if prev and curr are alphanumeric characters with a difference of 1 in their codes */
-    if (!isalnum(prev) || !isalnum(curr) || prev + 1 != curr)
-        return FALSE;
-    
-    /* prev and curr's codes match, but it doesn't mean they belong in the same sequence 
-    * For instance, Z (96) and a (97) will not belong in the same sequence */
-   return (isdigit(prev) && isdigit(curr)) || (isupper(prev) && isupper(curr)) || (islower(prev) && islower(curr));
+    return isalnum(prev) && isalnum(curr) && curr == prev + 1;
 }
 
 /* Replaces the '\n' character of a string with a '\0' character */
