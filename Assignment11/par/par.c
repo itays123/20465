@@ -184,18 +184,20 @@ int checkMatchWithStack(char line[])
         {
             /* Check start of comment */
             case '*': 
-                if (i>=1 && line[i-1] == '/')
+                if (i>=1 && line[i-1] == '/' && !insideString) /* Edge case of " + / + * + " combination prevented */
                     insideComment = TRUE;
                 break;
             
             /* Check end of comment */
             case '/':
-                if (i>=1 && line[i-1] == '/')
+                if (i>=1 && line[i-1] == '*' && !insideString) /* Edge case of " + * + / + " combination prevented */
                     insideComment = FALSE;
                 break;
             
             /* Check start/end of string */
             case '"':
+                if (insideComment) /* Edge case of " char inside comment */
+                    break;
                 if (insideString)
                     insideString = FALSE;
                 else

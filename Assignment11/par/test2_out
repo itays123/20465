@@ -1,0 +1,12 @@
+Please enter your code to check (^D to stop)
+
+	> Line 1: `char message[] = "Comment /*Inside string activates comment?";` - balanced.
+
+	> Line 2: `If it did, this ]ine would be balanced;` - IMBALANCED!
+
+	> Line 3: `*/` - balanced.
+
+	> Line 4: `` - balanced.
+
+	> Line 5: `int longline = /* string opener " inside comment */ 3 (]";` - IMBALANCED!
+Your code is imbalanced
