@@ -1,5 +1,9 @@
 /* 
 * Program will validate a given c code sequence of parenthesis.
+* Assertations - 
+* - A line consists of 100 characters at most
+* - There are no nested comments, and any comment must end
+* - Any quotation mark will have a matching one in the same line.
 */
 #include <stdio.h>
 #include <string.h>

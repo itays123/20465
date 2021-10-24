@@ -1,19 +1,23 @@
 /*
 * Program will recieve a string from the user and contract it
+* Assertations - 
+* - The user will enter a line no bigger than 80 characters.
 */
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 #define MAX_STR_LENGTH 81 /* 80 characters + '\0' */
 #define MIN_SEQUENCE_LENGTH 3
 #define DASH '-'
 #define TRUE 1
 #define FALSE 0
 
-/* a function that contracts the string in the first parameter and places the contracted string in the second */
+/* a function that contracts the string in the first parameter and places the contracted string in the second,
+* Asserting the second parameter has at least the amount of cells in the first one */
 void contract(char [], char []);
 
-/* a function that adds a given sequence to a string and returns the new string length */
-int addSequenceToString(char [], int , int , char , char );
+/* a function that adds a given sequence to a string */
+void addSequenceToString(char [] , int , char , char );
 
 /* Checks if two given chars are next to each other in the Ascii table, 
 * and are both the same type (number, big letter, small letter etc.) */
@@ -43,50 +47,53 @@ int main()
 void contract(char s1[], char s2[]) 
 {
     int sequenceStartIdx = 0; /* saves the position of the start index */
-    int s2Length = 0; /* saves the next available cell index of s2 */
     int i;
     char prev, curr;
     curr = s1[0]; /* First character will definately be the first in the contracted string */
+
+    s2[0] = '\0'; /* Add this in order to make the strcat() function work */
 
     for (i=1; s1[i]; i++) {
         prev = curr;
         curr = s1[i];
         if (!isInSameSequence(prev,curr)) {
             /* current char is NOT in the same sequence as the char before. Meaning, a sequence has ended */
-            s2Length = addSequenceToString(s2, s2Length, i-sequenceStartIdx, s1[sequenceStartIdx], prev);
+            addSequenceToString(s2, i-sequenceStartIdx, s1[sequenceStartIdx], prev);
             sequenceStartIdx = i;
         }
     }
 
     /* Add last sequence */
-    s2Length = addSequenceToString(s2, s2Length, i-sequenceStartIdx, s1[sequenceStartIdx], curr);
+    addSequenceToString(s2, i-sequenceStartIdx, s1[sequenceStartIdx], curr);
 
-    s2[s2Length] = '\0'; /* End the string */
 }
 
 /* a function that adds a given sequence to a string and returns the new string length.
 * Diffrenciuates between various cases: 1 char, 2 char and 3+ char long sequences. */
-int addSequenceToString(char str[], int strLength, int sequenceLength, char start, char end) 
+void addSequenceToString(char str[], int sequenceLength, char start, char end) 
 {
-    if (sequenceLength == 1) {
-        str[strLength] = start;
-        return strLength + 1;
+    char sequence[4];
+    sequence[0] = start;
+
+    if (sequenceLength == 1) 
+    {
+        sequence[1] = '\0';
+    }
+    else if (sequenceLength < MIN_SEQUENCE_LENGTH)
+    {
+        /* no need to add dash */
+        sequence[1] = end;
+        sequence[2] = '\0';
+    } 
+    else 
+    {
+        /* Sequence is long enough, dash is needed. */
+        sequence[1] = DASH;
+        sequence[2] = end;
+        sequence[3] = '\0';
     }
 
-    /* There are at least 2 characters in the sequence. Add the first */
-    str[strLength] = start;
-    strLength++;
-
-    /* Add a "-" if needed */
-    if (sequenceLength >= MIN_SEQUENCE_LENGTH) {
-        str[strLength] = DASH;
-        strLength++;
-    }
-
-    str[strLength] = end;
-    strLength++;
-
-    return strLength;
+    strcat(str, sequence);
 
 }
 
