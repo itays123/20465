@@ -15,9 +15,9 @@
 #define START_OF_BLOCK '{'
 #define END_OF_BLOCK '}'
 
-/* Add a char to a row in a specified length.
-* returns the new row length. If line ends, will return 101 (max row length is 100) */
-int addCharToRow(char, char[], int);
+/* Add a char to a line in a specified length.
+* returns the new line length. If line ends, will return 101 (max line length is 100) */
+int addCharToLine(char, char[], int);
 
 /* Prints a formatted message to the user */
 void notifyLineBalanced(int , char [], int );
@@ -25,26 +25,35 @@ void notifyLineBalanced(int , char [], int );
 /* Prints a formatted message to the user depending on the input */
 void notifyTextBalance(int , int );
 
-/* Handles all checks for a full row, and modifies global variables accordingly 
+/* Handles all checks for a full line, and modifies global variables accordingly 
 * Returns the result of the check. Balanced - TRUE, imbalanced (including block start/end) - FALSE*/
-int checkRow(char []);
+int checkLine(char []);
 
 /* Checks if a line has only a character and white chars, and returns TRUE/FALSE*/
 int lineContainsOnly(char [], char );
 
-/* Checks if a line is balanced. 
-* Returns TRUE if line is balanced, FALSE otherwise (excluding block start/end) */
-int checkLineBalance(char []);
+/****** PARENTHESIS STACK METHODS *******/
 
-/* GLOBAL VARIABLES */
+/* compares the parenthesis balance of a line with a stack
+* returns TRUE if balanced, FALSE otherwise */
+int checkMatchWithStack(char []);
+
+/* Push a new value to the stack, returns the new stack position */
+int pushChar(char [], int, char);
+
+/* Checks if a given character is the closing parenthesis of the stack top, and pops it 
+* returns TRUE if the character matches, FALSE otherwise */
+int compareAndPop(char [], int, char);
+
+/******* GLOBAL VARIABLES ********/
 int insideComment = FALSE; /* Handles the special case of multi-line comments */
 int blockDepth = 0; /* Handles the special case of implanced "{" and "}" lines */
 int anyImbalanced = FALSE; /* Will change to TRUE if an imbalanced line, that does not start\end a block, will be found */
 
 int main() 
 {
-    char currentRow[MAX_ROW_LEN];
-    int currentRowLength = 0;
+    char currentLine[MAX_ROW_LEN];
+    int currentLineLength = 0;
     char current;
     int currentLineBalanced;
     int lineNum = 1;
@@ -53,42 +62,42 @@ int main()
 
     while((current = getchar()) != EOF) 
     {
-        currentRowLength = addCharToRow(current, currentRow, currentRowLength);
-        if (currentRowLength > MAX_ROW_LEN) 
+        currentLineLength = addCharToLine(current, currentLine, currentLineLength);
+        if (currentLineLength > MAX_ROW_LEN) 
         {
-            currentLineBalanced = checkRow(currentRow);
-            notifyLineBalanced(lineNum, currentRow, currentLineBalanced);
-            currentRowLength = 0;
+            currentLineBalanced = checkLine(currentLine);
+            notifyLineBalanced(lineNum, currentLine, currentLineBalanced);
+            currentLineLength = 0;
             lineNum++;
         }
     }
 
     /* Check last line my mimiking another '\n' char */
-    addCharToRow('\n', currentRow, currentRowLength);
-    if (currentRowLength != 0) 
+    addCharToLine('\n', currentLine, currentLineLength);
+    if (currentLineLength != 0) 
     {
-        currentLineBalanced = checkRow(currentRow);
-        notifyLineBalanced(lineNum, currentRow, currentLineBalanced);
+        currentLineBalanced = checkLine(currentLine);
+        notifyLineBalanced(lineNum, currentLine, currentLineBalanced);
     }
     
     notifyTextBalance(anyImbalanced, blockDepth);
     return 0;
 }
 
-/* Add a char to a row in a specified length.
-* returns the new row length. If line ends, will return 102 (max row length is 101) */
-int addCharToRow(char ch, char row[], int rowLength) 
+/* Add a char to a line in a specified length.
+* returns the new line length. If line ends, will return 102 (max line length is 101) */
+int addCharToLine(char ch, char line[], int rowLength) 
 {
     switch (ch)
     {
     
     case '\n':
-        row[rowLength] = '\0'; 
+        line[rowLength] = '\0'; 
         return MAX_ROW_LEN + 1; /* Notify the caller that a line has ended */
     
     default:
-        row[rowLength] = ch;
-        return rowLength + 1; /* Default case - add char to row */
+        line[rowLength] = ch;
+        return rowLength + 1; /* Default case - add char to line */
     }
 }
 
@@ -112,25 +121,25 @@ void notifyTextBalance(int anyImbalanced, int blockDepth)
         printf("Your code is well balanced. Good Job!\n");
 }
 
-/* Handles all checks for a full row, and modifies global variables accordingly
+/* Handles all checks for a full line, and modifies global variables accordingly
 * Returns TRUE if line is balanced, FALSE otherwise (including block start/end) */
-int checkRow(char row[]) 
+int checkLine(char line[]) 
 {
-    if (strlen(row) == 0) /* Empty row */
+    if (strlen(line) == 0) /* Empty line */
         return TRUE;
-    if (lineContainsOnly(row, START_OF_BLOCK)) 
+    if (lineContainsOnly(line, START_OF_BLOCK)) 
     {
         blockDepth++;
         return FALSE; 
         /* Do NOT modify anyImbalanced. Distinguish between start/end of block and truly imbalanced lines */
     }
-    if (lineContainsOnly(row, END_OF_BLOCK))
+    if (lineContainsOnly(line, END_OF_BLOCK))
     {
         blockDepth--;
         return FALSE; 
         /* Do NOT modify anyImbalanced. Distinguish between start/end of block and truly imbalanced lines */
     }
-    if(!checkLineBalance(row)) 
+    if(!checkMatchWithStack(line)) 
     {
         anyImbalanced = TRUE;
         return FALSE;
@@ -160,27 +169,28 @@ int lineContainsOnly(char line[], char ch)
     return TRUE;
 }
 
-/* Checks if a line is balanced. 
-* Returns TRUE if line is balanced, FALSE otherwise (excluding block start/end) */
-int checkLineBalance(char row[]) 
+/* compares the parenthesis balance of a line with a stack
+* returns TRUE if balanced, FALSE otherwise */
+int checkMatchWithStack(char line[])
 {
-    char parenthesisCharacters[MAX_ROW_LEN];
-    int currentPosition = 0; /* If position !=0 at the end, it means that there are unclosed parenthesis. */
+    char stack[MAX_ROW_LEN];
+    int pos = 0; /* If position !=0 at the end, it means that there are unclosed parenthesis. */
     int insideString = FALSE;
     int i;
 
-    for (i=0; row[i]; i++) {
-        switch (row[i])
+    for (i=0; line[i]; i++) 
+    {
+        switch (line[i])
         {
             /* Check start of comment */
             case '*': 
-                if (i>=1 && row[i-1] == '/')
+                if (i>=1 && line[i-1] == '/')
                     insideComment = TRUE;
                 break;
             
             /* Check end of comment */
             case '/':
-                if (i>=1 && row[i-1] == '/')
+                if (i>=1 && line[i-1] == '/')
                     insideComment = FALSE;
                 break;
             
@@ -196,10 +206,8 @@ int checkLineBalance(char row[])
             case '{': /* Excluding start/end of block */
             case '[':
             case '(':
-                if (!insideComment && !insideString) {
-                    parenthesisCharacters[currentPosition] = row[i];
-                    currentPosition++;
-                }
+                if (!insideComment && !insideString) 
+                    pos = pushChar(stack, pos, line[i]);
                 break;
             
             /* Check parenthesis end */
@@ -207,15 +215,10 @@ int checkLineBalance(char row[])
             case ']':
             case ')':
                 if (!insideComment && !insideString) {
-                    if (currentPosition == 0 /* No opening parenthesis at all */) 
+                    if (compareAndPop(stack, pos, line[i]))
+                        pos--;
+                    else /* No match !! */
                         return FALSE;
-                    if ((row[i] == '}' && parenthesisCharacters[currentPosition-1] != '{')
-                        || (row[i] == ']' && parenthesisCharacters[currentPosition-1] != '[')
-                        || (row[i] == ')' && parenthesisCharacters[currentPosition-1] != '('))
-                        return FALSE;
-                    
-                    /* Everything is OK, closing bracket is matching */
-                    currentPosition--;
                 }
                 break;
             
@@ -224,7 +227,27 @@ int checkLineBalance(char row[])
         }
     }
 
-    if (currentPosition != 0) /* There are opening parenthesis with no closing */
+    if (pos != 0) /* There are opening parenthesis with no closing */
         return FALSE;
     return TRUE;
+}
+
+/* Push a new value to the stack, returns the new stack position */
+int pushChar(char stack[], int pos, char ch)
+{
+    stack[pos] = ch;
+    return pos + 1;
+}
+
+/* Checks if a given character is the closing parenthesis of the stack top, and pops it 
+* returns TRUE if the character matches, FALSE otherwise */
+int compareAndPop(char stack[], int pos, char cmprTo)
+{
+    char popped;
+    if (pos == 0) /* Nothing at the stack */
+        return FALSE;
+    popped = stack[pos-1];
+    return (popped == '{' && cmprTo == '}')
+        || (popped == '(' && cmprTo == ')')
+        || (popped == '[' && cmprTo == ']');
 }
