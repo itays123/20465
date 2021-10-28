@@ -45,6 +45,10 @@ int pushChar(char [], int, char);
 * returns TRUE if the character matches, FALSE otherwise */
 int compareAndPop(char [], int, char);
 
+/* Compares the previous character of a given string, in a given positon, to a given char.
+* Returns TRUE if equal, FALSE if not */
+int previousCharEq(char [], int, char);
+
 /******* GLOBAL VARIABLES ********/
 int insideComment = FALSE; /* Handles the special case of multi-line comments */
 int blockDepth = 0; /* Handles the special case of implanced "{" and "}" lines */
@@ -184,19 +188,20 @@ int checkMatchWithStack(char line[])
         {
             /* Check start of comment */
             case '*': 
-                if (i>=1 && line[i-1] == '/' && !insideString) /* Edge case of " + / + * + " combination prevented */
+                if (previousCharEq(line, i, '/') && !insideString) /* Edge case of " + / + * + " combination prevented */
                     insideComment = TRUE;
                 break;
             
             /* Check end of comment */
             case '/':
-                if (i>=1 && line[i-1] == '*' && !insideString) /* Edge case of " + * + / + " combination prevented */
+                if (previousCharEq(line, i, '*') && !insideString) /* Edge case of " + * + / + " combination prevented */
                     insideComment = FALSE;
                 break;
             
             /* Check start/end of string */
             case '"':
-                if (insideComment) /* Edge case of " char inside comment */
+                /* Edge case of " char inside comment or "\"" combination */
+                if (insideComment || previousCharEq(line, i, '\\')) 
                     break;
                 if (insideString)
                     insideString = FALSE;
@@ -252,4 +257,13 @@ int compareAndPop(char stack[], int pos, char cmprTo)
     return (popped == '{' && cmprTo == '}')
         || (popped == '(' && cmprTo == ')')
         || (popped == '[' && cmprTo == ']');
+}
+
+/* Compares the previous character of a given string, in a given positon, to a given char.
+* Returns TRUE if equal, FALSE if not */
+int previousCharEq(char line[], int pos, char cmprTo)
+{
+    if (pos < 1 || pos >= MAX_ROW_LEN + 1)
+        return FALSE;
+    return line[pos-1] == cmprTo;
 }
