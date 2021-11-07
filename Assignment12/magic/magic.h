@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #define N 5
 
 /* Booleans */
@@ -8,10 +10,13 @@
 typedef int square[N][N];
 
 /* Scans the standard input and builds the square from N^2 given numbers 
-* without any limitations on the format of them. Returns the pointer to the square.
-* If there's an invalid input, the program will return NULL and output the error */
-square *buildSquare(square );
+* without any limitations on the format of them. Returns TRUE if square is finished, false otherwise
+* If there's an error in the input, the function will output it */
+int buildSquare(square );
+
+/* Prints the square in a nice format */
+int printSquare(square );
 
 /* Sums every row, column and diagon. 
-* WIll return TRUE if they have the same value, false otherise */
+* Will return the sum if it's the same across all rows, columns and diagons, NULL otherwise */
 int checkSquare(square );
