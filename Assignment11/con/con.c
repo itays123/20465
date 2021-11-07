@@ -72,28 +72,15 @@ void contract(char s1[], char s2[])
 * Diffrenciuates between various cases: 1 char, 2 char and 3+ char long sequences. */
 void addSequenceToString(char str[], int sequenceLength, char start, char end) 
 {
-    char sequence[4];
-    sequence[0] = start;
+    int i = strlen(str); /* i = index of first available cell of str */
+    str[i++] = start;
 
-    if (sequenceLength == 1) 
-    {
-        sequence[1] = '\0';
-    }
-    else if (sequenceLength < MIN_SEQUENCE_LENGTH)
-    {
-        /* no need to add dash */
-        sequence[1] = end;
-        sequence[2] = '\0';
-    } 
-    else 
-    {
-        /* Sequence is long enough, dash is needed. */
-        sequence[1] = DASH;
-        sequence[2] = end;
-        sequence[3] = '\0';
-    }
+    if (sequenceLength >= MIN_SEQUENCE_LENGTH) /* sequence is long enough to add a dash */
+        str[i++] = DASH;
+    if (sequenceLength > 1) /* a sequence of 2 (i.e: ab) should be ended, and a longer sequence (i.e: a-c) as well */
+        str[i++] = end;
 
-    strcat(str, sequence);
+    str[i++] = '\0';
 
 }
 
