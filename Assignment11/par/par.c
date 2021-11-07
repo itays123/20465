@@ -15,10 +15,6 @@
 #define START_OF_BLOCK '{'
 #define END_OF_BLOCK '}'
 
-/* Add a char to a line in a specified length.
-* returns the new line length. If line ends, will return 101 (max line length is 100) */
-int addCharToLine(char, char[], int);
-
 /* Prints a formatted message to the user */
 void notifyLineBalanced(int , char [], int );
 
@@ -49,6 +45,9 @@ int compareAndPop(char [], int, char);
 * Returns TRUE if equal, FALSE if not */
 int previousCharEq(char [], int, char);
 
+/* Replaces the '\n' character of a string with a '\0' character */
+void removeEnterCharAtEndOfLine(char []);
+
 /******* GLOBAL VARIABLES ********/
 int insideComment = FALSE; /* Handles the special case of multi-line comments */
 int blockDepth = 0; /* Handles the special case of implanced "{" and "}" lines */
@@ -57,52 +56,21 @@ int anyImbalanced = FALSE; /* Will change to TRUE if an imbalanced line, that do
 int main() 
 {
     char currentLine[MAX_ROW_LEN];
-    int currentLineLength = 0;
-    char current;
     int currentLineBalanced;
     int lineNum = 1;
 
     printf("Please enter your code to check (^D to stop)\n");
 
-    while((current = getchar()) != EOF) 
+    while(fgets(currentLine, MAX_ROW_LEN, stdin)) 
     {
-        currentLineLength = addCharToLine(current, currentLine, currentLineLength);
-        if (currentLineLength > MAX_ROW_LEN) 
-        {
-            currentLineBalanced = checkLine(currentLine);
-            notifyLineBalanced(lineNum, currentLine, currentLineBalanced);
-            currentLineLength = 0;
-            lineNum++;
-        }
-    }
-
-    /* Check last line my mimiking another '\n' char */
-    addCharToLine('\n', currentLine, currentLineLength);
-    if (currentLineLength != 0) 
-    {
+        removeEnterCharAtEndOfLine(currentLine);
         currentLineBalanced = checkLine(currentLine);
         notifyLineBalanced(lineNum, currentLine, currentLineBalanced);
+        lineNum++;
     }
     
     notifyTextBalance(anyImbalanced, blockDepth);
     return 0;
-}
-
-/* Add a char to a line in a specified length.
-* returns the new line length. If line ends, will return 102 (max line length is 101) */
-int addCharToLine(char ch, char line[], int rowLength) 
-{
-    switch (ch)
-    {
-    
-    case '\n':
-        line[rowLength] = '\0'; 
-        return MAX_ROW_LEN + 1; /* Notify the caller that a line has ended */
-    
-    default:
-        line[rowLength] = ch;
-        return rowLength + 1; /* Default case - add char to line */
-    }
 }
 
 /* Prints a formatted message to the user */
@@ -266,4 +234,13 @@ int previousCharEq(char line[], int pos, char cmprTo)
     if (pos < 1 || pos >= MAX_ROW_LEN + 1)
         return FALSE;
     return line[pos-1] == cmprTo;
+}
+
+/* Replaces the '\n' character of a string with a '\0' character */
+void removeEnterCharAtEndOfLine(char str[]) 
+{
+    int i = 0;
+    while (str[i] && str[i] != '\n')
+        i++;
+    str[i] = '\0';
 }
