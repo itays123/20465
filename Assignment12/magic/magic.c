@@ -7,9 +7,9 @@ int main() {
         printSquare(sq);
         sum = checkSquare(sq);
         if (sum) 
-            printf("The given square is a magic square! (Sum of each row, column and digaon: %d)", sum);
+            printf("\nThe given square is a magic square! (Sum of each row, column and digaon: %d)\n", sum);
         else
-            printf("The given square is not a magic square:(");
+            printf("\nThe given square is not a magic square:( \n");
     }
     return 0;
 }
@@ -18,7 +18,7 @@ int main() {
 int buildSquare(square sq)
 {
     int rowsFilled = 0, valuesInRowFilled = 0, scanRes, current;
-    printf("Please enter %d integers to build the magic square, separates by spaces", N * N);
+    printf("\nPlease enter %d integers to build the magic square, separates by spaces\n", N * N);
     while (rowsFilled < N
         && (scanRes = scanf("%d", &current)) != EOF
         && scanRes != 0)
@@ -35,12 +35,12 @@ int buildSquare(square sq)
     /* Nothing in the input anymore - why did we get out of the loop? */
     if (scanRes == 0) /* Non-integer input was received */
     {
-        printf("Error: non-integer input was received");
+        printf("\nError: non-integer input was received\n");
         return FALSE;
     }
     if  (scanRes == EOF && rowsFilled < N)
     {
-        printf("Error: not enough numbers in the input");
+        printf("\nError: not enough numbers in the input\n");
         return FALSE;
     }
     return TRUE;
