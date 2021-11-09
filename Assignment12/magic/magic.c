@@ -18,7 +18,7 @@ int main() {
 int buildSquare(square sq)
 {
     int rowsFilled = 0, valuesInRowFilled = 0, scanRes, current;
-    printf("\nPlease enter %d integers to build the magic square, separates by spaces\n", N * N);
+    printf("\nPlease enter %d integers to build the magic square, separated by spaces (^d to stop):\n", N * N);
     while (rowsFilled < N
         && (scanRes = scanf("%d", &current)) != EOF
         && scanRes != 0)
