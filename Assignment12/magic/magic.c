@@ -14,6 +14,38 @@ int main() {
     return 0;
 }
 
+/* Gets and validates N^2 numbers from the user, and arranges it in the array */
+int buildSquare(square sq)
+{
+    int rowsFilled = 0, valuesInRowFilled = 0, scanRes, current;
+    printf("Please enter %d integers to build the magic square, separates by spaces", N * N);
+    while (rowsFilled < N
+        && (scanRes = scanf("%d", &current)) != EOF
+        && scanRes != 0)
+    {
+        /* There is a number to recieve in the input - put it in the right index of sq */
+        sq[rowsFilled][valuesInRowFilled] = current;
+        /* Move the indexes forward */
+        if((++valuesInRowFilled) == N)
+        {
+            rowsFilled++;
+            valuesInRowFilled = 0;
+        }
+    }
+    /* Nothing in the input anymore - why did we get out of the loop? */
+    if (scanRes == 0) /* Non-integer input was received */
+    {
+        printf("Error: non-integer input was received");
+        return FALSE;
+    }
+    if  (scanRes == EOF && rowsFilled < N)
+    {
+        printf("Error: not enough numbers in the input");
+        return FALSE;
+    }
+    return TRUE;
+}
+
 /* Prints the square in a nice N * N format */
 void printSquare(square sq)
 {
@@ -52,11 +84,11 @@ int checkSquare(square sq)
         if (!sum)
             sum = currRowSum;
         if (sum != currRowSum || sum != currColSum)
-            return NULL;
+            return 0;
         currRowSum = currColSum = 0;
     }
     /* Sums of diagons are complete - compare them */
     if (sum != mainDiagSum || sum != secDiagSum)
-        return NULL;
+        return 0;
     return sum;
 }

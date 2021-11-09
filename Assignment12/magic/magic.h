@@ -15,7 +15,7 @@ typedef int square[N][N];
 int buildSquare(square );
 
 /* Prints the square in a nice format */
-int printSquare(square );
+void printSquare(square );
 
 /* Sums every row, column and diagon. 
 * Will return the sum if it's the same across all rows, columns and diagons, NULL otherwise */
