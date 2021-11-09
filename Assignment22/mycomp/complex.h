@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <math.h> /* for power, square root */
+
 
 typedef struct complex {
     double real, imaginary;
