@@ -1,4 +1,5 @@
 
+#define MAX_LINE_LENGTH 100
 #define NUMBER_OF_VARIABLES 6
 
 typedef enum { EMPTY, VARIABLE, NUMBER } argtype;
@@ -8,6 +9,8 @@ typedef enum { NONE, ERROR, READ, PRINT, ADD_COMP, SUB_COMP, MULT_COMP_REAL, MUL
 cmdtype getcmd(char []);
 
 static cmdtype strtocmd(char []);
+
+static int iswhitecharsonly(char *);
 
 int arg_validate(char**, argtype, void*);
 
