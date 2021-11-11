@@ -85,7 +85,7 @@ int checkSquare(square sq)
             currColSum += sq[j][i];
             if (j == i)
                 mainDiagSum += curr;
-            if (j == N - i)
+            if (j == N - i - 1)
                 secDiagSum += curr;
         }
         /* sums of rows and columns are complete - compare them */
