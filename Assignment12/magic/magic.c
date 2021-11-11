@@ -24,7 +24,7 @@ int buildSquare(square sq)
         if (rowsFilled >= N) 
         {
             /* Too much input */
-            printf("Error: too much integers were inputted.");
+            printf("\nError: too much integers were inputted.\n");
             return FALSE;
         }
         /* There is a number to recieve in the input - put it in the right index of sq */
