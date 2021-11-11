@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
-#include <stdlib.h> /* for atof */
 
 #define NUMBER_OF_VARIABLES 6
 

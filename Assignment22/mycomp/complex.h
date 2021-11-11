@@ -1,5 +1,4 @@
 
-
 typedef struct complex {
     double real, imaginary;
 } complex;
