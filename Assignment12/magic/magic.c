@@ -19,10 +19,14 @@ int buildSquare(square sq)
 {
     int rowsFilled = 0, valuesInRowFilled = 0, scanRes, current;
     printf("\nPlease enter %d integers to build the magic square, separated by spaces (^d to stop):\n", N * N);
-    while (rowsFilled < N
-        && (scanRes = scanf("%d", &current)) != EOF
-        && scanRes != 0)
+    while ((scanRes = scanf("%d", &current)) != EOF && scanRes)
     {
+        if (rowsFilled >= N) 
+        {
+            /* Too much input */
+            printf("Error: too much integers were inputted.");
+            return FALSE;
+        }
         /* There is a number to recieve in the input - put it in the right index of sq */
         sq[rowsFilled][valuesInRowFilled] = current;
         /* Move the indexes forward */
@@ -33,7 +37,7 @@ int buildSquare(square sq)
         }
     }
     /* Nothing in the input anymore - why did we get out of the loop? */
-    if (scanRes == 0) /* Non-integer input was received */
+    if (!scanRes) /* Non-integer input was received */
     {
         printf("\nError: non-integer input was received\n");
         return FALSE;
@@ -64,7 +68,7 @@ void printSquare(square sq)
 int checkSquare(square sq)
 {
     int i,j; /* Iterators */
-    int sum;
+    int sum, curr;
     int currRowSum, currColSum, mainDiagSum, secDiagSum;
 
     sum = currRowSum = currColSum = mainDiagSum = secDiagSum = 0;
@@ -72,23 +76,27 @@ int checkSquare(square sq)
     {
         for (j=0; j<N; j++)
         {
+            curr = sq[i][j];
+            /* check if current value is in the range 1-N^2 */
+            if (curr < 1 || curr > N * N)
+                return FALSE;
             /* Add values to sums */
-            currRowSum += sq[i][j];
+            currRowSum += curr;
             currColSum += sq[j][i];
             if (j == i)
-                mainDiagSum += sq[i][i];
+                mainDiagSum += curr;
             if (j == N - i)
-                secDiagSum += sq[i][N-i];
+                secDiagSum += curr;
         }
         /* sums of rows and columns are complete - compare them */
         if (!sum)
             sum = currRowSum;
         if (sum != currRowSum || sum != currColSum)
-            return 0;
+            return FALSE;
         currRowSum = currColSum = 0;
     }
     /* Sums of diagons are complete - compare them */
     if (sum != mainDiagSum || sum != secDiagSum)
-        return 0;
+        return FALSE;
     return sum;
 }
