@@ -10,7 +10,6 @@ int main() {
     double numarg1, numarg2;
     while((cmd = getcmd(&rest)) != STOP)
     {
-        goto_args(rest); /* To identify illegal commas */
         switch (cmd)
         {
             case READ:
