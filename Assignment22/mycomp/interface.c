@@ -21,10 +21,10 @@ cmdtype getcmd(char **rest)
     char *command;
     cmdtype result;
     /* if EOF, return stop */
-    printf("\n\t> ");
+    printf("\n\n > ");
 
     scanRes = fgets(line, MAX_LINE_LENGTH, stdin);
-    printf("\n\t< %s", line);
+    printf("\n < %s", line);
 
     /* handle scanRes */
 
@@ -38,8 +38,8 @@ cmdtype getcmd(char **rest)
     result = strtocmd(command);
 
     /* Handle special case of STOP command */
-    if (result == STOP && !endofcmd(*rest))
-        return ERROR;
+    if (result == STOP)
+        return endofcmd(*rest) ? STOP : ERROR;
     
     /* point the rest pointer to the first argument */
     if (goto_arg(rest, TRUE))
@@ -89,6 +89,7 @@ static int goto_arg(char **p, int firstArg)
     {
         /* Argument not found */
         printf("Error: missing argument");
+        return FALSE;
     }
     if (**p != ',')
         return TRUE;
