@@ -1,3 +1,4 @@
+#include <stdio.h> /* for NULL */
 #include "interface.h"
 #include "mycomp.h"
 
@@ -8,6 +9,13 @@ int main() {
     cmdtype cmd;
     char chararg1, chararg2;
     double numarg1, numarg2;
+    int i;
+
+    /* Create complex variables */
+    for (i=0; i < NUMBER_OF_VARIABLES; i++)
+        variables[i] = new_comp();
+    
+    /* Handle user input */
     while((cmd = getcmd(&rest)) != STOP)
     {
         switch (cmd)
@@ -65,4 +73,15 @@ int main() {
     }
 
     return 0;
+}
+
+/* Returns a pointer to a complex variable. This function's job is not to validate the name. 
+If the name is invalid (which shouldn't happen with correct validation), will return NULL */
+complex *get_variable(char name)
+{
+    int pos = name - 'A';
+    if (pos >= 0 && pos < NUMBER_OF_VARIABLES)
+        return variables[pos];
+    
+    return NULL;
 }
