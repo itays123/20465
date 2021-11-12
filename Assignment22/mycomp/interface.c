@@ -4,6 +4,12 @@
 #include <stdlib.h> /* for atof */
 #include "interface.h"
 
+static cmdtype strtocmd(char []);
+
+static int goto_arg(char **, int);
+
+static int var_name_validate(char *);
+
 static char line[MAX_LINE_LENGTH];
 
 /* Requests the user for a new input line, and collects the command from the line.
@@ -11,7 +17,7 @@ points the argument given to the function to the first non-white, non-comma char
 handles the validation for the STOP command, so no invalid stop lines will be executed */
 cmdtype getcmd(char **rest)
 {
-    int scanRes;
+    int *scanRes;
     char *command;
     cmdtype result;
     /* if EOF, return stop */
@@ -147,6 +153,7 @@ int arg(char **rest, argtype type, void *to_assign)
     
     /* Point rest to the next character (if current one is comma) or two the current (if end of string) */
     *rest = *curr ? (curr + 1) : curr;
+    return TRUE;
 }
 
 /* Validates the string name of the variable. Returns a boolean value.
@@ -173,7 +180,7 @@ int endofcmd(char *rest)
     }
 
     for (c=rest; *c; c++)
-        if (!isspace(*c));
+        if (!isspace(*c))
             return FALSE;
     
     return TRUE;

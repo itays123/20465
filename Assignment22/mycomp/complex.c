@@ -92,6 +92,6 @@ void mult_comp_comp(complex *comp1, complex *comp2)
 * |a+bi| = sqrt(a^2 + b^2) */
 void abs_comp(complex *comp)
 {
-    int result = sqrt(pow(comp->real, 2) + pow(comp->imaginary, 2));
+    double result = sqrt(pow(comp->real, 2) + pow(comp->imaginary, 2));
     printf("%.4f", result);
 }

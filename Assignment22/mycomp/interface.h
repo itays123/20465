@@ -10,12 +10,6 @@ typedef enum { NONE, ERROR, READ, PRINT, ADD_COMP, SUB_COMP, MULT_COMP_REAL, MUL
 
 cmdtype getcmd(char**);
 
-static cmdtype strtocmd(char []);
-
-static int goto_arg(char **, int);
-
 int arg(char**, argtype, void*);
-
-static int var_name_validate(char *);
 
 int endofcmd(char*);
