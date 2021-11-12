@@ -4,10 +4,12 @@
 #include <stdlib.h> /* for atof */
 #include "interface.h"
 
-cmdtype getcmd(char line[])
+char line[MAX_LINE_LENGTH];
+
+cmdtype getcmd(char **rest)
 {
     int scanRes;
-    char *command, *rest;
+    char *command;
     cmdtype result;
     /* if EOF, return stop */
     printf("\n\t>");
@@ -18,14 +20,14 @@ cmdtype getcmd(char line[])
 
     /* find command */
     command = strtok(line, "\t \n");
-    rest = command + strlen(command) + 1;
+    *rest = command + strlen(command) + 1;
 
     if (command == NULL)
         return NONE;
     
     result = strtocmd(command);
     /* Handle special case of STOP command */
-    if (result == STOP && !iswhitecharsonly(rest))
+    if (result == STOP && !endofcmd(*rest))
         return ERROR;
     
     return result;
