@@ -10,8 +10,8 @@ cmdtype getcmd(char []);
 
 static cmdtype strtocmd(char []);
 
-static int iswhitecharsonly(char *);
+int goto_args(char**);
 
-int arg_validate(char**, argtype, void*);
+int arg(char**, argtype, void*);
 
-int arg_count_validate(char [], int );
+int endofcmd(char*);
