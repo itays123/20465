@@ -1,4 +1,4 @@
-
+Welcome to my complex calculator! Ready for calculations...
 
  > 
  < read_comp G, 3.1, 6.5
@@ -82,3 +82,4 @@ Error: Extraneous text after end of command
 
  > 
  < stop
+Goodbye!

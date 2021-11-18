@@ -28,9 +28,9 @@ void read_comp(complex *var, double real, double imaginary)
 void print_comp(complex *var)
 {
     if (var->imaginary >= 0)
-        printf("%.4f + (%.4f)i", var->real, var->imaginary);
+        printf("%.2f + (%.2f)i", var->real, var->imaginary);
     else
-        printf("%.4f - (%.4f)i", var->real, fabs(var->imaginary));
+        printf("%.2f - (%.2f)i", var->real, fabs(var->imaginary));
 }
 
 /* Print the sum of two complex variables, using the following formula:
@@ -93,5 +93,5 @@ void mult_comp_comp(complex *comp1, complex *comp2)
 void abs_comp(complex *comp)
 {
     double result = sqrt(pow(comp->real, 2) + pow(comp->imaginary, 2));
-    printf("%.4f", result);
+    printf("%.2f", result);
 }

@@ -15,6 +15,8 @@ int main() {
     for (i=0; i < NUMBER_OF_VARIABLES; i++)
         variables[i] = new_comp();
     
+    printf("Welcome to my complex calculator! Ready for calculations...");
+
     /* Handle user input */
     while((cmd = getcmd(&rest)) != STOP)
     {
@@ -71,6 +73,8 @@ int main() {
                 break;
         }
     }
+
+    printf("Goodbye!");
 
     return 0;
 }
