@@ -17,16 +17,22 @@ points the argument given to the function to the first non-white, non-comma char
 handles the validation for the STOP command, so no invalid stop lines will be executed */
 cmdtype getcmd(char **rest)
 {
-    int *scanRes;
+    char *scanRes;
     char *command;
     cmdtype result;
-    /* if EOF, return stop */
+
     printf("\n\n > ");
 
     scanRes = fgets(line, MAX_LINE_LENGTH, stdin);
-    printf("\n < %s", line);
 
     /* handle scanRes */
+    if (scanRes == NULL) /* End of file occured */
+    {
+        printf("\nError: not exited using the stop command");
+        return STOP;
+    }
+
+    printf("\n < %s", line);
 
     /* find command */
     command = strtok(line, "\t \n");

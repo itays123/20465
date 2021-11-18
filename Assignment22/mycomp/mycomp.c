@@ -74,7 +74,7 @@ int main() {
         }
     }
 
-    printf("Goodbye!");
+    printf("\n\nGoodbye!");
 
     return 0;
 }

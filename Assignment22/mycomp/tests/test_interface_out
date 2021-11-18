@@ -77,9 +77,9 @@ Error: missing argument
 
  > 
  < stop A
-
 Error: Extraneous text after end of command
 
  > 
- < stop
+Error: not exited using the stop command
+
 Goodbye!

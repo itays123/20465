@@ -14,4 +14,3 @@ mult_comp_real, A, 2.5
 mult_comp_img A,B
 abs_comp
 stop A
-stop
