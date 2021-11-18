@@ -45,7 +45,12 @@ cmdtype getcmd(char **rest)
 
     /* Handle special case of STOP command */
     if (result == STOP)
+    {
+        if (strlen(command) == strlen(line)) /* Edge case of stop + EOF */
+            return STOP;
         return endofcmd(*rest) ? STOP : ERROR;
+
+    }
     
     /* point the rest pointer to the first argument */
     if (goto_arg(rest, TRUE))
