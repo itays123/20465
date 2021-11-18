@@ -88,7 +88,7 @@ static int goto_arg(char **p, int firstArg)
     if (!(**p) || (**p == '\n'))
     {
         /* Argument not found */
-        printf("Error: missing argument");
+        printf("\nError: missing argument");
         return FALSE;
     }
     if (**p != ',')
@@ -113,7 +113,8 @@ int arg(char **rest, argtype type, void *to_assign)
     char *curr, *start;
     char temp_end; /* To temporarly replace the char after the argument with \0 */
     start = *rest;
-    goto_arg(&start, FALSE); /* We assume that for the first arg curr is already pointing towards it */
+    if (!goto_arg(&start, FALSE)) /* We assume that for the first arg rest is already pointing towards it */
+        return FALSE; 
     for (curr = start; *curr && (*curr != ',') && !isspace(*curr); curr++)
     {
         if (type == NUMBER && !isdigit(*curr) && *curr != '.' && *curr != '-')
@@ -136,7 +137,7 @@ int arg(char **rest, argtype type, void *to_assign)
             *(char *)to_assign = *start;
         else
         {
-            printf("Error: undefined complex variable");
+            printf("\nError: undefined complex variable");
             return FALSE;
         }
     }
@@ -148,7 +149,7 @@ int arg(char **rest, argtype type, void *to_assign)
         /* Check for other arguments given without a seperating comma */
         if (!isspace(*curr))
         {
-            printf("Error: Missing comma");
+            printf("\nError: Missing comma");
             return FALSE;
         }
     
@@ -176,13 +177,16 @@ int endofcmd(char *rest)
     /* Handle comma edge case */
     if (*(rest-1) == ',')
     {
-        printf("Error: Extraneous text after end of command");
+        printf("\nError: Extraneous text after end of command");
         return FALSE;
     }
 
     for (c=rest; *c; c++)
         if (!isspace(*c))
+        {
+            printf("\nError: Extraneous text after end of command");
             return FALSE;
+        }
     
     return TRUE;
 }
