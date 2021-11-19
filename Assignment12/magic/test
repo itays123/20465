@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo $(make)
+echo $(./magic <test_input_format >test_input_format_out)
+echo $(./magic <test_non_integer >test_non_integer_out)
+echo $(./magic <test_not_enough_input >test_not_enough_input_out)
+echo $(./magic <test_too_much_input >test_too_much_input_out)
+echo $(./magic <test_square_n5 >test_square_n5_out)
