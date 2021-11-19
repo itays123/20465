@@ -17,24 +17,19 @@ int main() {
 /* Gets and validates N^2 numbers from the user, and arranges it in the array */
 int buildSquare(square sq)
 {
-    int rowsFilled = 0, valuesInRowFilled = 0, scanRes, current;
+    int *p = *sq;
+    int scanRes;
     printf("\nPlease enter %d integers to build the magic square, separated by spaces (^d to stop):\n", N * N);
-    while ((scanRes = scanf("%d", &current)) != EOF && scanRes)
+    while ((scanRes = scanf("%d", p)) != EOF && scanRes)
     {
-        if (rowsFilled >= N) 
+        if (p >= *sq + N*N) 
         {
             /* Too much input */
             printf("\nError: too much integers were inputted.\n");
             return FALSE;
         }
-        /* There is a number to recieve in the input - put it in the right index of sq */
-        sq[rowsFilled][valuesInRowFilled] = current;
-        /* Move the indexes forward */
-        if((++valuesInRowFilled) == N)
-        {
-            rowsFilled++;
-            valuesInRowFilled = 0;
-        }
+        /* move p forward */
+        p++;
     }
     /* Nothing in the input anymore - why did we get out of the loop? */
     if (!scanRes) /* Non-integer input was received */
@@ -42,7 +37,7 @@ int buildSquare(square sq)
         printf("\nError: non-integer input was received\n");
         return FALSE;
     }
-    if  (scanRes == EOF && rowsFilled < N)
+    if  (scanRes == EOF && p < *sq + N*N)
     {
         printf("\nError: not enough numbers in the input\n");
         return FALSE;
