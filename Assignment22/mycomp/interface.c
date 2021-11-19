@@ -20,6 +20,7 @@ cmdtype getcmd(char **rest)
     char *scanRes;
     char *command;
     cmdtype result;
+    int linelen;
 
     printf("\n\n > ");
 
@@ -33,6 +34,7 @@ cmdtype getcmd(char **rest)
     }
 
     printf("\n < %s", line);
+    linelen = strlen(line);
 
     /* find command */
     command = strtok(line, "\t \n");
@@ -46,7 +48,7 @@ cmdtype getcmd(char **rest)
     /* Handle special case of STOP command */
     if (result == STOP)
     {
-        if (strlen(command) == strlen(line)) /* Edge case of stop + EOF */
+        if (strlen(command) == linelen) /* Edge case of stop + EOF */
             return STOP;
         return endofcmd(*rest) ? STOP : ERROR;
 
