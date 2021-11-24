@@ -83,11 +83,11 @@ static char *splitcmd(char *line, char **rest)
 {
     char *p = line;
     char *start;
-    while (*p && ((*p == ' ') || (*p == '\t')))
+    while (*p && isspace(*p))
         p++;
     
     /* If line ended, return NULL */
-    if (!(*p) || (*p == '\n'))
+    if (!(*p))
         return NULL;
     
     /* Found command name. Keep going forward until encountered another space */
