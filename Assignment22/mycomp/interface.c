@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-#include <stdlib.h> /* for atof */
+#include <stdlib.h> /* for atof, malloc */
 #include "interface.h"
 
 static cmdtype strtocmd(char []);
@@ -10,15 +10,28 @@ static int goto_arg(char **, int);
 
 static int var_name_validate(char *);
 
-static char line[MAX_LINE_LENGTH];
+/* allocates a memory for a set of MAX_LINE_LENGTH characters,
+to be used by the interface functions.
+This method will only be called once during the execution */
+char *malloc_line(void)
+{
+    char *p;
+    p = (char *) malloc(sizeof(char) * MAX_LINE_LENGTH);
+    if (!p) {
+        printf("Error: memory allocation failed");
+        exit(1);
+    }
+    return p;
+}
 
 /* Requests the user for a new input line, and collects the command from the line.
-points the argument given to the function to the first non-white, non-comma character after the command.
+uses the set of charcaters the first argument is pointing to, assuming it had no less than MAX_LINE_LENGTH chacaters.
+points the second argument to the function to the first non-white, non-comma character after the command.
 handles the validation for the STOP command, so no invalid stop lines will be executed */
-cmdtype getcmd(char **rest)
+cmdtype getcmd(char *line, char **rest)
 {
-    char *scanRes;
     char *command;
+    char *scanRes;
     cmdtype result;
     int linelen;
 
