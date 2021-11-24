@@ -4,6 +4,8 @@
 #include <stdlib.h> /* for atof, malloc */
 #include "interface.h"
 
+static char *splitcmd(char *, char **);
+
 static cmdtype strtocmd(char []);
 
 static int goto_arg(char **, int);
@@ -50,8 +52,7 @@ cmdtype getcmd(char *line, char **rest)
     linelen = strlen(line);
 
     /* find command */
-    command = strtok(line, "\t \n");
-    *rest = command + strlen(command) + 1;
+    command = splitcmd(line, rest);
 
     if (command == NULL)
         return NONE;
@@ -74,6 +75,38 @@ cmdtype getcmd(char *line, char **rest)
     return ERROR;
 
 }
+
+/* Returns a pointer to the first non-white character in the line given, NULL if not found
+Terminates the first word in the line with '\0' if other charcters after it were found
+points the second pointer given in the function to the charcter after the '\0' if placed, NULL if not*/
+static char *splitcmd(char *line, char **rest)
+{
+    char *p = line;
+    char *start;
+    while (*p && ((*p == ' ') || (*p == '\t')))
+        p++;
+    
+    /* If line ended, return NULL */
+    if (!(*p) || (*p == '\n'))
+        return NULL;
+    
+    /* Found command name. Keep going forward until encountered another space */
+    start = p;
+    while (*p && !isspace(*p))
+        p++;
+    
+    /* Found a space charcater, or line ended */
+    if (!(*p))
+    {
+        *rest = (char *) NULL;
+        return start;
+    }
+    
+    *p = '\0';
+    *rest = p + 1;
+    return start;
+}
+
 
 static cmdtype strtocmd(char command[])
 {
