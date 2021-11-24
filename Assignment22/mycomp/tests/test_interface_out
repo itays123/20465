@@ -51,6 +51,15 @@ Error: missing argument
 Error: missing argument
 
  > 
+ < add_comp A,B
+0.00 + (0.00)i
+
+ > 
+ < add_comp
+
+Error: missing argument
+
+ > 
  < print_comp C, D
 
 Error: Extraneous text after end of command
@@ -66,6 +75,10 @@ Error: Multiple consecutive commas
 Error: Missing comma
 
  > 
+ <     
+
+
+ > 
  < mult_comp_real, A, 2.5
 
 Error: undefined command name
@@ -74,6 +87,10 @@ Error: undefined command name
  < mult_comp_img A,B
 
 Error: invalid parameter - not a number
+
+ > 
+ < 
+
 
  > 
  < abs_comp
