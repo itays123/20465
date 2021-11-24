@@ -41,6 +41,11 @@ Error: missing argument
 Error: Extraneous text after end of command
 
  > 
+ <        add_comp D
+
+Error: missing argument
+
+ > 
  < add_comp B
 
 Error: missing argument
