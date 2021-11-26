@@ -1,3 +1,4 @@
+/* Mycomp.c - the main program responsible for combining complex computations with user input */
 #include <stdio.h> /* for NULL */
 #include "interface.h"
 #include "mycomp.h"

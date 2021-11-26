@@ -1,14 +1,16 @@
+/* Interface.c - 
+* Responsible for handling and processing input from the user 
+*/
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h> /* for atof, malloc */
 #include "interface.h"
+#include "nextchar.h"
 
 static char *splitcmd(char *, char **);
 
 static cmdtype strtocmd(char []);
-
-static int goto_arg(char **, int);
 
 static int var_name_validate(char *);
 
@@ -69,11 +71,13 @@ cmdtype getcmd(char *line, char **rest)
     }
     
     /* point the rest pointer to the first argument */
-    if (goto_arg(rest, TRUE))
+    *rest = next_nonwhite(*rest);
+    if (*rest != NULL && **rest != ',')
         return result;
     
+    /* Illegal comma or no args found */
+    printf("\n Error: %s", ((*rest)? "Illegal comma" : "missing argument"));
     return ERROR;
-
 }
 
 /* Returns a pointer to the first non-white character in the line given, NULL if not found
@@ -81,29 +85,25 @@ Terminates the first word in the line with '\0' if other charcters after it were
 points the second pointer given in the function to the charcter after the '\0' if placed, NULL if not*/
 static char *splitcmd(char *line, char **rest)
 {
-    char *p = line;
-    char *start;
-    while (*p && isspace(*p))
-        p++;
+    char *start, *end;
+    start = next_nonwhite(line);
     
-    /* If line ended, return NULL */
-    if (!(*p))
+    /* If line is empty, return NULL */
+    if (!(*start))
         return NULL;
     
-    /* Found command name. Keep going forward until encountered another space */
-    start = p;
-    while (*p && !isspace(*p))
-        p++;
+    end = next_white(start);
     
     /* Found a space charcater, or line ended */
-    if (!(*p))
+    if (!(*end))
     {
         *rest = (char *) NULL;
         return start;
     }
     
-    *p = '\0';
-    *rest = p + 1;
+    /* Split line */
+    *end = '\0';
+    *rest = end + 1;
     return start;
 }
 
@@ -135,58 +135,41 @@ static cmdtype strtocmd(char command[])
     }
 }
 
-/* Searches for a first non-white character and moves the pointer to it.
-If runs into a comma before that, returns FALSE and exists the function with an error message
-If doesn't find such a character, returns FALSE is well */
-static int goto_arg(char **p, int firstArg)
-{
-    while (**p && ((**p == ' ') || (**p == '\t')))
-        (*p)++;
-    
-    /* encountered a non-white character */
-    if (!(**p) || (**p == '\n'))
-    {
-        /* Argument not found */
-        printf("\nError: missing argument");
-        return FALSE;
-    }
-    if (**p != ',')
-        return TRUE;
-    
-    /* Found illegal comma */
-    if (firstArg)
-        printf("\nError: Illegal comma");
-    else
-        printf("\nError: Multiple consecutive commas");
-    return FALSE;
-}
-
 /* Gets a pointer to somewhere along a string, assuming it's after the command.
 in the characters between the pointer and the next comma char,
 it ignores white chars and finds an argument in a desired type
 Moves the pointer to beyond the comma, or to a NULL character, whichever comes first
 returns TRUE if the argument is valid, FALSE otherwise */
-int arg(char **rest, argtype type, void *to_assign)
+int arg(char **args, argtype type, void *to_assign)
 {
     /* Start and end will mark the start and end of the argument string without white chars and commas */
-    char *curr, *start;
+    char *start, *end;
     char temp_end; /* To temporarly replace the char after the argument with \0 */
-    start = *rest;
-    if (!goto_arg(&start, FALSE)) /* We assume that for the first arg rest is already pointing towards it */
-        return FALSE; 
-    for (curr = start; *curr && (*curr != ',') && !isspace(*curr); curr++)
+    start = next_nonwhite(*args);
+    if (!(*start) || *start == ',')
     {
-        if (type == NUMBER && !isdigit(*curr) && *curr != '.' && *curr != '-')
+        /* We assume illegal commas before the arguments have already been searched */
+        printf("\nError: %s", ((*start)? "Multiple consecutive commas" : "missing argument"));
+        return FALSE;
+    }
+
+    if (type == NUMBER)
+    {
+        end = next_non_number(start);
+        if (!isspace(*end) && *end != ',')
         {
+            /* Argument should be a number but found a non-numeric char before argument string ended */
             printf("\nError: invalid parameter - not a number");
             return FALSE;
         }
     }
+    else
+        end = next_white_or_comma(start);
 
     /* Assign the result, as the desired type, in the given pointer.
     Note: Curr is now pointing to the first character in the sequence which isn't a part of the arg */
-    temp_end = *curr;
-    *curr = '\0';
+    temp_end = *end;
+    *end = '\0';
 
     if (type == NUMBER)
         *(double *)to_assign = atof(start);
@@ -201,20 +184,25 @@ int arg(char **rest, argtype type, void *to_assign)
         }
     }
     
-    *curr = temp_end;
+    *end = temp_end;
 
-    /* Before we return true, move the pointer to beyond the next comma or to the end of the line */
-    for (; *curr && *curr != ','; curr++)
-        /* Check for other arguments given without a seperating comma */
-        if (!isspace(*curr))
-        {
-            printf("\nError: Missing comma");
-            return FALSE;
-        }
-    
-    /* Point rest to the next character (if current one is comma) or two the current (if end of string) */
-    *rest = *curr ? (curr + 1) : curr;
-    return TRUE;
+    /* Before we return true, move args the pointer to beyond the next comma or to the end of the line */
+    end = next_nonwhite(end);
+
+    if (!(*end))
+    {
+        *args = end;
+        return TRUE;
+    }
+    else if (*end == ',')
+    {
+        *args = end + 1;
+        return TRUE;
+    }
+
+    /* Found another argument without a separating comma */
+    printf("\nError: Missing comma");
+    return FALSE;
 }
 
 /* Validates the string name of the variable. Returns a boolean value.
@@ -240,12 +228,12 @@ int endofcmd(char *rest)
         return FALSE;
     }
 
-    for (c=rest; *c; c++)
-        if (!isspace(*c))
-        {
-            printf("\nError: Extraneous text after end of command");
-            return FALSE;
-        }
+    c = next_nonwhite(rest); /* c should be pointing to end of string */
+    if (*c)
+    {
+        printf("\nError: Extraneous text after end of command");
+        return FALSE;
+    }
     
     return TRUE;
 }
