@@ -17,6 +17,9 @@ int buildSquare(square );
 /* Prints the square in a nice format */
 void printSquare(square );
 
+/* Checks if every value in the square is between 1 and N*N */
+int checkRange(square );
+
 /* Checks if every value in the square is unique */
 int checkUniqueValues(square );
 

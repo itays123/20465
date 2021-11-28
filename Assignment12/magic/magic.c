@@ -5,7 +5,7 @@ int main() {
     int sum;
     if (buildSquare(sq)) {
         printSquare(sq);
-        if (checkUniqueValues(sq) && (sum = checkSquareSum(sq))) 
+        if (checkRange(sq) && checkUniqueValues(sq) && (sum = checkSquareSum(sq))) 
             printf("\nThe given square is a magic square! (Sum of each row, column and digaon: %d)\n", sum);
         else
             printf("\nThe given square is not a magic square:( \n");
@@ -55,6 +55,16 @@ void printSquare(square sq)
             printf("%d\t", sq[i][j]);
         printf("\n");
     }
+}
+
+/* Checks if every value in the square is between 1 and N*N */
+int checkRange(square sq)
+{
+    int *p;
+    for (p = *sq; p < *sq + N * N; p++)
+        if (*p < 1 || *p > N * N)
+            return FALSE;
+    return TRUE;
 }
 
 /* Checks if every value in the square is unique */
