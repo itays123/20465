@@ -17,6 +17,9 @@ int buildSquare(square );
 /* Prints the square in a nice format */
 void printSquare(square );
 
+/* Checks if every value in the square is unique */
+int checkUniqueValues(square );
+
 /* Sums every row, column and diagon. 
 * Will return the sum if it's the same across all rows, columns and diagons, NULL otherwise */
-int checkSquare(square );
+int checkSquareSum(square );

@@ -5,8 +5,7 @@ int main() {
     int sum;
     if (buildSquare(sq)) {
         printSquare(sq);
-        sum = checkSquare(sq);
-        if (sum) 
+        if (checkUniqueValues(sq) && (sum = checkSquareSum(sq))) 
             printf("\nThe given square is a magic square! (Sum of each row, column and digaon: %d)\n", sum);
         else
             printf("\nThe given square is not a magic square:( \n");
@@ -58,9 +57,20 @@ void printSquare(square sq)
     }
 }
 
+/* Checks if every value in the square is unique */
+int checkUniqueValues(square sq)
+{
+    int *p, *q;
+    for (p = *sq; p < *sq + N * N; p++)
+        for (q = *sq; q < *sq + N * N; q++)
+            if (p != q && *p == *q)
+                return FALSE;
+    return TRUE;
+}
+
 /* Sums and compares each row, column and diagon of a N*N square, assuming it's valid. 
 * Returns NULL if the sums aren't equal */
-int checkSquare(square sq)
+int checkSquareSum(square sq)
 {
     int i,j; /* Iterators */
     int sum, curr;
