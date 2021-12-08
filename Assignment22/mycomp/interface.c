@@ -14,20 +14,6 @@ static cmdtype strtocmd(char []);
 
 static int var_name_validate(char *);
 
-/* allocates a memory for a set of MAX_LINE_LENGTH characters,
-to be used by the interface functions.
-This method will only be called once during the execution */
-char *malloc_line(void)
-{
-    char *p;
-    p = (char *) malloc(sizeof(char) * MAX_LINE_LENGTH);
-    if (!p) {
-        printf("Error: memory allocation failed");
-        exit(1);
-    }
-    return p;
-}
-
 /* Requests the user for a new input line, and collects the command from the line.
 uses the set of charcaters the first argument is pointing to, assuming it had no less than MAX_LINE_LENGTH chacaters.
 points the second argument to the function to the first non-white, non-comma character after the command.
@@ -138,7 +124,7 @@ static cmdtype strtocmd(char command[])
 /* Gets a pointer to somewhere along a string, assuming it's after the command.
 in the characters between the pointer and the next comma char,
 it ignores white chars and finds an argument in a desired type
-Moves the pointer to beyond the comma, or to a NULL character, whichever comes first
+Moves the pointer to beyond the comma, or to a \0 character, whichever comes first
 returns TRUE if the argument is valid, FALSE otherwise */
 int arg(char **args, argtype type, void *to_assign)
 {
@@ -221,15 +207,11 @@ like in the command "read_comp A,3.5,-3," it will mark the end of command as fal
 int endofcmd(char *rest)
 {
     char *c;
-    /* Handle comma edge case */
-    if (*(rest-1) == ',')
-    {
-        printf("\nError: Extraneous text after end of command");
-        return FALSE;
-    }
 
     c = next_nonwhite(rest); /* c should be pointing to end of string */
-    if (*c)
+    
+    /* Handle comma edge case */
+    if (*c || *(rest-1) == ',')
     {
         printf("\nError: Extraneous text after end of command");
         return FALSE;

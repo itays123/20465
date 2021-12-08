@@ -6,12 +6,12 @@
 static complex *variables[NUMBER_OF_VARIABLES];
 
 int main() {
-    char *line, *args;
+    char line[MAX_LINE_LENGTH];
+    char *args;
     cmdtype cmd;
     char chararg1, chararg2;
     double numarg1, numarg2;
 
-    line = malloc_line();
     init_variables();
     
     printf("Welcome to my complex calculator! Ready for calculations...");
