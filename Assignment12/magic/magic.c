@@ -5,7 +5,7 @@ int main() {
     int sum;
     if (buildSquare(sq)) {
         printSquare(sq);
-        if (checkRange(sq) && checkUniqueValues(sq) && (sum = checkSquareSum(sq))) 
+        if (checkRangeUniqueValues(sq) && (sum = checkSquareSum(sq))) 
             printf("\nThe given square is a magic square! (Sum of each row, column and digaon: %d)\n", sum);
         else
             printf("\nThe given square is not a magic square:( \n");
@@ -57,24 +57,30 @@ void printSquare(square sq)
     }
 }
 
-/* Checks if every value in the square is between 1 and N*N */
-int checkRange(square sq)
+/* Checks if every value in the square is between 1 and N*N and unique (only appears once)
+Will return TRUE if condition holds, FALSE otherwise */
+int checkRangeUniqueValues(square sq)
 {
+    int markingArr[N*N];
     int *p;
-    for (p = *sq; p < *sq + N * N; p++)
-        if (*p < 1 || *p > N * N)
-            return FALSE;
-    return TRUE;
-}
+    int i;
 
-/* Checks if every value in the square is unique */
-int checkUniqueValues(square sq)
-{
-    int *p, *q;
-    for (p = *sq; p < *sq + N * N; p++)
-        for (q = *sq; q < *sq + N * N; q++)
-            if (p != q && *p == *q)
-                return FALSE;
+    for (i=0; i < N*N; i++)
+        markingArr[i] = FALSE;
+    
+    for (p = *sq; p < *sq + N*N; p++)
+    {
+        if (*p < 1 || *p > N*N) /* if value is out of range */
+            return FALSE;
+        
+        /* Note: 1<=*p<=N*N, but 0<=index<=N*N-1 */
+        if (markingArr[*p - 1]) /* Value has been found before */
+            return FALSE;
+        
+        /* Mark the value as found */
+        markingArr[*p - 1] = TRUE;
+    }
+
     return TRUE;
 }
 
