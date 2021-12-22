@@ -1,7 +1,6 @@
 /* Nextchar.c - 
 * responsible for working with pointers to characters and searching charcters within strings
 */
-#include <stdio.h> /* for NULL */
 #include <ctype.h> /* for isdigit, isspace, etc. */
 #include "nextchar.h"
 
@@ -13,27 +12,27 @@ static int white(char);
 static int non_number(char);
 
 /* Returns a pointer to the next non-white character in a given string
-* or NULL if not found */
+* or to the end of the string if not found */
 char *next_nonwhite(char *str)
 {
     return next(nonwhite, str);
 }
 
 /* Returns a pointer to the next white character in a given string
-* or NULL if not found */
+* or to the end of string if not found */
 char *next_white(char *str)
 {
     return next(white, str);
 }
 
 /* Returns a pointer to the next white character or comma in a given string
-* or NULL if not found */
+* or to the end of string if not found */
 char *next_white_or_comma(char *str)
 {
     return next(white_or_comma, str);
 }
 
-/* Returns a pointer to the next character that is not a digit, a decimal point or a minus sign */
+/* Returns a pointer to the next character that is not a digit, a decimal point or a minus sign, or to the end of string if not found */
 char *next_non_number(char *str)
 {
     return next(non_number, str);
