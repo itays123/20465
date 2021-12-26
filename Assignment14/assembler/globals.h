@@ -65,9 +65,9 @@ typedef struct {
 } operand_data;
 
 typedef struct {
-    unsigned char ARE: 3;
-    unsigned char length: 3; /* For OPWORD words, to store their length (1-6, 3 bytes at most) */
-    unsigned char type: 2; /* use the word_type enum */
+    unsigned int ARE: 3;
+    unsigned int length: 3; /* For OPWORD words, to store their length (1-6, 3 bytes at most) */
+    unsigned int type: 2; /* use the word_type enum */
     union data {
         operand_data opdata;
         int integer_data;
