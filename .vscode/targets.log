@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+ 
 # GNU Make 4.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2014 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Dec 22 01:05:53 2021
+# Make data base, printed on Tue Dec 28 00:39:17 2021
 
 # Variables
 
@@ -73,7 +75,7 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/ubuntu:@/tmp/.ICE-unix/1473,unix/ubuntu:/tmp/.ICE-unix/1473
+SESSION_MANAGER = local/ubuntu:@/tmp/.ICE-unix/1456,unix/ubuntu:/tmp/.ICE-unix/1456
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -93,7 +95,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 10096
+GIO_LAUNCHED_DESKTOP_FILE_PID = 10234
 # automatic
 %F = $(notdir $%)
 # environment
@@ -107,7 +109,7 @@ PWD = /home/user/Desktop/20465
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 1632
+SSH_AGENT_PID = 1642
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -147,7 +149,7 @@ SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-89153f0d-8b11-4dca-87f7-58272a07e908.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-2d6c3385-b336-4e21-a7e5-157d6d7aa513.sock
 # environment
 XDG_SESSION_ID = 1
 # environment
@@ -213,7 +215,7 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 10096
+VSCODE_PID = 10234
 # variable set hash-table stats:
 # Load=102/1024=10%, Rehash=0, Collisions=15/124=12%
 
@@ -223,9 +225,9 @@ VSCODE_PID = 10096
 
 # Directories
 
-# . (device 2050, inode 546928): 8 files, no impossibilities.
+# . (device 2050, inode 546928): 9 files, no impossibilities.
 
-# 8 files, no impossibilities in 1 directories.
+# 9 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -275,15 +277,13 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 16 / storage = 152 B / avg = 9 B
-# current buf: size = 8162 B / used = 152 B / count = 16 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 17 / storage = 165 B / avg = 9 B
+# current buf: size = 8162 B / used = 165 B / count = 17 / avg = 9 B
 
-# strcache performance: lookups = 19 / hit rate = 15%
+# strcache performance: lookups = 20 / hit rate = 15%
 # hash-table stats:
  
-make: *** No rule to make target 'all'.  Stop.
- 
-# Load=16/8192=0%, Rehash=0, Collisions=1/19=5%
-# Finished Make data base on Wed Dec 22 01:05:53 2021
+# Load=17/8192=0%, Rehash=0, Collisions=1/20=5%
+# Finished Make data base on Tue Dec 28 00:39:17 2021
 
  

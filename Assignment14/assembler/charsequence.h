@@ -66,14 +66,13 @@ and four pointer to pointers to characters:
 - index_end
 points symbol_start and symbol_end to the start and end of the symbol char sequence (end exclusive), 
 and index_start and index_end to the start and end of the index char sequence (end exclusive).
-returns TRUE if everything went fine, FLASE if couldn't find characters from the pattern mentioned above */
-boolean split_symbol_index(char *str, char **symbol_start, char **symbol_end,
-                            char **index_start, char **index_end);
+returns TRUE if everything went fine, FALSE if couldn't find characters from the pattern mentioned above */
+boolean split_symbol_index(char *, char **, char **, char **, char **);
 
 /* Gets a pointer to the first desired whitespace character in a sequence of white chars ending a string, 
 and searches for non-whitespace characters after it.
 returns:
 - EXTRANEOUS_TEXT if found a non-white char or if the pointer given points to a non-whitespace character
 - PASS otherwise */
-input_status end_of_command(char *str);
+input_status end_of_command(char *);
 
