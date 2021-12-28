@@ -41,7 +41,7 @@ boolean str_equal(char *start, char *end, char *compare_to)
     int result;
     char temp = *end;
     *end = '\0';
-    result = strcmp(start, compare_to);
+    result = !strcmp(start, compare_to);
     *end = temp;
     return result ? TRUE : FALSE;
 }
