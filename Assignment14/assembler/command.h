@@ -1,6 +1,6 @@
 #include "globals.h"
 
-/***************** Input errors enum*******************/
+/***************** Type definitions *******************/
 
 typedef enum {
     r0,
@@ -68,6 +68,8 @@ typedef enum {
     EXTERNAL_ENTRY_SYMBOL
 
 } input_status;
+
+/*********************** Module Methods ***********************/
 
 /* Gets a pointer to the start and end of a subtring (end exclusive), and two pointers to pointers of characters.
 If the end of the substring is a colon (:), searches the next word after the substring end 
