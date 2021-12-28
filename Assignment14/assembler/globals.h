@@ -22,14 +22,6 @@ enum word_type {
     DATA
 };
 
-enum addressing_method {
-    NONE = -1,
-    IMMEDIATE = 0,
-    DIRECT = 1,
-    INDEX = 2,
-    REGISTER_DIRECT = 3
-};
-
 enum ARE {
     Absolute = 4, /* 100 */
     Relocatable = 2, /* 010 */

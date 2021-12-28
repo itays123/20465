@@ -23,6 +23,14 @@ typedef enum {
 } reg;
 
 typedef enum {
+    NONE = -1,
+    IMMEDIATE = 0,
+    DIRECT = 1,
+    INDEX = 2,
+    REGISTER_DIRECT = 3
+} addressing_method;
+
+typedef enum {
     PASS,
     /* Warnings */
     WARN_LABEL_TO_ENTRY,
@@ -60,6 +68,7 @@ typedef enum {
     OPERATION_REQ_NO_OPERANDS,
     INVALID_ADRS_METHOD_FIRST_OP,
     INVALID_ADRS_METHOD_SECOND_OP,
+    INVALID_REGISTER_FOR_INDEX_ADDRESSING,
 
     /* Second pass - error in symbol references */
     UNREC_SYMBOL_FOR_ENTRY,
@@ -78,6 +87,13 @@ If not a colon, assigns the start and end of the substring to the two other poin
 Return TRUE if there was a colon, FALSE otherwise */
 boolean find_opword(char *, char *, char **, char **);
 
+/* Gets a pointer to the start and end of a substring,
+compares it to given strings and assigns their opcode and funct values to two pointers given.
+returns 
+- UNREC_OPERATION if operation not found
+- PASS otherwise */
+input_status str_to_opcode_funct(char *, char *, int *, int *);
+
 /* Gets a pointer to a pointer to somewhere along a string, 
 assuming it's after a comma if there should have been one.
 Assigns the pointer to the next non-whitespace character (if found) to the second argument,
@@ -90,6 +106,12 @@ Returns:
 - PASS, in any other case */
 input_status find_operand(char **, char **, char **, input_status );
 
+/* Gets two pointers to the start and end of a substring (end exclusive),
+assuming it had no whitespace characters in its start and end.
+Find the corresponding addressing method of the substring
+*/
+input_status find_addressing_method(char *, char *, addressing_method *);
+
 /* Gets a pointer to a string in the form of "symbol[index]"
 and four pointer to pointers to characters:
 - symbol_start
@@ -100,6 +122,11 @@ points symbol_start and symbol_end to the start and end of the symbol char seque
 and index_start and index_end to the start and end of the index char sequence (end exclusive).
 returns TRUE if everything went fine, FALSE if couldn't find characters from the pattern mentioned above */
 boolean split_symbol_index(char *, char **, char **, char **, char **);
+
+/* Gets two pointers to the start and end of a substring (end exclusive)
+and returns the register code matching to it "r0" will return 0, etc.
+if not found, will return NONE_REG */
+reg str_to_reg(char *, char *);
 
 /* Gets a pointer to the first desired whitespace character in a sequence of white chars ending a string, 
 and searches for non-whitespace characters after it.
