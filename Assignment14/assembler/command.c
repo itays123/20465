@@ -1,6 +1,7 @@
 /* Command.h - dealing with command strings */
 #include "command.h"
 #include "charsequence.h"
+#include <ctype.h>
 
 boolean find_opword(char *label_start_maybe, char *label_end_maybe,
                 char **opstart, char **opend)
@@ -53,6 +54,10 @@ input_status str_to_opcode_funct(char *start, char *end, opcode *op_out, funct *
     struct cmd_lookup_element *row;
     *op_out = NONE_OP;
     *ft_out = NONE_FUNCT;
+
+    /* Save a lot of worst-case executions by checking length */
+    if (end - start < MIN_OPERATION_LENGTH || end - start > MAX_OPERATION_LENGTH)
+        return UNREC_OPERATION;
 
     for (row = lookup_table; *(row->cmd); row++)
         if (str_equal(start, end, row->cmd))
@@ -135,11 +140,42 @@ input_status get_operand_data(char *start, char *end, addressing_method *addr_ou
         if ((temp_reg = str_to_reg(symb_start, symb_end)) == NON_REG || temp_reg < r10)
             return INVALID_REGISTER_FOR_INDEX_ADDRESSING;
         *reg_out = temp_reg;
+        if (validate_symbol_name(symb_start, symb_end) != PASS)
+            return INVALID_REGISTER_FOR_INDEX_ADDRESSING;
         return PASS;
     }
 
     /* Direct addressing is remained */
     *addr_out = DIRECT;
+    if (validate_symbol_name(start, end) != PASS)
+        return INVALID_SYMBOL_REFERENCE;
+    return PASS;
+}
+
+input_status validate_symbol_name(char *start, char *end)
+{
+    opcode op; 
+    funct ft;
+    /* Check length */
+    if (end - start > MAX_SYMBOL_LENGTH)
+        return TOO_LONG_SYMBOL_NAME;
+    
+    /* Check starts with letter */
+    if (!isalpha(*start))
+        return ILLEGAL_CHAR_IN_BEGINNING_OF_SYMBOL;
+    
+    /* Check contains only digits and letters */
+    if (next_non_alnum(start) < end)
+        return ILLEGAL_CHARS_IN_SYMBOL_NAME;
+    
+    /* Check name of register */
+    if (str_to_reg(start, end) != NON_REG)
+        return SYMBOL_NAMED_LIKE_REGISTER;
+    
+    /* Check name of operation */
+    if (str_to_opcode_funct(start, end, &op, &ft) != UNREC_OPERATION)
+        return SYMBOL_NAMED_LIKE_OPERATION;
+    
     return PASS;
 }
 
@@ -202,13 +238,17 @@ reg str_to_reg(char *start, char *end)
 {
     struct reg_lookup_element *row;
 
+    /* Save a lot of worst-case runs with this check */
+    if (end - start != REGISTER_NAME_LENGTH)
+        return NON_REG; 
+
     for (row = lookup_table; *(row->name); row++)
         if (str_equal(start, end, row->name))
         {
             return row->rg;
         }
     
-    /* Did not recognize operation */
+    /* Did not recognize register */
     return NON_REG;
 }
 

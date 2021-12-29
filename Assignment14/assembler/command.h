@@ -1,5 +1,8 @@
 #include "globals.h"
-
+#define MAX_SYMBOL_LENGTH 31
+#define REGISTER_NAME_LENGTH 3
+#define MIN_OPERATION_LENGTH 3
+#define MAX_OPERATION_LENGTH 4
 /***************** Type definitions *******************/
 
 typedef enum {
@@ -37,12 +40,12 @@ typedef enum {
     WARN_LABEL_TO_EXTERN,
 
     /* Label name errors */
-    TOO_LONG_LABEL_NAME,
-    ILLEGAL_CHAR_IN_BEGINNING_OF_LABEL,
-    ILLEGAL_CHARS_IN_LABEL_NAME,
-    SYMBOL_ALREADY_DEFINED,
+    TOO_LONG_SYMBOL_NAME,
+    ILLEGAL_CHAR_IN_BEGINNING_OF_SYMBOL,
+    ILLEGAL_CHARS_IN_SYMBOL_NAME,
     SYMBOL_NAMED_LIKE_OPERATION,
     SYMBOL_NAMED_LIKE_REGISTER,
+    SYMBOL_ALREADY_DEFINED,
 
     /* First pass - structure of line errors */
     LABEL_TO_EMPTY_LINE,
@@ -62,14 +65,16 @@ typedef enum {
 
     /* First pass - operation structure */
     UNREC_OPERATION,
-    MISSING_OPERAND_REQUIRED_1,
-    MISSING_OPERAND_REQUIRED_2,
+    MISSING_OPERAND_REQUIRED_ONE,
+    MISSING_OPERAND_REQUIRED_TWO,
     TOO_MANY_OPERANDS,
     OPERATION_REQ_NO_OPERANDS,
     INVALID_ADRS_METHOD_FIRST_OP,
     INVALID_ADRS_METHOD_SECOND_OP,
     INVALID_NUMBER_FOR_IMMD_ADDRESSING,
+    INVALID_SYMBOL_FOR_INDEX_ADDRESSING,
     INVALID_REGISTER_FOR_INDEX_ADDRESSING,
+    INVALID_SYMBOL_REFERENCE,
 
     /* Second pass - error in symbol references */
     UNREC_SYMBOL_FOR_ENTRY,
@@ -117,9 +122,20 @@ If addressing method contains a register (register-direct or index), assign in t
 If addressing method is immediate, assign the string result to the corresponsing pointer given.
 Returns:
 - INVALID_NUMBER_FOR_IMMD_ADDRESSING if the number given for immediate addressing is invalid.
-- INVALID_REGISTER_FOR_INDEX_ADDRESSING if the index given in an index adddressing operand is not r10 to r15
+- INVALID_REGISTER_FOR_INDEX_ADDRESSING if the index given in an index adddressing operand is not r10 to r15.
+- INVALID_SYMBOL_FOR_INDEX_ADDRESSING if the symbol given in an index addressing operand has an invalid name.
+- INVALID_SYMBOL_REFERENCE if a symbol referenced in a direct-addressed operand is invalid.
 - PASS otherwise */
 input_status get_operand_data(char *, char *, addressing_method *, reg *, int *);
+
+/* Gets two pointers to the start and end of a substring (end exclusive), 
+and checks for a valid symbol name:
+- 31 characters at most, else return TOO_LONG_SYMBOL_NAME
+- Starts with a letter, else return ILLEGAL_CHAR_IN_BEGINNING_OF_SYMBOL
+- Contains only digits and letters, else return ILLEGAL_CHARS_IN_SYMBOL_NAME
+- Is not a name of a command or a register, else return corresponding input statuses
+If all checks pass, return PASS. */
+input_status validate_symbol_name(char *, char *);
 
 /* Gets a pointer to a string in the form of "symbol[index]"
 and four pointer to pointers to characters:
