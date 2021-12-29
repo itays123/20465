@@ -33,7 +33,7 @@ typedef enum {
     REGISTER_DIRECT = 3
 } addressing_method;
 
-typedef enum {
+typedef enum input_statuses {
     PASS,
     /* Warnings */
     WARN_LABEL_TO_ENTRY,
@@ -72,9 +72,7 @@ typedef enum {
     INVALID_ADRS_METHOD_FIRST_OP,
     INVALID_ADRS_METHOD_SECOND_OP,
     INVALID_NUMBER_FOR_IMMD_ADDRESSING,
-    INVALID_SYMBOL_FOR_INDEX_ADDRESSING,
     INVALID_REGISTER_FOR_INDEX_ADDRESSING,
-    INVALID_SYMBOL_REFERENCE,
 
     /* Second pass - error in symbol references */
     UNREC_SYMBOL_FOR_ENTRY,
@@ -123,8 +121,6 @@ If addressing method is immediate, assign the string result to the corresponsing
 Returns:
 - INVALID_NUMBER_FOR_IMMD_ADDRESSING if the number given for immediate addressing is invalid.
 - INVALID_REGISTER_FOR_INDEX_ADDRESSING if the index given in an index adddressing operand is not r10 to r15.
-- INVALID_SYMBOL_FOR_INDEX_ADDRESSING if the symbol given in an index addressing operand has an invalid name.
-- INVALID_SYMBOL_REFERENCE if a symbol referenced in a direct-addressed operand is invalid.
 - PASS otherwise */
 input_status get_operand_data(char *, char *, addressing_method *, reg *, int *);
 
@@ -175,3 +171,5 @@ returns:
 - PASS otherwise */
 input_status end_of_command(char *);
 
+/* Gets an input status enumerable and returns its corresponding error message */
+char *get_error(input_status);

@@ -140,15 +140,11 @@ input_status get_operand_data(char *start, char *end, addressing_method *addr_ou
         if ((temp_reg = str_to_reg(symb_start, symb_end)) == NON_REG || temp_reg < r10)
             return INVALID_REGISTER_FOR_INDEX_ADDRESSING;
         *reg_out = temp_reg;
-        if (validate_symbol_name(symb_start, symb_end) != PASS)
-            return INVALID_REGISTER_FOR_INDEX_ADDRESSING;
         return PASS;
     }
 
     /* Direct addressing is remained */
     *addr_out = DIRECT;
-    if (validate_symbol_name(start, end) != PASS)
-        return INVALID_SYMBOL_REFERENCE;
     return PASS;
 }
 
@@ -244,9 +240,7 @@ reg str_to_reg(char *start, char *end)
 
     for (row = lookup_table; *(row->name); row++)
         if (str_equal(start, end, row->name))
-        {
             return row->rg;
-        }
     
     /* Did not recognize register */
     return NON_REG;
@@ -287,5 +281,64 @@ input_status end_of_command(char *str)
     if (*next_nonwhite(str)) /* If found a non-white char in or after the one str points to */
         return EXTRANEOUS_TEXT;
     return PASS;
+}
+
+/**
+ * A single lookup table element
+ */
+struct err_lookup_element {
+    input_status status;
+	char *message;
+};
+/**
+ * A lookup table for errors by input_status
+ */
+static struct err_lookup_element err_lookup_table[] = {
+    {WARN_LABEL_TO_ENTRY, "Warning: Label to .entry instruction ignored"},
+    {WARN_LABEL_TO_EXTERN, "Warning: Label to .extern instruction ignored"},
+    {TOO_LONG_SYMBOL_NAME, "Error: Label name should be at most 31 characters"},
+    {ILLEGAL_CHAR_IN_BEGINNING_OF_SYMBOL, "Error: Label name should start with a letter"},
+    {ILLEGAL_CHARS_IN_SYMBOL_NAME, "Error: Label name should contain only letters and digits"},
+    {SYMBOL_NAMED_LIKE_OPERATION, "Error: Label cannot be named like operation"},
+    {SYMBOL_NAMED_LIKE_REGISTER, "Error: Label cannot be named like register"},
+    {SYMBOL_ALREADY_DEFINED, "Error: Symbol already defined"},
+    {LABEL_TO_EMPTY_LINE, "Error: Expects code after label"},
+    {MULTIPLE_CONSECUTIVE_COMMAS, "Error: Multiple consecutive commas between operands"},
+    {MISSING_COMMA_BETWEEN_OPERANDS, "Error: Missing comma between operands"},
+    {EXTRANEOUS_TEXT, "Error: Extraneous text after command end"},
+    {UNREC_INSTRUCTION, "Error: Unrecognized instruction"},
+    {ILLEGAL_COMMA_AFTER_INST, "Error: Illegal comma afer instruction"},
+    {STRING_INST_EXPECTS_OPERAND, "Error: Expected string after .string instruction"},
+    {STRING_MUST_BEGIN_WITH_QUOT, "Error: String must begin with quotation mark ('\"')"},
+    {STRING_MUST_END_WITH_QUOT, "Error: String must end with quotation mark ('\"')"},
+    {NO_NUMBERS_FOR_DATA_INST, "Error: Expected data after .data instruction"},
+    {INVALID_OPERAND_NOT_NUMBER, "Error: Invalid operand - not a number"},
+    {EXPECTED_NUMBER_AFTER_COMMA, "Error: expected number after comma"},
+    {UNREC_OPERATION, "Error: Unrecognized operation"},
+    {MISSING_OPERAND_REQUIRED_ONE, "Error: Missing operand - required 1"},
+    {MISSING_OPERAND_REQUIRED_TWO, "Error: Missing operand(s) - required 2"},
+    {TOO_MANY_OPERANDS, "Error: Too many operands for operation"},
+    {OPERATION_REQ_NO_OPERANDS, "Error: Operation requires no operands"},
+    {INVALID_ADRS_METHOD_FIRST_OP, "Error: Invalid addressing method for first operand"},
+    {INVALID_ADRS_METHOD_SECOND_OP, "Error: Invalid addressing method for second operand"},
+    {INVALID_NUMBER_FOR_IMMD_ADDRESSING, "Error: Expected a valid number after '#' mark"},
+    {INVALID_REGISTER_FOR_INDEX_ADDRESSING, "Error: Expected a register between r10 and r15 for index operand"},
+    {UNREC_SYMBOL_FOR_ENTRY, "Error: Unrecognized symbol for .entry instruction"},
+    {SYMBOL_NOT_FOUND_FIRST_OP, "Error: Symbol not found in first operand"},
+    {SYMBOL_NOT_FOUND_SECOND_OP, "Error: Symbol not found in second operand"},
+    {EXTERNAL_ENTRY_SYMBOL, "Error: External symbol cannot be defined as .entry"},
+    {PASS, ""}
+};
+
+char *get_error(input_status status)
+{
+    struct err_lookup_element *row; 
+
+    for (row = lookup_table; row->status; row++)
+        if (row->status == status)
+            return row->message;
+    
+    /* Will not get there - but just in case */
+    return "";
 }
 
