@@ -92,7 +92,7 @@ compares it to given strings and assigns their opcode and funct values to two po
 returns 
 - UNREC_OPERATION if operation not found
 - PASS otherwise */
-input_status str_to_opcode_funct(char *, char *, int *, int *);
+input_status str_to_opcode_funct(char *, char *, opcode *, funct *);
 
 /* Gets a pointer to a pointer to somewhere along a string, 
 assuming it's after a comma if there should have been one.

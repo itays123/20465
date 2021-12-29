@@ -49,6 +49,25 @@ typedef enum opcodes {
 	NONE_OP = -1
 } opcode;
 
+typedef enum functs {
+    /* Opcode 2 */
+    ADD_FUNCT = 10,
+    SUB_FUNCT = 11,
+
+    /* Opcode 5 */
+    CLR_FUNCT = 10,
+    NOT_FUNCT = 11,
+    INC_FUNCT = 12,
+    DEC_FUNCT = 13,
+
+    /* Opcode 9 */
+    JMP_FUNCT = 10,
+    BNE_FUNCT = 11,
+    JSR_FUNCT = 12,
+
+    NONE_FUNCT = -1
+} funct;
+
 enum ARE {
     Absolute = 4, /* 100 */
     Relocatable = 2, /* 010 */

@@ -16,6 +16,55 @@ boolean find_opword(char *label_start_maybe, char *label_end_maybe,
     *opend = label_end_maybe;
     return FALSE;
 }
+/**
+ * A single lookup table element
+ */
+struct cmd_lookup_element {
+	char *cmd;
+	opcode op;
+	funct fun;
+};
+/**
+ * A lookup table for opcode & funct by command name
+ */
+static struct cmd_lookup_element lookup_table[] = {
+		{"mov", MOV_OP, NONE_FUNCT},
+		{"cmp",CMP_OP, NONE_FUNCT},
+		{"add",ADD_OP, ADD_FUNCT},
+		{"sub",SUB_OP, SUB_FUNCT},
+		{"lea",LEA_OP, NONE_FUNCT},
+		{"clr",CLR_OP, CLR_FUNCT},
+		{"not",NOT_OP, NOT_FUNCT},
+		{"inc",INC_OP, INC_FUNCT},
+		{"dec",DEC_OP, DEC_FUNCT},
+		{"jmp",JMP_OP, JMP_FUNCT},
+		{"bne",BNE_OP, BNE_FUNCT},
+		{"jsr",JSR_OP, JSR_FUNCT},
+		{"red",RED_OP, NONE_FUNCT},
+		{"prn",PRN_OP, NONE_FUNCT},
+		{"rts",RTS_OP, NONE_FUNCT},
+		{"stop",STOP_OP, NONE_FUNCT},
+		{"", NONE_OP, NONE_FUNCT}
+};
+
+input_status str_to_opcode_funct(char *start, char *end, opcode *op_out, funct *ft_out)
+{
+    struct cmd_lookup_element *row;
+    *op_out = NONE_OP;
+    *ft_out = NONE_FUNCT;
+
+    for (row = lookup_table; *(row->cmd); row++)
+        if (str_equal(start, end, row->cmd))
+        {
+            *op_out = row->op;
+            *ft_out = row->fun;
+            return PASS;
+        }
+    
+    /* Did not recognize operation */
+    return UNREC_OPERATION;
+}
+
 
 input_status find_operand(char **str, char **start, char **end, input_status not_found_status)
 {
