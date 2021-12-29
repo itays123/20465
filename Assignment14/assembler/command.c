@@ -108,26 +108,38 @@ int num_of_operands(opcode op)
     return 0;
 }
 
-input_status find_addressing_method(char *start, char *end, addressing_method *addr_out)
+input_status get_operand_data(char *start, char *end, addressing_method *addr_out, reg *reg_out, int *int_out)
 {
-    reg rg;
     char *symb_start, *symb_end, *index_start, *index_end;
+    reg temp_reg;
     /* We assume there are no whitespaces in the beginning and end of the substring 
     For immediate addressing, check start is # and validate rest of substring is number. */
     if (*start == '#')
     {
         *addr_out = IMMEDIATE;
-        /* return str_is_number(start + 1, end) ? PASS : INVALID_OPERAND_NOT_NUMBER */
+        return str_to_int(start + 1, end, int_out) ? PASS : INVALID_NUMBER_FOR_IMMD_ADDRESSING;
     }
 
     /* Check register direct addressing method */
-    if ((rg = str_to_reg(start, end)) != NON_REG)
+    if ((temp_reg = str_to_reg(start, end)) != NON_REG)
     {
         *addr_out = REGISTER_DIRECT;
+        *reg_out = temp_reg;
         return PASS;
     }
 
     /* Check index addressing method */
+    if (split_symbol_index(start, &symb_start, &symb_end, &index_start, &index_end))
+    {
+        *addr_out = INDEX;
+        if ((temp_reg = str_to_reg(symb_start, symb_end)) == NON_REG || temp_reg < r10)
+            return INVALID_REGISTER_FOR_INDEX_ADDRESSING;
+        *reg_out = temp_reg;
+        return PASS;
+    }
+
+    /* Direct addressing is remained */
+    *addr_out = DIRECT;
     return PASS;
 }
 

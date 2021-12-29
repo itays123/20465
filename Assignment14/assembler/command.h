@@ -49,7 +49,6 @@ typedef enum {
     MULTIPLE_CONSECUTIVE_COMMAS,
     MISSING_COMMA_BETWEEN_OPERANDS,
     EXTRANEOUS_TEXT,
-    INVALID_OPERAND_NOT_NUMBER,
 
     /* First pass - instruction structure */
     UNREC_INSTRUCTION,
@@ -58,6 +57,7 @@ typedef enum {
     STRING_MUST_BEGIN_WITH_QUOT,
     STRING_MUST_END_WITH_QUOT,
     NO_NUMBERS_FOR_DATA_INST,
+    INVALID_OPERAND_NOT_NUMBER,
     EXPECTED_NUMBER_AFTER_COMMA,
 
     /* First pass - operation structure */
@@ -68,6 +68,7 @@ typedef enum {
     OPERATION_REQ_NO_OPERANDS,
     INVALID_ADRS_METHOD_FIRST_OP,
     INVALID_ADRS_METHOD_SECOND_OP,
+    INVALID_NUMBER_FOR_IMMD_ADDRESSING,
     INVALID_REGISTER_FOR_INDEX_ADDRESSING,
 
     /* Second pass - error in symbol references */
@@ -111,9 +112,14 @@ int num_of_operands(opcode);
 
 /* Gets two pointers to the start and end of a substring (end exclusive),
 assuming it had no whitespace characters in its start and end.
-Find the corresponding addressing method of the substring
-*/
-input_status find_addressing_method(char *, char *, addressing_method *);
+Find the corresponding addressing method of the operand substring and assigns it to the corresponding pointer given.
+If addressing method contains a register (register-direct or index), assign in to the corresponding pointer given.
+If addressing method is immediate, assign the string result to the corresponsing pointer given.
+Returns:
+- INVALID_NUMBER_FOR_IMMD_ADDRESSING if the number given for immediate addressing is invalid.
+- INVALID_REGISTER_FOR_INDEX_ADDRESSING if the index given in an index adddressing operand is not r10 to r15
+- PASS otherwise */
+input_status get_operand_data(char *, char *, addressing_method *, reg *, int *);
 
 /* Gets a pointer to a string in the form of "symbol[index]"
 and four pointer to pointers to characters:
@@ -134,8 +140,8 @@ reg str_to_reg(char *, char *);
 /* Gets an opcode and two addressing methods, 
 and validates them against each other via the table presented in the intructions
 returns
-- INVALID_ADRS_METHOD_OP1 if the first operand has an invalid addressing method
-- INVALID_ADRS_METHOD_OP2 if the second operand has an invalid addressing method
+- INVALID_ADRS_METHOD_FIRST_OP if the first operand has an invalid addressing method
+- INVALID_ADRS_METHOD_SECOND_OP if the second operand has an invalid addressing method
 - PASS otherwise */
 input_status check_addressing_methods(opcode, addressing_method, addressing_method);
 
