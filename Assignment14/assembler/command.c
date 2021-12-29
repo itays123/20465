@@ -246,24 +246,24 @@ reg str_to_reg(char *start, char *end)
     return NON_REG;
 }
 
-input_status check_addressing_methods(opcode op, addressing_method src_addr, addressing_method dest_addr)
+input_status check_addressing_methods(opcode op, addressing_method addr1, addressing_method addr2)
 {
     /* Validate source address for opcodes 0-4
     For mov, cmp, add: src can be anything */
-    if (op == LEA_OP && src_addr != DIRECT && src_addr != INDEX)
+    if (op == LEA_OP && addr1 != DIRECT && addr1 != INDEX)
         return INVALID_ADRS_METHOD_FIRST_OP;
     
     /* Validate destination address for opcodes 0-4 
     For cmp - dest can be anything*/
-    if (op >= MOV_OP && op <= LEA_OP && op != CMP_OP && dest_addr == IMMEDIATE)
+    if (op >= MOV_OP && op <= LEA_OP && op != CMP_OP && addr2 == IMMEDIATE)
         return INVALID_ADRS_METHOD_SECOND_OP;
     
     /* Validate destination address for opcodes 5-13
     For prn - dest can be anything */
-    if (op == CLR_OP && dest_addr == IMMEDIATE) /* All opcode 5 group */
+    if (op == CLR_OP && addr1 == IMMEDIATE) /* All opcode 5 group */
         return INVALID_ADRS_METHOD_FIRST_OP;
     
-    if (op == JMP_OP && dest_addr != DIRECT && dest_addr != INDEX) /* All opcode 9 group */
+    if (op == JMP_OP && addr1 != DIRECT && addr1 != INDEX) /* All opcode 9 group */
         return INVALID_ADRS_METHOD_FIRST_OP;
     
     return PASS;
@@ -271,7 +271,7 @@ input_status check_addressing_methods(opcode op, addressing_method src_addr, add
 
 int words_by_addr(addressing_method addr)
 {
-    if (addr == REGISTER_DIRECT)
+    if (addr == REGISTER_DIRECT || addr == NONE)
         return 0;
     if (addr == IMMEDIATE)
         return 1;
