@@ -86,6 +86,12 @@ void test_line(char *line)
         printf("\nSymbol validated. status = %d", status);
     }
 
+    if (label_found)
+    {
+        status = validate_symbol_name(label_start, label_end);
+        printf("\nLabel validated, status = %d", status);
+    }
+
     status = check_addressing_methods(op, addr1, addr2);
     printf("\nValidated addressing methods. status = %d", status);
     printf("\nWord line will occupy: 2 + %d + %d", words_by_addr(addr1), words_by_addr(addr2));
