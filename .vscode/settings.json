@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "stdio.h": "c",
-        "ctype.h": "c"
+        "ctype.h": "c",
+        "charsequence.h": "c"
     },
     "cmake.configureOnOpen": false
 }

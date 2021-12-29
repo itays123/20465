@@ -1,3 +1,6 @@
+#ifndef _GLOBALS
+#define _GLOBALS
+
 /* Global Type Definitions */
 #define IC_INIT_VALUE 100
 #define MAX_LINE_LENGTH 82 /* 80 chars + \n + \0 */
@@ -92,3 +95,4 @@ typedef struct {
     } data; /* Occupies sizeof(int) bytes */
 } word;
 
+#endif

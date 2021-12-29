@@ -1,3 +1,5 @@
+#ifndef _CHARSEQ
+#define _CHARSEQ
 #include "globals.h" /* For bool */
 
 /* Returns a pointer to the next non-white character in a given string
@@ -38,3 +40,5 @@ and parses it to an integer if a valid integer (optional sign + decimal digits)
 assigns the result to the pointer given to it.
 Returns true if succesfully converted to number, false otherwise */
 boolean str_to_int(char *, char *, int *);
+
+#endif

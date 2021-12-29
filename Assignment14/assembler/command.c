@@ -9,7 +9,7 @@ boolean find_opword(char *label_start_maybe, char *label_end_maybe,
     if (*label_end_maybe == ':')
     {
         *opstart = next_nonwhite(label_end_maybe + 1);
-        *opend = next_white(opstart);
+        *opend = next_white(*opstart);
         return TRUE;
     }
     
@@ -137,7 +137,7 @@ input_status get_operand_data(char *start, char *end, addressing_method *addr_ou
     if (split_symbol_index(start, &symb_start, &symb_end, &index_start, &index_end))
     {
         *addr_out = INDEX;
-        if ((temp_reg = str_to_reg(symb_start, symb_end)) == NON_REG || temp_reg < r10)
+        if ((temp_reg = str_to_reg(index_start, index_end)) == NON_REG || temp_reg < r10)
             return INVALID_REGISTER_FOR_INDEX_ADDRESSING;
         *reg_out = temp_reg;
         return PASS;
@@ -238,7 +238,7 @@ reg str_to_reg(char *start, char *end)
     if (end - start != REGISTER_NAME_LENGTH)
         return NON_REG; 
 
-    for (row = lookup_table; *(row->name); row++)
+    for (row = reg_lookup_table; *(row->name); row++)
         if (str_equal(start, end, row->name))
             return row->rg;
     
@@ -265,6 +265,8 @@ input_status check_addressing_methods(opcode op, addressing_method src_addr, add
     
     if (op == JMP_OP && dest_addr != DIRECT && dest_addr != INDEX) /* All opcode 9 group */
         return INVALID_ADRS_METHOD_FIRST_OP;
+    
+    return PASS;
 }
 
 int words_by_addr(addressing_method addr)
@@ -334,7 +336,7 @@ char *get_error(input_status status)
 {
     struct err_lookup_element *row; 
 
-    for (row = lookup_table; row->status; row++)
+    for (row = err_lookup_table; row->status; row++)
         if (row->status == status)
             return row->message;
     

@@ -1,3 +1,5 @@
+#ifndef _COMMAND
+#define _COMMAND
 #include "globals.h"
 #define MAX_SYMBOL_LENGTH 31
 #define REGISTER_NAME_LENGTH 3
@@ -176,3 +178,5 @@ char *get_error(input_status);
 
 /*Checks if an input status is either PASS or a warning */
 boolean passed(input_status);
+
+#endif
