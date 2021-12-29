@@ -16,6 +16,7 @@ boolean find_opword(char *label_start_maybe, char *label_end_maybe,
     *opend = label_end_maybe;
     return FALSE;
 }
+
 /**
  * A single lookup table element
  */
@@ -92,6 +93,44 @@ input_status find_operand(char **str, char **start, char **end, input_status not
     
 }
 
+int num_of_operands(opcode op)
+{
+    /* Opcodes 0-4 - mov, cmp, add, sub, lea - 2 operands. */
+    if (op >= MOV_OP && op <= LEA_OP)
+        return 2;
+    
+    /* Opcodes 5-13 - clr, not, inc, dec, jmp, bne
+    * jsr, red, prn - 1 operand */
+    if (op >= CLR_OP && op <= PRN_OP)
+        return 1;
+    
+    /* Else, no operands */
+    return 0;
+}
+
+input_status find_addressing_method(char *start, char *end, addressing_method *addr_out)
+{
+    reg rg;
+    char *symb_start, *symb_end, *index_start, *index_end;
+    /* We assume there are no whitespaces in the beginning and end of the substring 
+    For immediate addressing, check start is # and validate rest of substring is number. */
+    if (*start == '#')
+    {
+        *addr_out = IMMEDIATE;
+        /* return str_is_number(start + 1, end) ? PASS : INVALID_OPERAND_NOT_NUMBER */
+    }
+
+    /* Check register direct addressing method */
+    if ((rg = str_to_reg(start, end)) != NON_REG)
+    {
+        *addr_out = REGISTER_DIRECT;
+        return PASS;
+    }
+
+    /* Check index addressing method */
+    return PASS;
+}
+
 boolean split_symbol_index(char *str, char **symbol_start, char **symbol_end,
                             char **index_start, char **index_end)
 {
@@ -115,6 +154,80 @@ boolean split_symbol_index(char *str, char **symbol_start, char **symbol_end,
         return FALSE;
     
     return TRUE;
+}
+
+/**
+ * A single lookup table element
+ */
+struct reg_lookup_element {
+	char *name;
+	reg rg;
+};
+/**
+ * A lookup table for registers by name
+ */
+static struct reg_lookup_element reg_lookup_table[] = {
+		{"r0", r0},
+        {"r1", r1},
+        {"r2", r2},
+        {"r3", r3},
+        {"r4", r4},
+        {"r5", r5},
+        {"r6", r6},
+        {"r7", r7},
+        {"r8", r8},
+        {"r9", r9},
+        {"r10", r10},
+        {"r11", r11},
+        {"r12", r12},
+        {"r13", r13},
+        {"r14", r14},
+        {"r15", r15},
+        {"", r0},
+};
+
+reg str_to_reg(char *start, char *end)
+{
+    struct reg_lookup_element *row;
+
+    for (row = lookup_table; *(row->name); row++)
+        if (str_equal(start, end, row->name))
+        {
+            return row->rg;
+        }
+    
+    /* Did not recognize operation */
+    return NON_REG;
+}
+
+input_status check_addressing_methods(opcode op, addressing_method src_addr, addressing_method dest_addr)
+{
+    /* Validate source address for opcodes 0-4
+    For mov, cmp, add: src can be anything */
+    if (op == LEA_OP && src_addr != DIRECT && src_addr != INDEX)
+        return INVALID_ADRS_METHOD_FIRST_OP;
+    
+    /* Validate destination address for opcodes 0-4 
+    For cmp - dest can be anything*/
+    if (op >= MOV_OP && op <= LEA_OP && op != CMP_OP && dest_addr == IMMEDIATE)
+        return INVALID_ADRS_METHOD_SECOND_OP;
+    
+    /* Validate destination address for opcodes 5-13
+    For prn - dest can be anything */
+    if (op == CLR_OP && dest_addr == IMMEDIATE) /* All opcode 5 group */
+        return INVALID_ADRS_METHOD_FIRST_OP;
+    
+    if (op == JMP_OP && dest_addr != DIRECT && dest_addr != INDEX) /* All opcode 9 group */
+        return INVALID_ADRS_METHOD_FIRST_OP;
+}
+
+int words_by_addr(addressing_method addr)
+{
+    if (addr == REGISTER_DIRECT)
+        return 0;
+    if (addr == IMMEDIATE)
+        return 1;
+    return 2;
 }
 
 input_status end_of_command(char *str)
