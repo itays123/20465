@@ -106,6 +106,9 @@ Returns:
 - PASS, in any other case */
 input_status find_operand(char **, char **, char **, input_status );
 
+/* Gets an opcode integer and returns the number of operands this operation requires */
+int num_of_operands(opcode);
+
 /* Gets two pointers to the start and end of a substring (end exclusive),
 assuming it had no whitespace characters in its start and end.
 Find the corresponding addressing method of the substring
@@ -127,6 +130,23 @@ boolean split_symbol_index(char *, char **, char **, char **, char **);
 and returns the register code matching to it "r0" will return 0, etc.
 if not found, will return NONE_REG */
 reg str_to_reg(char *, char *);
+
+/* Gets an opcode and two addressing methods, 
+and validates them against each other via the table presented in the intructions
+returns
+- INVALID_ADRS_METHOD_OP1 if the first operand has an invalid addressing method
+- INVALID_ADRS_METHOD_OP2 if the second operand has an invalid addressing method
+- PASS otherwise */
+input_status check_addressing_methods(opcode, addressing_method, addressing_method);
+
+/* Gets two addressing methods of at most two operands, 
+and calculates the length of command - how many words it will occupy:
+- base length is 1
+- if the command has operands (addressing modes different from NONE_ADDR), 1 opdata word is added
+- addressing mode REGISTER_DIRECT occupies 0 words
+- addressing mode IMMEDIATE occupies 1 word
+- addressing modes DIRECT and INDEX occupy two words  */
+int length_of_command(addressing_method, addressing_method);
 
 /* Gets a pointer to the first desired whitespace character in a sequence of white chars ending a string, 
 and searches for non-whitespace characters after it.

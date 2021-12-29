@@ -22,6 +22,33 @@ enum word_type {
     DATA
 };
 
+typedef enum opcodes {
+	MOV_OP = 0,
+	CMP_OP = 1,
+
+	ADD_OP = 2,
+	SUB_OP = 2,
+
+	LEA_OP = 4,
+
+	CLR_OP = 5,
+	NOT_OP = 5,
+	INC_OP = 5,
+	DEC_OP = 5,
+
+	JMP_OP = 9,
+	BNE_OP = 9,
+	JSR_OP = 9,
+
+	RED_OP = 12,
+	PRN_OP = 13,
+
+	RTS_OP = 14,
+	STOP_OP = 15,
+
+	NONE_OP = -1
+} opcode;
+
 enum ARE {
     Absolute = 4, /* 100 */
     Relocatable = 2, /* 010 */
