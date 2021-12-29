@@ -173,3 +173,6 @@ input_status end_of_command(char *);
 
 /* Gets an input status enumerable and returns its corresponding error message */
 char *get_error(input_status);
+
+/*Checks if an input status is either PASS or a warning */
+boolean passed(input_status);

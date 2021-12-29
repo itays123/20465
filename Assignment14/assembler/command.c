@@ -342,3 +342,7 @@ char *get_error(input_status status)
     return "";
 }
 
+boolean passed(input_status status)
+{
+    return status == PASS || status == WARN_LABEL_TO_ENTRY || status == WARN_LABEL_TO_EXTERN;
+}
