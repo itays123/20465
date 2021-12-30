@@ -1,5 +1,6 @@
 /* Mycomp.c - the main program responsible for combining complex computations with user input */
 #include <stdio.h> /* for NULL */
+#include <stdlib.h> /* for free() */
 #include "interface.h"
 #include "mycomp.h"
 
@@ -11,6 +12,7 @@ int main() {
     cmdtype cmd;
     char chararg1, chararg2;
     double numarg1, numarg2;
+    complex *result = NULL;
 
     init_variables();
     
@@ -37,39 +39,46 @@ int main() {
                 if (arg(&args, VARIABLE, &chararg1)
                     && arg(&args, VARIABLE, &chararg2)
                     && endofcmd(args))
-                    add_comp(get_variable(chararg1), get_variable(chararg2));
+                    result = add_comp(get_variable(chararg1), get_variable(chararg2));
                 break;
             case SUB_COMP:
                 if (arg(&args, VARIABLE, &chararg1)
                     && arg(&args, VARIABLE, &chararg2)
                     && endofcmd(args))
-                    subtract_comp(get_variable(chararg1), get_variable(chararg2));
+                    result = subtract_comp(get_variable(chararg1), get_variable(chararg2));
                 break;
             case MULT_COMP_REAL:
                 if (arg(&args, VARIABLE, &chararg1)
                     && arg(&args, NUMBER, &numarg1)
                     && endofcmd(args))
-                    mult_comp_real(get_variable(chararg1), numarg1);
+                    result = mult_comp_real(get_variable(chararg1), numarg1);
                 break;
             case MULT_COMP_IMG:
                 if (arg(&args, VARIABLE, &chararg1)
                     && arg(&args, NUMBER, &numarg1)
                     && endofcmd(args))
-                    mult_comp_img(get_variable(chararg1), numarg1);
+                    result = mult_comp_img(get_variable(chararg1), numarg1);
                 break;
             case MULT_COMP_COMP:
                 if (arg(&args, VARIABLE, &chararg1)
                     && arg(&args, VARIABLE, &chararg2)
                     && endofcmd(args))
-                    mult_comp_comp(get_variable(chararg1), get_variable(chararg2));
+                    result = mult_comp_comp(get_variable(chararg1), get_variable(chararg2));
                 break;
             case ABS_COMP:
                 if (arg(&args, VARIABLE, &chararg1)
                     && endofcmd(args))
-                    abs_comp(get_variable(chararg1));
+                    printf("%.2f", abs_comp(get_variable(chararg1)));
                 break;
             default: /* Undefined command name or error accured */
                 break;
+        }
+        /* If recieved a result, print it, free and reset to null*/
+        if (result != NULL)
+        {
+            print_comp(result);
+            free(result);
+            result = NULL;
         }
     }
 
