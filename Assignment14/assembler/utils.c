@@ -52,6 +52,6 @@ void get_integer_hexbits(hexbits bits, int data)
         1 => 0xF000, 2 => 0x0F00, 3 => 0x00F0, 4 => 0x000F */
         bitsToMove = (BITS_IN_HEXBIT * (HEXBITS_IN_WORD - 1 - i));
         currentMask = HEXBIT_MASK << bitsToMove;
-        bits[i] = data & currentMask;
+        bits[i] = (data & currentMask) >> bitsToMove;
     }
 }
