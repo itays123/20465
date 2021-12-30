@@ -6,6 +6,7 @@
 #define MAX_LINE_LENGTH 82 /* 80 chars + \n + \0 */
 #define BITS_IN_WORD 20
 #define BITS_IN_HEXBIT 4
+#define HEXBITS_IN_WORD BITS_IN_WORD / BITS_IN_HEXBIT
 #define MAX_CODE_IMAGE_SIZE 8192 /* Assumption - change if needed */
 #define ASSEMBLY_POSTFIX ".as"
 #define ASSEMBLY_POST_MACRO_POSTFIX ".am"
@@ -17,7 +18,7 @@ typedef enum { FALSE = 0, TRUE = 1 } boolean;
 
 /**************** WORD TYPE DEFINITONS ***********************/
 
-typedef unsigned int hexbits[BITS_IN_WORD / BITS_IN_HEXBIT];
+typedef unsigned int hexbits[HEXBITS_IN_WORD];
 
 enum word_type {
     OPWORD,
