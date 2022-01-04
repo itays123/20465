@@ -12,7 +12,7 @@ int main()
     int i;
     printf("\nSize of word - %ld", sizeof(word));
     word_arr[0] = new_opcode_word(ADD_OP, 5);
-    printf("\nnew_opcode_word(ADD_OP):");
+    printf("\nnew_opcode_word(ADD_OP, 5):");
     print_data_word(word_arr[0]);
     printf("\nnew_opdata_word(ADD_FUNCT, 0, IMMEDIATE, 6, INDEX):");
     word_arr[1] = new_opdata_word(ADD_FUNCT, 0, IMMEDIATE, 6, INDEX);

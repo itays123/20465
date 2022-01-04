@@ -1,6 +1,6 @@
 
 Size of word - 4
-new_opcode_word(ADD_OP):
+new_opcode_word(ADD_OP, 5):
 Word {
 	ARE: 4,
 	type: 0,
