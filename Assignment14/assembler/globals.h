@@ -20,6 +20,34 @@ typedef enum { FALSE = 0, TRUE = 1 } boolean;
 
 typedef unsigned int hexbits[HEXBITS_IN_WORD];
 
+typedef enum {
+    r0,
+    r1,
+    r2,
+    r3,
+    r4,
+    r5,
+    r6,
+    r7,
+    r8,
+    r9,
+    r10,
+    r11,
+    r12,
+    r13,
+    r14,
+    r15,
+    NON_REG = -1
+} reg;
+
+typedef enum {
+    NONE = -1,
+    IMMEDIATE = 0,
+    DIRECT = 1,
+    INDEX = 2,
+    REGISTER_DIRECT = 3
+} addressing_method;
+
 typedef enum opcodes {
 	MOV_OP = 0,
 	CMP_OP = 1,
@@ -66,10 +94,10 @@ typedef enum functs {
     NONE_FUNCT = -1
 } funct;
 
-enum ARE {
+typedef enum ARE {
     Absolute = 4, /* 100 */
     Relocatable = 2, /* 010 */
     Extern = 1 /* 001 */
-};
+} memory_status;
 
 #endif

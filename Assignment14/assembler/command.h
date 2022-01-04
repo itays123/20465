@@ -5,35 +5,8 @@
 #define REGISTER_NAME_LENGTH 3
 #define MIN_OPERATION_LENGTH 3
 #define MAX_OPERATION_LENGTH 4
+
 /***************** Type definitions *******************/
-
-typedef enum {
-    r0,
-    r1,
-    r2,
-    r3,
-    r4,
-    r5,
-    r6,
-    r7,
-    r8,
-    r9,
-    r10,
-    r11,
-    r12,
-    r13,
-    r14,
-    r15,
-    NON_REG = -1
-} reg;
-
-typedef enum {
-    NONE = -1,
-    IMMEDIATE = 0,
-    DIRECT = 1,
-    INDEX = 2,
-    REGISTER_DIRECT = 3
-} addressing_method;
 
 typedef enum input_statuses {
     PASS,
