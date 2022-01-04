@@ -52,7 +52,7 @@ word *new_data_word(int);
 with values of the base and offset of the address given,
 and the memory status given in the arguments.
 Sets the pointers of the words given to the words created. */
-void *alloc_address_words(word **, word **, int, memory_status);
+void alloc_address_words(word **, word **, int, memory_status);
 
 /* Checks the type of the word, and fills the hexbit array accordingly. */
 void get_bits(hexbits, word *);

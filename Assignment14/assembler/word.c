@@ -39,7 +39,7 @@ void alloc_address_words(word **base_word, word **offset_word, int address, memo
     GET_BASE_OFFSET(address, base, offset)
     *base_word = new_word(DATA, ARE);
     ((*base_word)->integer).data = base;
-    offset_word = new_word(DATA, ARE);
+    *offset_word = new_word(DATA, ARE);
     ((*offset_word)->integer).data = offset;
 }
 
