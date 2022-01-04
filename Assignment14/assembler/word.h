@@ -34,9 +34,10 @@ typedef union word_union {
 /******************** Method Definitions **************************/
 
 /* Creates and allocates memory to a new integer word. 
-Sets all values to 0, except for data which will be set to the value of op, 
+Sets all values to 0, except for data which will be set to the value of op,
+and length which will be set as the value of length. 
 and the type which will be set to OPCODE */
-word *new_opcode_word(opcode);
+word *new_opcode_word(opcode, int);
 
 /* Creates and allocates memory to a new opdata word. 
 Sets values according to the arguments given 

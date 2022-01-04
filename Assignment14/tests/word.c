@@ -11,7 +11,7 @@ int main()
     hexbits bits;
     int i;
     printf("\nSize of word - %ld", sizeof(word));
-    word_arr[0] = new_opcode_word(ADD_OP);
+    word_arr[0] = new_opcode_word(ADD_OP, 5);
     printf("\nnew_opcode_word(ADD_OP):");
     print_data_word(word_arr[0]);
     printf("\nnew_opdata_word(ADD_FUNCT, 0, IMMEDIATE, 6, INDEX):");

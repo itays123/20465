@@ -7,10 +7,11 @@
 ARE will be set to the memory_status given */
 static word *new_word(word_type, memory_status);
 
-word *new_opcode_word(opcode op)
+word *new_opcode_word(opcode op, int length)
 {
     word *result = new_word(OPCODE, Absolute);
     (result->integer).data = op;
+    (result->integer).length = length;
     return result;
 }
 
