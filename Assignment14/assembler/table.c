@@ -6,7 +6,7 @@
 
 table find_last_row_before(table *tab, char *key)
 {
-    table curr, prev;
+    table curr, prev = NULL;
     
     /* Edge case: empty table or key comes before the key of the head. 
     Return NULL */
