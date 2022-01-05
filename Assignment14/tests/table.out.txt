@@ -10,3 +10,9 @@ Last row before 'third row':
 Row (hello)
 Last row before 'not found': 
 Row (hello)
+Searching row: 'hello'
+Row (hello)
+Searching row: 'a slightly key before'
+Row (a slightly key before)
+Searching row: 'not found'
+Nullish Row

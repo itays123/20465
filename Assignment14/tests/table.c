@@ -25,7 +25,12 @@ int main()
     printf("Last row before 'not found': \n");
     print_row(find_last_row_before(&head, "not found"));
     
-    
+    printf("Searching row: 'hello'\n");
+    print_row(find_item(&head, "hello"));
+    printf("Searching row: 'a slightly key before'\n");
+    print_row(find_item(&head, "a slightly key before"));
+    printf("Searching row: 'not found'\n");
+    print_row(find_item(&head, "not found"));
 
     return 0;
 }

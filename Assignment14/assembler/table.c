@@ -58,8 +58,16 @@ table find_item(table *tab, char *key)
     table prev, target;
     prev = find_last_row_before(tab, key);
 
-    /* Check: Target node or the one before it are NULL => node not found! */
-    if (prev == NULL || prev->next == NULL) 
+    /* Check: Table empty, or key comes before head (or head itself) */
+    if (prev == NULL) 
+    {
+        if ((*tab) && !strcmp(key, (*tab)->key))
+            return *tab;
+        return NULL;
+    }
+
+    /* Check: if prev is the last element, element not found */
+    if (prev->next == NULL)
         return NULL;
     
     target = prev->next;
