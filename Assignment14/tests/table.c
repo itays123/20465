@@ -32,6 +32,8 @@ int main()
     printf("Searching row: 'not found'\n");
     print_row(find_item(&head, "not found"));
 
+    free_table(&head);
+
     return 0;
 }
 
