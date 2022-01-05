@@ -31,7 +31,7 @@ boolean add_item(table *, char *, row_data);
 
 /* Return a pointer to a row with a given key in a given table,
 NULL if not found */
-table *find_item(table *, char *);
+table find_item(table *, char *);
 
 /* Free every row in the table. */
 void free_table(table *);
