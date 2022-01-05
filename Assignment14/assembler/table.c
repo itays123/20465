@@ -2,7 +2,7 @@
 #include "table.h"
 #include "utils.h"
 #include "string.h" /* For strcmp */
-#include "utils.h"
+#include "stdlib.h"
 
 table find_last_row_before(table *tab, char *key)
 {
@@ -10,7 +10,7 @@ table find_last_row_before(table *tab, char *key)
     
     /* Edge case: empty table or key comes before the key of the head. 
     Return NULL */
-    if (tab == NULL || strcmp(key, (*tab)->key) < 0)
+    if ((*tab) == NULL || strcmp(key, (*tab)->key) < 0)
         return NULL;
 
 
@@ -34,9 +34,9 @@ boolean add_item(table *tab, char *key, row_data data)
     
     /* Edge case: empty table or key comes before the key of the head. 
     Add the new row on the spot */
-    if (tab == NULL || strcmp(key, (*tab)->key) < 0)
+    if ((*tab) == NULL || strcmp(key, (*tab)->key) < 0)
     {
-        *tab = new_row(key, data, *tab);
+        *tab = new_row(key, data, tab ? *tab : NULL);
         return TRUE;
     }
 
@@ -73,14 +73,24 @@ table find_item(table *tab, char *key)
 
 void free_table(table *tab)
 {
+    table head, temp;
     if (tab == NULL)
         return;
 
-    table head = *tab, temp;
+    head = *tab;
     while (head != NULL)
     {
         temp = head;
         head = head->next;
         free(temp);
     }
+}
+
+static table new_row(char *key, row_data data, table next)
+{
+    table result = (table) malloc_safe(sizeof(table_row));
+    result->key = key;
+    result->data = data;
+    result->next = next;
+    return result;
 }

@@ -1,0 +1,4 @@
+Adding row - ('hello', {0,0,0,0,0}): 1
+Adding row - ('a slightly key before', {0,0,0,0,0}): 1
+Adding row - ('third row', {0,0,0,0,0}): 1
+Adding row - ('hello', {0,0,0,0,0}): 0
