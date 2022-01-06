@@ -38,8 +38,12 @@ boolean add_item(table *tab, char *key, row_data data)
         return TRUE;
     }
 
-    /* Find position to add. Prev is not null since we checked the edge cases before */
+    /* Find position to add */
     prev = find_last_row_before(tab, key);
+    /* Prev is only null if the key is equal to the key of the head of the table */
+    if (!prev)
+        return FALSE;
+    
     next_node = prev->next;
 
     /* Check the key of the next node. If equals to this key, do not add and return FALSE */
