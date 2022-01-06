@@ -102,8 +102,12 @@ void relocate_data_symbols(table *tab, int ic)
     int prev_value;
     while (current_row != NULL)
     {
-        prev_value = (current_row->data).symbol.data;
-        (current_row->data).symbol.data = prev_value + ic;
+        if ((current_row->data).symbol.is_data)
+        {
+            prev_value = (current_row->data).symbol.data;
+            (current_row->data).symbol.data = prev_value + ic;
+        }
+        current_row = current_row->next;
     }
 }
 
@@ -130,4 +134,5 @@ static void make_symbol_attr(row_data *row_out, symbol_purpose purpose, int addr
     (*row_out).symbol.is_extern = purpose == EXTERN;
     (*row_out).symbol.is_code = purpose == CODE;
     (*row_out).symbol.is_data = purpose == DATA;
+    (*row_out).symbol.is_entry = FALSE;
 }
