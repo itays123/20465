@@ -1,5 +1,5 @@
-#include "../assembler/command.h"
-#include "../assembler/charsequence.h"
+#include "../../assembler/command.h"
+#include "../../assembler/charsequence.h"
 #include <stdio.h>
 
 void test_line(char *);

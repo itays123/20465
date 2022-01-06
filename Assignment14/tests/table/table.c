@@ -1,4 +1,4 @@
-#include "../assembler/table.h"
+#include "../../assembler/table.h"
 
 void print_row(table row);
 

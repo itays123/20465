@@ -1,5 +1,5 @@
-#include "../assembler/word.h"
-#include "../assembler/utils.h"
+#include "../../assembler/word.h"
+#include "../../assembler/utils.h"
 #include <stdio.h>
 
 static void print_data_word(word *);
