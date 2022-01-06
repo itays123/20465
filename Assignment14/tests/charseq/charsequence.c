@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../assembler/charsequence.h"
+#include "../../assembler/charsequence.h"
 
 int main()
 {
