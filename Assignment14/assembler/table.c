@@ -1,8 +1,8 @@
 /* Table.c - deal with dynamic tables */
 #include "table.h"
 #include "utils.h"
-#include "string.h" /* For strcmp */
-#include "stdlib.h"
+#include "string.h" /* For strcmp, strlen, strcpy */
+#include "stdlib.h" /* For free */
 
 table find_last_row_before(table *tab, char *key)
 {
@@ -25,8 +25,6 @@ table find_last_row_before(table *tab, char *key)
     /* Prev is pointing to the desired node */
     return prev;
 }
-
-static table new_row(char *key, row_data data, table next);
 
 boolean add_item(table *tab, char *key, row_data data)
 {
@@ -90,14 +88,21 @@ void free_table(table *tab)
     {
         temp = head;
         head = head->next;
+        free(temp->key);
         free(temp);
     }
 }
 
-static table new_row(char *key, row_data data, table next)
+table new_row(char *key, row_data data, table next)
 {
+    char *key_copy;
     table result = (table) malloc_safe(sizeof(table_row));
-    result->key = key;
+
+    /* Copy key */
+    key_copy = (char *) malloc_safe(sizeof(char) * (strlen(key) + 1));
+    strcpy(key_copy, key);
+
+    result->key = key_copy;
     result->data = data;
     result->next = next;
     return result;
