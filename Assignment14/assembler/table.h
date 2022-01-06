@@ -1,10 +1,22 @@
 #ifndef _TABLE
 #define _TABLE
 #include "globals.h"
-#include "symbols.h"
-#include "macro.h"
+#include <stdio.h>
 
 /***** Table type definition ********/
+
+typedef struct symbol_attributes {
+    unsigned int is_code: 1;
+    unsigned int is_data: 1;
+    unsigned int is_extern: 1;
+    unsigned int is_entry: 1;
+    unsigned int data: 16;
+} symbol_attr;
+
+typedef struct macro_attributes {
+    unsigned int lines;
+    fpos_t *position;
+} macro_attr;
 
 typedef union row_data_union {
     symbol_attr symbol;

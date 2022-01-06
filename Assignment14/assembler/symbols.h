@@ -1,8 +1,8 @@
 #ifndef _SYMBOLS
 #define _SYMBOLS
 #include "globals.h"
-#include "table.h"
 #include "command.h" /* For input_status */
+#include "table.h"
 
 #define ADDR_NOT_FOUND -1
 #define ADDR_EXTERN 0
@@ -10,14 +10,6 @@
 /************** Symbol type definitions *************************/
 
 typedef enum symbol_purposes { CODE, DATA, EXTERN } symbol_purpose;
-
-typedef struct symbol_attributes {
-    unsigned int is_code: 1;
-    unsigned int is_data: 1;
-    unsigned int is_extern: 1;
-    unsigned int is_entry: 1;
-    unsigned int data: 16;
-} symbol_attr;
 
 /*************************** Function definitions *****************/
 
@@ -54,7 +46,7 @@ input_status add_extern_symbol(table *, char *, char *);
 /* Gets a table and the start and end of a symbol key (end exclusive).
 Search for the symbol and assign its value (symbol_attr.data) to the pointer given
 if not found, return ADDR_NOT_FOUND. If extern, return ADDR_EXTERN. */
-int find_symbol_addr(table , char *, char *);
+int find_symbol_addr(table *, char *, char *);
 
 /* Gets a table and the start and end of a symbol key (end exclusive)
 Search for the symbol and attempt to mark it as entry
@@ -62,11 +54,11 @@ Return:
 - UNREC_SYMBOL_FOR_ENTRY if symbol not found
 - EXTERNAL_ENTRY_SYMBOL if symbol is marked as external
 - PASS otherwise */
-input_status mark_entry_symbol(table , char *, char *);
+input_status mark_entry_symbol(table *, char *, char *);
 
 /* Go through each symbol in the table. 
 If marked as data, add to their symbol_attr.data the given amount. */
-void relocate_data_symbols(table, int);
+void relocate_data_symbols(table *, int);
 
 /************ Extarnal words table - identical method *******/
 

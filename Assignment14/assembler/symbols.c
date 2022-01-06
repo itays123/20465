@@ -64,13 +64,13 @@ input_status add_extern_symbol(table *tab, char *start, char *end)
     return PASS;
 }
 
-int find_symbol_addr(table tab, char *start, char *end)
+int find_symbol_addr(table *tab, char *start, char *end)
 {
     table target_row;
     char temp = *end;
     *end = '\0';
     
-    target_row = find_item(&tab, start);
+    target_row = find_item(tab, start);
     *end = temp;
 
     if (!target_row)
@@ -78,13 +78,14 @@ int find_symbol_addr(table tab, char *start, char *end)
     return (target_row->data).symbol.data;
 }
 
-input_status mark_entry_symbol(table tab, char *start, char *end)
+input_status mark_entry_symbol(table *tab, char *start, char *end)
 {
     table target_row;
     char temp = *end;
     *end = '\0';
 
-    target_row = find_item(&tab, start);
+    target_row = find_item(tab, start);
+    *end = temp;
     if (!target_row)
         return UNREC_SYMBOL_FOR_ENTRY;
     
@@ -95,9 +96,9 @@ input_status mark_entry_symbol(table tab, char *start, char *end)
     return PASS;
 }
 
-void relocate_data_symbols(table tab, int ic)
+void relocate_data_symbols(table *tab, int ic)
 {
-    table current_row = tab;
+    table current_row = *tab;
     int prev_value;
     while (current_row != NULL)
     {
@@ -116,9 +117,17 @@ void add_extern_reference_word(table *tab, char *start, char *end, int base_addr
     make_symbol_attr(&word_data, EXTERN, base_addr);
     
     prev_row = find_last_row_before(tab, start);
+    *end = temp;
     if (!prev_row) /* Symbol comes first or table is empty */
         add_item(tab, start, word_data);
     else /* Add word */
         prev_row->next = new_row(start, word_data, prev_row->next);
 }
 
+static void make_symbol_attr(row_data *row_out, symbol_purpose purpose, int addr)
+{
+    (*row_out).symbol.data = addr;
+    (*row_out).symbol.is_extern = purpose == EXTERN;
+    (*row_out).symbol.is_code = purpose == CODE;
+    (*row_out).symbol.is_data = purpose == DATA;
+}

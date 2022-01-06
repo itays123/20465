@@ -5,9 +5,4 @@
 
 /********************** Macro table type definitions *********************/
 
-typedef struct macro_attributes {
-    unsigned int lines;
-    fpos_t *position;
-} macro_attr;
-
 #endif
