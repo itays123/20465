@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../assembler/utils.h"
+#include "../../assembler/utils.h"
 
 int main()
 {
