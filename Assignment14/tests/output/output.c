@@ -90,7 +90,7 @@ void build_words_from_command(word **img, int *icf, char *opword, reg reg1, reg 
         img[IC_TO_IDX(icf)] = new_data_word(data1);
     if(src_length == 2) /* New address words */
     {
-        alloc_address_words(&base, &offset, data1, data1 == ADDR_EXTERN ? Extern : Absolute);
+        alloc_address_words(&base, &offset, data1, data1 == ADDR_EXTERN ? Extern : Relocatable);
         img[IC_TO_IDX(icf)] = base;
         img[IC_TO_IDX(icf)] = offset;
     }
