@@ -137,17 +137,27 @@ void alloc_int_arr(int arr[], int *img, int *dcf)
 
 void build_externals_table(table *externals)
 {
-    char *ref1 = "W", *ref2 = "K", *ref3 = "END";
-    add_extern_reference_word(externals, ref1, ref1 + strlen(ref1), 123);
-    add_extern_reference_word(externals, ref2, ref2 + strlen(ref1), 104);
-    add_extern_reference_word(externals, ref3, ref3 + strlen(ref3), 109);
-    add_extern_reference_word(externals, ref1, ref1 + strlen(ref1), 117);
-    add_extern_reference_word(externals, ref2, ref2 + strlen(ref2), 127);
+    char references[][4] = {
+        "W",
+        "K",
+        "END"
+    };
+    char *ref1 = references[0], *ref2 = references[1], *ref3 = references[2];
+    add_extern_reference_word(externals, MOCK_PTRS(ref1), 123);
+    add_extern_reference_word(externals, MOCK_PTRS(ref2), 104);
+    add_extern_reference_word(externals, MOCK_PTRS(ref3), 109);
+    add_extern_reference_word(externals, MOCK_PTRS(ref1), 117);
+    add_extern_reference_word(externals, MOCK_PTRS(ref2), 127);
 }
 
 void build_symbols_table(table *symbols)
 {
-    char *symb1 = "Hello", *symb2 = "symb", *symb3 = "supp";
+    char symbol_names[][6] = {
+        "Hello",
+        "symb",
+        "supp"
+    };
+    char *symb1 = symbol_names[0], *symb2 = symbol_names[1], *symb3 = symbol_names[2];
     add_symbol(symbols, MOCK_PTRS(symb1), CODE, 102);
     add_symbol(symbols, MOCK_PTRS(symb2), DATA, 150);
     add_symbol(symbols, MOCK_PTRS(symb3), CODE, 104);
