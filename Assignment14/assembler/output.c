@@ -9,7 +9,7 @@
     if (not_needed) \
         not_needed = FALSE; \
     else \
-        fputs("", file);
+        fputs("\n", file);
 
 /* Write the object file */
 static boolean write_ob(char *, word **, int, int *, int);
@@ -40,7 +40,7 @@ static boolean write_ob(char *filename, word **code_image, int icf, int *data_im
     /* Print code image */
     for (i = 0; i < code_image_length; i++)
     {
-        puts(""); /* New line */
+        fputs("\n", out); /* New line */
         get_bits(bits, code_image[i]);
         fprintf(out, LINE_FORMAT, i + IC_INIT_VALUE, BITSOF(bits));
     }
@@ -49,9 +49,9 @@ static boolean write_ob(char *filename, word **code_image, int icf, int *data_im
     bits[0] = Absolute; /* Data words are always absolute */
     for (i = 0; i < dcf; i++)
     {
-        fputs("", out); /* New line */
+        fputs("\n", out); /* New line */
         get_integer_hexbits(bits, data_image[i]);
-        fprintf(out, LINE_FORMAT, i, BITSOF(bits));
+        fprintf(out, LINE_FORMAT, i + icf, BITSOF(bits));
     }
 
     fclose(out);
