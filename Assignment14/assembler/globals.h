@@ -20,7 +20,7 @@ typedef enum { FALSE = 0, TRUE = 1 } boolean;
 
 typedef unsigned int hexbits[HEXBITS_IN_WORD];
 
-typedef enum {
+typedef enum registers {
     r0,
     r1,
     r2,
@@ -37,10 +37,10 @@ typedef enum {
     r13,
     r14,
     r15,
-    NON_REG = -1
+    NON_REG = 0
 } reg;
 
-typedef enum {
+typedef enum addressing_methods {
     NONE = -1,
     IMMEDIATE = 0,
     DIRECT = 1,
