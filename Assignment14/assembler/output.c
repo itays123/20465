@@ -5,11 +5,11 @@
 
 #define LINE_FORMAT "%.4d A%x-B%x-C%x-D%x-E%x"
 #define BITSOF(bits) bits[0], bits[1], bits[2], bits[3], bits[4]
-#define NEWLINE_IF_NEEDED(not_needed, file) \
+#define NEWLINE_IF_NEEDED(not_needed, file, newline) \
     if (not_needed) \
         not_needed = FALSE; \
     else \
-        fputs("\n", file);
+        fputs(newline, file);
 
 /* Write the object file */
 static boolean write_ob(char *, word **, int, int *, int);
@@ -73,9 +73,9 @@ static boolean write_ext(char *filename, table externals)
 
     while (current != NULL)
     {
-        NEWLINE_IF_NEEDED(is_first, out)
+        NEWLINE_IF_NEEDED(is_first, out, "\n\n")
         base_loc = ROW_DATA(current);
-        fprintf(out, "\n%s BASE %d", current->key, base_loc);
+        fprintf(out, "%s BASE %d", current->key, base_loc);
         fprintf(out, "\n%s OFFSET %d", current->key, base_loc + 1);
         current = current->next;
     }
@@ -103,7 +103,7 @@ static boolean write_ent(char *filename, table symbols)
     {
         if (IS_ENTRY(current))
         {
-            NEWLINE_IF_NEEDED(is_first, out)
+            NEWLINE_IF_NEEDED(is_first, out, "\n")
             GET_BASE_OFFSET(ROW_DATA(current), base, offset);
             fprintf(out, "%s, %.4d, %.4d", current->key, base, offset);
         }
