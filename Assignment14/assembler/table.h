@@ -1,7 +1,12 @@
 #ifndef _TABLE
 #define _TABLE
 #include "globals.h"
+#include "charsequence.h"
 #include <stdio.h>
+
+#define KEYOF_NODE_EQUALS(node, keystart, keyend) ((node) != NULL && str_equal((keystart), (keyend), (node)->key))
+#define KEYOF_NODE_BEFORE(node, keyname) ((node) != NULL && strcmp((node)->key, keyname) < 0)
+#define KEYOF_NODE_AFTER(node, keyname) ((node) != NULL && strcmp((node)->key, keyname) > 0)
 
 /***** Table type definition ********/
 

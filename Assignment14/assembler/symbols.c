@@ -31,7 +31,6 @@ input_status add_extern_symbol(table *tab, char *start, char *end)
     
     make_symbol_attr(&symb_data, EXTERN, ADDR_EXTERN);
 
-
     prev_row = find_last_row_before(tab, start, end);
     if (!prev_row) 
         /* table is null, or symbol comes first, therefore doesn't exist already */
@@ -39,14 +38,16 @@ input_status add_extern_symbol(table *tab, char *start, char *end)
     else /* There is a symbol beofre. Chect next symbol */
     {
         next_row = prev_row->next;
-        if (!next_row || strcmp(next_row->key, start))
-            /* Symbol not defined already */
-            prev_row->next = new_row(start, end, symb_data, next_row);
-        else {
+        if (KEYOF_NODE_EQUALS(next_row, start, end))
+        {
             /* Symbol is defined, check extern or not */
-            if (!((next_row->data).symbol.is_extern))
+            if (!IS_EXTERN(next_row))
                 return SYMBOL_ALREADY_DEFINED;
             /* Symbol already defined as extern. Do nothing. */
+        }
+        else {
+            /* Symbol not defined already */
+            prev_row->next = new_row(start, end, symb_data, next_row);   
         }
     }
 
@@ -61,7 +62,7 @@ int find_symbol_addr(table *tab, char *start, char *end)
 
     if (!target_row)
         return ADDR_NOT_FOUND;
-    return (target_row->data).symbol.data;
+    return ROW_DATA(target_row);
 }
 
 input_status mark_entry_symbol(table *tab, char *start, char *end)
@@ -71,10 +72,10 @@ input_status mark_entry_symbol(table *tab, char *start, char *end)
     if (!target_row)
         return UNREC_SYMBOL_FOR_ENTRY;
     
-    if ((target_row->data).symbol.is_extern)
+    if (IS_EXTERN(target_row))
         return EXTERNAL_ENTRY_SYMBOL;
     
-    (target_row->data).symbol.is_entry = TRUE;
+    IS_ENTRY(target_row) = TRUE;
     return PASS;
 }
 
@@ -84,10 +85,10 @@ void relocate_data_symbols(table *tab, int ic)
     int prev_value;
     while (current_row != NULL)
     {
-        if ((current_row->data).symbol.is_data)
+        if (IS_DATA(current_row))
         {
-            prev_value = (current_row->data).symbol.data;
-            (current_row->data).symbol.data = prev_value + ic;
+            prev_value = ROW_DATA(current_row);
+            ROW_DATA(current_row) = prev_value + ic;
         }
         current_row = current_row->next;
     }

@@ -1,13 +1,8 @@
 /* Table.c - deal with dynamic tables */
 #include "table.h"
-#include "charsequence.h"
 #include "utils.h"
 #include "string.h" /* For strcmp, strlen, strcpy */
 #include "stdlib.h" /* For free */
-
-#define KEYOF_NODE_EQUALS(node, keystart, keyend) ((node) && str_equal((keystart), (keyend), (node)->key))
-#define KEYOF_NODE_BEFORE(node, keyname) ((node) && strcmp((node)->key, keyname) < 0)
-#define KEYOF_NODE_AFTER(node, keyname) ((node) && strcmp((node)->key, keyname) > 0)
 
 table find_last_row_before(table *tab, char *keystart, char *keyend)
 {

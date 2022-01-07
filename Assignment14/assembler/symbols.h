@@ -7,7 +7,14 @@
 #define ADDR_NOT_FOUND -1
 #define ADDR_EXTERN 0
 
-/************** Symbol type definitions *************************/
+/************** Symbol definitions *************************/
+
+#define ATTR(row) ((row)->data).symbol /* For a more readable code */
+#define IS_CODE(row) ATTR(row).is_code
+#define IS_DATA(row) ATTR(row).is_data
+#define IS_ENTRY(row) ATTR(row).is_entry
+#define IS_EXTERN(row) ATTR(row).is_extern
+#define ROW_DATA(row) ATTR(row).data
 
 typedef enum symbol_purposes { CODE, DATA, EXTERN } symbol_purpose;
 
