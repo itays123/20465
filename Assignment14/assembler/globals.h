@@ -8,11 +8,6 @@
 #define BITS_IN_HEXBIT 4
 #define HEXBITS_IN_WORD BITS_IN_WORD / BITS_IN_HEXBIT
 #define MAX_CODE_IMAGE_SIZE 8192 /* Assumption - change if needed */
-#define ASSEMBLY_POSTFIX ".as"
-#define ASSEMBLY_POST_MACRO_POSTFIX ".am"
-#define ENTRY_POSTFIX ".ent"
-#define EXTERN_POSTFIX ".ext"
-#define OBJECT_POSTFIX ".ob"
 
 typedef enum { FALSE = 0, TRUE = 1 } boolean;
 
