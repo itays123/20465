@@ -1,9 +1,15 @@
 #include "output.h"
 #include "utils.h"
+#include "symbols.h" /* For ROW_DATA */
 #include <stdio.h>
 
 #define LINE_FORMAT "%.4d A%x-B%x-C%x-D%x-E%x"
 #define BITSOF(bits) bits[0], bits[1], bits[2], bits[3], bits[4]
+#define NEWLINE_IF_NEEDED(not_needed, file) \
+    if (not_needed) \
+        not_needed = FALSE; \
+    else \
+        fputs("", file);
 
 /* Write the object file */
 static boolean write_ob(char *, word **, int, int *, int);
@@ -43,7 +49,7 @@ static boolean print_ob(char *filename, word **code_image, int icf, int *data_im
     bits[0] = Absolute; /* Data words are always absolute */
     for (i = 0; i < dcf; i++)
     {
-        puts(""); /* New line */
+        fputs("", out); /* New line */
         get_integer_hexbits(bits, data_image[i]);
         fprintf(out, LINE_FORMAT, i, BITSOF(bits));
     }
@@ -58,27 +64,47 @@ static boolean write_ext(char *filename, table externals)
     FILE *out;
     table current;
     int base_loc;
+    boolean is_first = TRUE;
     if (externals == NULL)
         return TRUE; /* Nothing to write */
     
     out = fopen_safe(filename, EXTERN_POSTFIX, "w");
-    current = externals;
-
-    /* Write first key without new line */
-    base_loc = (current->data).symbol.data;
-    fprintf(out, "%s BASE %d", current->key, base_loc);
-    fprintf(out, "\n%s OFFSET %d", current->key, base_loc + 1);
-    current = current->next;
 
     while (current != NULL)
     {
-        puts(""); /* Separating line */
-        base_loc = (current->data).symbol.data;
+        NEWLINE_IF_NEEDED(is_first, out)
+        base_loc = ROW_DATA(current);
         fprintf(out, "\n%s BASE %d", current->key, base_loc);
         fprintf(out, "\n%s OFFSET %d", current->key, base_loc + 1);
         current = current->next;
     }
 
     fclose(out);
+    return TRUE;
+}
+
+static boolean write_ent(char *filename, table symbols)
+{
+    FILE *out;
+    table current;
+    int base, offset;
+    boolean is_first = TRUE;
+    while (current != NULL && !IS_ENTRY(current))
+        current = current->next;
+    
+    if (current == NULL) /* Did not find entry symbols */
+        return TRUE;
+    
+    /* Found at least one entry symbol. Create file */
+    while(current != NULL)
+    {
+        if (IS_ENTRY(current))
+        {
+            NEWLINE_IF_NEEDED(is_first, out)
+            GET_BASE_OFFSET(ROW_DATA(current), base, offset);
+            fprintf(out, "%s, %.4d, %.4d", current->key, base, offset);
+        }
+    }
+
     return TRUE;
 }
