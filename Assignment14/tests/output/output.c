@@ -27,6 +27,9 @@ int main()
 
     write_files("full", code_image, icf, data_image, dcf, symbols_table, externals_table);
     write_files("no_tables", code_image, icf, data_image, dcf, NULL, NULL);
+    free_word_arr(code_image, icf);
+    free_table(&symbols_table);
+    free_table(&externals_table);
     return 0;
 }
 

@@ -90,6 +90,7 @@ static boolean write_ent(char *filename, table symbols)
     table current;
     int base, offset;
     boolean is_first = TRUE;
+    current = symbols;
     while (current != NULL && !IS_ENTRY(current))
         current = current->next;
     
@@ -107,6 +108,7 @@ static boolean write_ent(char *filename, table symbols)
             GET_BASE_OFFSET(ROW_DATA(current), base, offset);
             fprintf(out, "%s, %.4d, %.4d", current->key, base, offset);
         }
+        current = current->next;
     }
 
     return TRUE;
