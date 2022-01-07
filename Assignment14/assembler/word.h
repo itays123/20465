@@ -5,7 +5,7 @@
 typedef enum word_types {
     OPCODE,
     OPDATA,
-    DATA
+    INTDATA
 } word_type;
 
 struct opdata_word {

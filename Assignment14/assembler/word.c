@@ -29,7 +29,7 @@ word *new_opdata_word(funct ft, reg src_reg, addressing_method src_adrs,
 
 word *new_data_word(int data)
 {
-    word *result = new_word(DATA, Absolute);
+    word *result = new_word(INTDATA, Absolute);
     (result->integer).data = data;
     return result;
 }
@@ -38,9 +38,9 @@ void alloc_address_words(word **base_word, word **offset_word, int address, memo
 {
     int base, offset;
     GET_BASE_OFFSET(address, base, offset)
-    *base_word = new_word(DATA, ARE);
+    *base_word = new_word(INTDATA, ARE);
     ((*base_word)->integer).data = base;
-    *offset_word = new_word(DATA, ARE);
+    *offset_word = new_word(INTDATA, ARE);
     ((*offset_word)->integer).data = offset;
 }
 
@@ -59,7 +59,7 @@ void get_bits(hexbits bits, word *source)
             get_integer_hexbits(bits, 1 << op);
             break;
         
-        case DATA:
+        case INTDATA:
             get_integer_hexbits(bits, (source->integer).data);
             break;
         

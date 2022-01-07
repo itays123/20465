@@ -28,7 +28,7 @@ boolean write_files(char *filename, word **code_image, int icf,
         && write_ent(filename, symbols);
 }
 
-static boolean print_ob(char *filename, word **code_image, int icf, int *data_image, int dcf)
+static boolean write_ob(char *filename, word **code_image, int icf, int *data_image, int dcf)
 {
     hexbits bits;
     int i, code_image_length = icf - IC_INIT_VALUE;
@@ -96,6 +96,8 @@ static boolean write_ent(char *filename, table symbols)
         return TRUE;
     
     /* Found at least one entry symbol. Create file */
+    out = fopen_safe(filename, ENTRY_POSTFIX, "w");
+
     while(current != NULL)
     {
         if (IS_ENTRY(current))
