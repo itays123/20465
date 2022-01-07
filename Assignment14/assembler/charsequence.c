@@ -46,6 +46,16 @@ boolean str_equal(char *start, char *end, char *compare_to)
     return result ? TRUE : FALSE;
 }
 
+boolean str_before(char *start, char *end, char *compare_to)
+{
+    int result;
+    char temp = *end;
+    *end = '\0';
+    result = strcmp(start, compare_to);
+    *end = temp;
+    return result < 0 ? TRUE : FALSE;
+}
+
 boolean str_to_int(char *start, char *end, int *to_assign)
 {
     char temp = *end;

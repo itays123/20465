@@ -20,6 +20,10 @@ void *malloc_safe(int);
 /* Gets two strings and allocates a new string with the contents of the two strings joined */
 char *strcat_safe(char *, char *);
 
+/* Gets two pointers to the start and end (end exclusive) of a string and copies it to an allocated 
+location in memory. Return pointer to memory*/
+char *strcpy_safe(char *, char *);
+
 /* Opens a file with a name,postfix and permissions specified safely */
 FILE *fopen_safe(char *, char *, char *);
 

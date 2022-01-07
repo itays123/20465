@@ -35,6 +35,11 @@ and compares it with a given string.
 Return true if equal, false otherwise */
 boolean str_equal(char *, char *, char *);
 
+/* Gets a pointer to the start of a substring, and a pointer to the end of it(end exclusive), 
+and compares it with a given string.
+Return true if before the compared string lexicographically, false otherwise */
+boolean str_before(char *, char *, char *);
+
 /* Gets a pointer to the start of a substring, and a pointer to the end of it (end exclusive),
 and parses it to an integer if a valid integer (optional sign + decimal digits)
 assigns the result to the pointer given to it.

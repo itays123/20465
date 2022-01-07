@@ -3,6 +3,8 @@
 #include "stdlib.h" /* For malloc(), free(), .... */
 #include "string.h" /* For strlen(), strcpy() */
 
+#define SIZEOF_STR(length) (sizeof(char) * ((length) + 1)) /* length + '\0' */
+
 void *malloc_safe(int bytes)
 {
     void *result = malloc(bytes);
@@ -22,10 +24,20 @@ char *strcat_safe(char *str1, char *str2)
     /* malloc length1 + length2 + 1 (for \0) characters */
     length1 = strlen(str1);
     length2 = strlen(str2);
-    result = malloc_safe(sizeof(char) * (length1 + length2 + 1));
+    result = malloc_safe(SIZEOF_STR(length1 + length2));
     memcpy(result, str1, length1);
     memcpy(result+length1, str2, length2);
     result[length1 + length2] = '\0';
+    return result;
+}
+
+char *strcpy_safe(char *start, char *end)
+{
+    char *result;
+    int length = end - start;
+    result = malloc_safe(SIZEOF_STR(length));
+    memcpy(result, start, length);
+    result[length] = '\0';
     return result;
 }
 
