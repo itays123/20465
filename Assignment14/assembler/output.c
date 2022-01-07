@@ -69,6 +69,7 @@ static boolean write_ext(char *filename, table externals)
         return TRUE; /* Nothing to write */
     
     out = fopen_safe(filename, EXTERN_POSTFIX, "w");
+    current = externals;
 
     while (current != NULL)
     {
