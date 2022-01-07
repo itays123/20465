@@ -34,18 +34,32 @@ void build_words_from_command(word **, int *, char *, reg , reg , addressing_met
 
 void build_code_image(word **img, int *icf)
 {
-    build_words_from_command(img, icf, "add", r3, NON_REG, REGISTER_DIRECT, DIRECT, 0, 147);
-    build_words_from_command(img, icf, "prn", NON_REG, NON_REG, NONE, IMMEDIATE, 0, 48);
-    build_words_from_command(img, icf, "lea", NON_REG, r6, DIRECT, REGISTER_DIRECT, 148, 0);
-    build_words_from_command(img, icf, "inc", NON_REG, r6, NONE, REGISTER_DIRECT, 0, 0);
-    build_words_from_command(img, icf, "mov", r3, NON_REG, REGISTER_DIRECT, DIRECT, 0, 0);
-    build_words_from_command(img, icf, "sub", r1, r4, REGISTER_DIRECT, REGISTER_DIRECT, 0, 0);
-    build_words_from_command(img, icf, "bne", NON_REG, NON_REG, NONE, DIRECT, 0, 103);
-    build_words_from_command(img, icf, "cmp", NON_REG, NON_REG, DIRECT, IMMEDIATE, 150, -6);
-    build_words_from_command(img, icf, "bne", NON_REG, r15, NONE, INDEX, 0, 151);
-    build_words_from_command(img, icf, "dec", NON_REG, NON_REG, NONE, DIRECT, 0, 152);
-    build_words_from_command(img, icf, "sub", r10, r14, INDEX, REGISTER_DIRECT, 153, 0);
-    build_words_from_command(img, icf, "stop", NON_REG, NON_REG, NONE, NONE, 0, 0);
+    char commands[][5] = {
+        "add",
+        "prn",
+        "lea",
+        "inc",
+        "mov",
+        "sub",
+        "bne",
+        "cmp",
+        "bne",
+        "dec",
+        "sub",
+        "stop"
+    };
+    build_words_from_command(img, icf, commands[0], r3, NON_REG, REGISTER_DIRECT, DIRECT, 0, 147);
+    build_words_from_command(img, icf, commands[1], NON_REG, NON_REG, NONE, IMMEDIATE, 0, 48);
+    build_words_from_command(img, icf, commands[2], NON_REG, r6, DIRECT, REGISTER_DIRECT, 148, 0);
+    build_words_from_command(img, icf, commands[3], NON_REG, r6, NONE, REGISTER_DIRECT, 0, 0);
+    build_words_from_command(img, icf, commands[4], r3, NON_REG, REGISTER_DIRECT, DIRECT, 0, 0);
+    build_words_from_command(img, icf, commands[5], r1, r4, REGISTER_DIRECT, REGISTER_DIRECT, 0, 0);
+    build_words_from_command(img, icf, commands[6], NON_REG, NON_REG, NONE, DIRECT, 0, 103);
+    build_words_from_command(img, icf, commands[7], NON_REG, NON_REG, DIRECT, IMMEDIATE, 150, -6);
+    build_words_from_command(img, icf, commands[8], NON_REG, r15, NONE, INDEX, 0, 151);
+    build_words_from_command(img, icf, commands[9], NON_REG, NON_REG, NONE, DIRECT, 0, 152);
+    build_words_from_command(img, icf, commands[10], r10, r14, INDEX, REGISTER_DIRECT, 153, 0);
+    build_words_from_command(img, icf, commands[11], NON_REG, NON_REG, NONE, NONE, 0, 0);
 }
 
 void build_words_from_command(word **img, int *icf, char *opword, reg reg1, reg reg2, 
