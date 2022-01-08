@@ -27,6 +27,7 @@ input.am:32 - Error: Missing comma between operands
 input.am:33 - Error: Expected string after .string instruction
 input.am:34 - Error: String must begin with quotation mark ('"')
 input.am:35 - Error: String must begin with quotation mark ('"')
+input.am:36 - Error: String must end with quotation mark ('"')
 input.am:38 - Error: Extraneous text after command end
 input.am:39 - Error: Illegal comma after operation
 input.am:40 - Error: Missing operand - required 1

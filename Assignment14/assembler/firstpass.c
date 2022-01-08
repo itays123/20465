@@ -140,7 +140,7 @@ static input_status process_instruction(char *opstart, char *opend, int *data_im
         if (*argstart != '"')
             return STRING_MUST_BEGIN_WITH_QUOT;
 
-        argend = next('"', argstart);
+        argend = next('"', argstart + 1);
         if (!(*argend))
             return STRING_MUST_END_WITH_QUOT;
         
