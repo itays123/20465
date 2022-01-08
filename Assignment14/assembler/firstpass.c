@@ -213,3 +213,16 @@ static input_status process_operation(char *opstart, char *opend, word **code_im
     *ic = *ic + length;
     return PASS;
 }
+
+static input_status check_entry_extern_inst(char *opstart, char *opend, char **symb_start, char **symb_end)
+{
+    input_status status;
+    char *str = next_nonwhite(opend);
+    if (*str == ',')
+        return ILLEGAL_COMMA_AFTER_INST;
+    
+    EXECUTE(status, find_operand(&str, symb_start, symb_end, INST_REQ_OPERAND))
+    EXECUTE(status, end_of_command(*symb_end))
+
+    return PASS;
+}

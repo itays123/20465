@@ -31,6 +31,7 @@ typedef enum input_statuses {
     /* First pass - instruction structure */
     UNREC_INSTRUCTION,
     ILLEGAL_COMMA_AFTER_INST,
+    INST_REQ_OPERAND,
     STRING_INST_EXPECTS_OPERAND,
     STRING_MUST_BEGIN_WITH_QUOT,
     STRING_MUST_END_WITH_QUOT,

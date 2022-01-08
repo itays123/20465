@@ -310,6 +310,7 @@ static struct err_lookup_element err_lookup_table[] = {
     {EXTRANEOUS_TEXT, "Error: Extraneous text after command end"},
     {UNREC_INSTRUCTION, "Error: Unrecognized instruction"},
     {ILLEGAL_COMMA_AFTER_INST, "Error: Illegal comma afer instruction"},
+    {INST_REQ_OPERAND, "Error: Required operand for instruction"},
     {STRING_INST_EXPECTS_OPERAND, "Error: Expected string after .string instruction"},
     {STRING_MUST_BEGIN_WITH_QUOT, "Error: String must begin with quotation mark ('\"')"},
     {STRING_MUST_END_WITH_QUOT, "Error: String must end with quotation mark ('\"')"},
