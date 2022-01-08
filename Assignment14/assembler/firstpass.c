@@ -1,3 +1,4 @@
+/* First pass - Generate data image, symbols table and partial code image */
 #include "firstpass.h"
 #include "command.h" /* For every method in the module */
 #include "charsequence.h" /* For every method in the module */

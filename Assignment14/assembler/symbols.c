@@ -1,6 +1,6 @@
 /* Symbols.c - dealing with the symbols table and the external words table */
 #include "symbols.h"
-#include <string.h> /* Temp - remove!! */
+#include <string.h> /* For strcmp */
 
 static void make_symbol_attr(row_data *, symbol_purpose, int);
 
