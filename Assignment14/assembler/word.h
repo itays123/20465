@@ -8,6 +8,20 @@ typedef enum word_types {
     INTDATA
 } word_type;
 
+/* For increased code readability */
+#define INT_ATTR(word) ((word)->integer)
+#define OPDATA_ATTR(word) ((word)->opdata)
+/* Keep in mind that the bits of ARE, Type and length are in the same place for both structs. */
+#define ARE_OF(word) INT_ATTR(word).ARE 
+#define TYPEOF(word) INT_ATTR(word).type
+#define LENGTH(word) INT_ATTR(word).length
+#define FUNCT_OF(word) OPDATA_ATTR(word).funct
+#define SRC_REG(word) OPDATA_ATTR(word).src_reg
+#define SRC_ADRS(word) OPDATA_ATTR(word).src_adrs
+#define DEST_REG(word) OPDATA_ATTR(word).dest_reg
+#define DEST_ADRS(word) OPDATA_ATTR(word).dest_adrs
+#define INTEGER_DATA(word) INT_ATTR(word).data
+
 struct opdata_word {
     unsigned int ARE: 3;
     unsigned int type: 2; /* use the word_type enum */

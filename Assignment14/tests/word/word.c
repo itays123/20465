@@ -37,27 +37,25 @@ int main()
 
 static void print_data_word(word *source)
 {
-    struct integer_word source_data = source->integer;
     printf("\nWord {");
-    printf("\n\tARE: %d,", source_data.ARE);
-    printf("\n\ttype: %d,", source_data.type);
-    printf("\n\tlength: %d,", source_data.length);
-    printf("\n\tdata: %d", source_data.data);
+    printf("\n\tARE: %d,", ARE_OF(source));
+    printf("\n\ttype: %d,", TYPEOF(source));
+    printf("\n\tlength: %d,", LENGTH(source));
+    printf("\n\tdata: %d", INTEGER_DATA(source));
     printf("\n}");
 }
 
 static void print_opdata_word(word *source)
 {
-    struct opdata_word source_data = source->opdata;
     printf("\nWord {");
-    printf("\n\tARE: %d,", source_data.ARE);
-    printf("\n\ttype: %d,", source_data.type);
-    printf("\n\tlength: %d,", source_data.length);
-    printf("\n\tfunct: %d,", source_data.funct);
-    printf("\n\tsrc_reg: %d,", source_data.src_reg);
-    printf("\n\tsrc_adrs: %d,", source_data.src_adrs);
-    printf("\n\tdest_reg: %d,", source_data.dest_reg);
-    printf("\n\tdest_adrs: %d", source_data.dest_adrs);
+    printf("\n\tARE: %d,", ARE_OF(source));
+    printf("\n\ttype: %d,", TYPEOF(source));
+    printf("\n\tlength: %d,", LENGTH(source));
+    printf("\n\tfunct: %d,", FUNCT_OF(source));
+    printf("\n\tsrc_reg: %d,", SRC_REG(source));
+    printf("\n\tsrc_adrs: %d,", SRC_ADRS(source));
+    printf("\n\tdest_reg: %d,", DEST_REG(source));
+    printf("\n\tdest_adrs: %d", DEST_ADRS(source));
     printf("\n}");
 }
 

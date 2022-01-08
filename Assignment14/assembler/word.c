@@ -10,8 +10,8 @@ static word *new_word(word_type, memory_status);
 word *new_opcode_word(opcode op, int length)
 {
     word *result = new_word(OPCODE, Absolute);
-    (result->integer).data = op;
-    (result->integer).length = length;
+    INTEGER_DATA(result) = op;
+    LENGTH(result) = length;
     return result;
 }
 
@@ -19,18 +19,18 @@ word *new_opdata_word(funct ft, reg src_reg, addressing_method src_adrs,
                     reg dest_reg, addressing_method dest_adrs)
 {
     word *result = new_word(OPDATA, Absolute);
-    (result->opdata).funct = ft;
-    (result->opdata).src_reg = src_reg;
-    (result->opdata).src_adrs = src_adrs;
-    (result->opdata).dest_reg = dest_reg;
-    (result->opdata).dest_adrs = dest_adrs;
+    FUNCT_OF(result) = ft;
+    SRC_REG(result) = src_reg;
+    SRC_ADRS(result) = src_adrs;
+    DEST_REG(result) = dest_reg;
+    DEST_ADRS(result) = dest_adrs;
     return result;
 }
 
 word *new_data_word(int data)
 {
     word *result = new_word(INTDATA, Absolute);
-    (result->integer).data = data;
+    INTEGER_DATA(result) = data;
     return result;
 }
 
@@ -39,9 +39,9 @@ void alloc_address_words(word **base_word, word **offset_word, int address, memo
     int base, offset;
     GET_BASE_OFFSET(address, base, offset)
     *base_word = new_word(INTDATA, ARE);
-    ((*base_word)->integer).data = base;
+    INTEGER_DATA(*base_word) = base;
     *offset_word = new_word(INTDATA, ARE);
-    ((*offset_word)->integer).data = offset;
+    INTEGER_DATA(*offset_word) = offset;
 }
 
 void get_bits(hexbits bits, word *source)
@@ -49,29 +49,28 @@ void get_bits(hexbits bits, word *source)
     opcode op;
     addressing_method src_adrs, dest_adrs;
     reg dest_reg;
-    word_type type = (source->integer).type;
-    bits[0] = (source->integer).ARE;
+    bits[0] = ARE_OF(source);
 
-    switch (type)
+    switch (TYPEOF(source))
     {
         case OPCODE:
-            op = (source->integer).data;
+            op = INTEGER_DATA(source);
             get_integer_hexbits(bits, 1 << op);
             break;
         
         case INTDATA:
-            get_integer_hexbits(bits, (source->integer).data);
+            get_integer_hexbits(bits, INTEGER_DATA(source));
             break;
         
         case OPDATA:
-            bits[1] = (source->opdata).funct;
-            bits[2] = (source->opdata).src_reg;
+            bits[1] = FUNCT_OF(source);
+            bits[2] = SRC_REG(source);
             /* The next hexbit is the two bits of src_adrs and the first two of dest_reg */
-            src_adrs = (source->opdata).src_adrs;
-            dest_reg = (source->opdata).dest_reg;
+            src_adrs = SRC_ADRS(source);
+            dest_reg = DEST_REG(source);
             bits[3] = (src_adrs << 4 | dest_reg) >> 2;
             /* The next hexbit is the last two bits of dest_reg and the two of dest_adrs */
-            dest_adrs = (source->opdata).dest_adrs;
+            dest_adrs = DEST_ADRS(source);
             bits[4] = (dest_reg << 2 | dest_adrs) & HEXBIT_MASK;
             break;
     }
@@ -91,7 +90,7 @@ static word* new_word(word_type type, memory_status ARE)
 {
     word *result = malloc_safe(sizeof(word));
     /* In both structs, type and ARE are in the same location. */
-    (result->integer).type = type;
-    (result->integer).ARE = ARE;
+    TYPEOF(result) = type;
+    ARE_OF(result) = ARE;
     return result;
 }
