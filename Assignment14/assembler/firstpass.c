@@ -96,3 +96,52 @@ static input_status fpass_process_line(char *line, word **code_image, int *ic,
         EXECUTE(status, add_symbol(symbols_table, label_start_maybe, label_end_maybe, label_purpose, label_points_to))
     return PASS;
 }
+
+static input_status process_instruction(char *opstart, char *opend, int *data_image, int *dc)
+{
+    char *str, *argstart, *argend, *curr_char;
+    int curr_arg;
+    input_status status;
+
+    if (str_equal(opstart, opend, ".data"))
+    {
+        str = next_nonwhite(opend);
+        if (!(*str))
+            return NO_NUMBERS_FOR_DATA_INST;
+        if (*str == ',')
+            return ILLEGAL_COMMA_AFTER_INST;
+        
+        while (*str)
+        {
+            EXECUTE(status, find_operand(&str, &argstart, &argend, EXPECTED_NUMBER_AFTER_COMMA))
+            if (!str_to_int(argstart, argend, &curr_arg))
+                return INVALID_OPERAND_NOT_NUMBER;
+            data_image[(*dc)++] = curr_arg;
+        }
+        if (*argend == ',')
+            return EXPECTED_NUMBER_AFTER_COMMA;
+        EXECUTE(status, end_of_command(*argend))
+        return PASS;
+    }
+    
+    if (str_equal(opstart, opend, ".string"))
+    {
+        argstart = next_nonwhite(opend);
+        if (!(*argstart))
+            return STRING_INST_EXPECTS_OPERAND;
+        if (*argstart != '"')
+            return STRING_MUST_BEGIN_WITH_QUOT;
+
+        argend = next('"', argstart);
+        if (!(*argend))
+            return STRING_MUST_END_WITH_QUOT;
+        
+        for (curr_char = argstart + 1; curr_char < argend; curr_char++)
+            data_image[(*dc)++] = *curr_char;
+        /* Terminate with 0 */
+        data_image[(*dc)++] = '\0';
+        return PASS;
+    }
+
+    return UNREC_INSTRUCTION;
+}
