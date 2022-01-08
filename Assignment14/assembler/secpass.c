@@ -34,6 +34,7 @@ boolean second_pass(FILE *source, char *filename, word **code_image,
             /* New line if needed  */
             if (!is_success)
                 puts("");
+            is_success = FALSE;
             printf(ERROR_FORMAT, filename, ASSEMBLY_POST_MACRO_POSTFIX, line_num, get_error(status));
             status = PASS;
         }

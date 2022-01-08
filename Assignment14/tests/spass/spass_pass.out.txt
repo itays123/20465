@@ -1,0 +1,2 @@
+input.am:4 - Error: Symbol not found in second operand
+input.am:8 - Error: Symbol not found in second operand
