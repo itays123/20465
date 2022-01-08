@@ -4,7 +4,7 @@ Found label ? 1, opword is add #14  , symb[r10]
 Recognized command ? status = 0, opcode = 2, funct = 10
 Approached operands - #14  , symb[r10]
 Operand searched. status = 0, op1 start = `#14  , symb[r10]`, end = `  , symb[r10]`, operands = ` symb[r10]`
-Data collected. Status = 0, addressing method = 0, register = -1, data = 14
+Data collected. Status = 0, addressing method = 0, register = 0, data = 14
 Operand searched. status = 0, op2 start = `symb[r10]`, end = ``, operands = ``
 Data collected. Status = 0, addressing method = 2, register = 10, data = 0
 Checked end of command. status = 0
@@ -19,7 +19,7 @@ Passed - 1
 
 Found label ? 0, opword is .string "hello"
 
-Recognized command ? status = 21, opcode = -1, funct = -1
+Recognized command ? status = 22, opcode = -1, funct = -1
 Validated addressing methods. status = 0
 Word line will occupy: 2 + 0 + 0
 Passed - 1
@@ -29,7 +29,7 @@ Passed - 1
 
 Found label ? 1, opword is unrec #34, r10
 
-Recognized command ? status = 21, opcode = -1, funct = -1
+Recognized command ? status = 22, opcode = -1, funct = -1
 Label validated, status = 0
 Validated addressing methods. status = 0
 Word line will occupy: 2 + 0 + 0
@@ -47,11 +47,11 @@ Operand searched. status = 0, op1 start = `#34, ,r10
 `, end = `, ,r10
 `, operands = ` ,r10
 `
-Data collected. Status = 0, addressing method = 0, register = -1, data = 34
+Data collected. Status = 0, addressing method = 0, register = 0, data = 34
 Operand searched. status = 10, op2 start = `,r10
 `, end = ``, operands = ` ,r10
 `
-Data collected. Status = 0, addressing method = 1, register = -1, data = 0
+Data collected. Status = 0, addressing method = 1, register = 0, data = 0
 Checked end of command. status = 0
 Symbol validated. status = 4
 Label validated, status = 0
@@ -71,7 +71,7 @@ Operand searched. status = 11, op1 start = `#34 r10
 `, end = ` r10
 `, operands = `r10
 `
-Data collected. Status = 0, addressing method = 0, register = -1, data = 34
+Data collected. Status = 0, addressing method = 0, register = 0, data = 34
 Operand searched. status = 0, op2 start = `r10
 `, end = `
 `, operands = ``
@@ -89,7 +89,7 @@ Found label ? 1, opword is jmp
 
 Recognized command ? status = 0, opcode = 9, funct = 10
 Approached operands - 
-Operand searched. status = 22, op1 start = ``, end = `notFoundSec: add #34
+Operand searched. status = 24, op1 start = ``, end = `notFoundSec: add #34
 notFoundSec2: add #34    ,
 invldNum: add #xyz, r10
 invldReg: add #-6, symb[xyz]
@@ -109,7 +109,7 @@ add #-6, r10    hey!
 
 
 `, operands = ``
-Data collected. Status = 0, addressing method = 1, register = -1, data = 0
+Data collected. Status = 0, addressing method = 1, register = 0, data = 0
 Checked end of command. status = 12
 Symbol validated. status = 4
 Label validated, status = 0
@@ -128,10 +128,10 @@ Approached operands - #34
 Operand searched. status = 0, op1 start = `#34
 `, end = `
 `, operands = ``
-Data collected. Status = 0, addressing method = 0, register = -1, data = 34
-Operand searched. status = 23, op2 start = ``, end = `
+Data collected. Status = 0, addressing method = 0, register = 0, data = 34
+Operand searched. status = 25, op2 start = ``, end = `
 `, operands = ``
-Data collected. Status = 0, addressing method = 1, register = -1, data = 0
+Data collected. Status = 0, addressing method = 1, register = 0, data = 0
 Checked end of command. status = 0
 Symbol validated. status = 4
 Label validated, status = 0
@@ -151,11 +151,11 @@ Operand searched. status = 0, op1 start = `#34    ,
 `, end = `    ,
 `, operands = `
 `
-Data collected. Status = 0, addressing method = 0, register = -1, data = 34
-Operand searched. status = 23, op2 start = ``, end = `,
+Data collected. Status = 0, addressing method = 0, register = 0, data = 34
+Operand searched. status = 25, op2 start = ``, end = `,
 `, operands = `
 `
-Data collected. Status = 0, addressing method = 1, register = -1, data = 0
+Data collected. Status = 0, addressing method = 1, register = 0, data = 0
 Checked end of command. status = 12
 Symbol validated. status = 4
 Label validated, status = 0
@@ -175,7 +175,7 @@ Operand searched. status = 0, op1 start = `#xyz, r10
 `, end = `, r10
 `, operands = ` r10
 `
-Data collected. Status = 28, addressing method = 0, register = -1, data = 0
+Data collected. Status = 28, addressing method = 0, register = 0, data = 0
 Operand searched. status = 0, op2 start = `r10
 `, end = `
 `, operands = ``
@@ -198,11 +198,11 @@ Operand searched. status = 0, op1 start = `#-6, symb[xyz]
 `, end = `, symb[xyz]
 `, operands = ` symb[xyz]
 `
-Data collected. Status = 0, addressing method = 0, register = -1, data = -6
+Data collected. Status = 0, addressing method = 0, register = 0, data = -6
 Operand searched. status = 0, op2 start = `symb[xyz]
 `, end = `
 `, operands = ``
-Data collected. Status = 29, addressing method = 2, register = -1, data = 0
+Data collected. Status = 29, addressing method = 2, register = 0, data = 0
 Checked end of command. status = 0
 Symbol validated. status = 0
 Label validated, status = 0
@@ -232,7 +232,7 @@ Approached operands - symb
 Operand searched. status = 0, op1 start = `symb
 `, end = `
 `, operands = ``
-Data collected. Status = 0, addressing method = 1, register = -1, data = 0
+Data collected. Status = 0, addressing method = 1, register = 0, data = 0
 Checked end of command. status = 0
 Symbol validated. status = 0
 Label validated, status = 5
@@ -263,7 +263,7 @@ Operand searched. status = 0, op1 start = `#-6, r10
 `, end = `, r10
 `, operands = ` r10
 `
-Data collected. Status = 0, addressing method = 0, register = -1, data = -6
+Data collected. Status = 0, addressing method = 0, register = 0, data = -6
 Operand searched. status = 0, op2 start = `r10
 `, end = `
 `, operands = ``
@@ -286,7 +286,7 @@ Operand searched. status = 0, op1 start = `#-6, r10
 `, end = `, r10
 `, operands = ` r10
 `
-Data collected. Status = 0, addressing method = 0, register = -1, data = -6
+Data collected. Status = 0, addressing method = 0, register = 0, data = -6
 Operand searched. status = 0, op2 start = `r10
 `, end = `
 `, operands = ``
@@ -309,7 +309,7 @@ Operand searched. status = 0, op1 start = `#-6, r10
 `, end = `, r10
 `, operands = ` r10
 `
-Data collected. Status = 0, addressing method = 0, register = -1, data = -6
+Data collected. Status = 0, addressing method = 0, register = 0, data = -6
 Operand searched. status = 0, op2 start = `r10
 `, end = `
 `, operands = ``
@@ -331,7 +331,7 @@ Approached operands - symb]r10[
 Operand searched. status = 0, op1 start = `symb]r10[
 `, end = `
 `, operands = ``
-Data collected. Status = 0, addressing method = 1, register = -1, data = 0
+Data collected. Status = 0, addressing method = 1, register = 0, data = 0
 Checked end of command. status = 0
 Symbol validated. status = 5
 Validated addressing methods. status = 0
@@ -349,7 +349,7 @@ Approached operands - symb[r16]
 Operand searched. status = 0, op1 start = `symb[r16]
 `, end = `
 `, operands = ``
-Data collected. Status = 29, addressing method = 2, register = -1, data = 0
+Data collected. Status = 29, addressing method = 2, register = 0, data = 0
 Checked end of command. status = 0
 Symbol validated. status = 0
 Validated addressing methods. status = 0
@@ -368,11 +368,11 @@ Operand searched. status = 0, op1 start = `#34, #22
 `, end = `, #22
 `, operands = ` #22
 `
-Data collected. Status = 0, addressing method = 0, register = -1, data = 34
+Data collected. Status = 0, addressing method = 0, register = 0, data = 34
 Operand searched. status = 0, op2 start = `#22
 `, end = `
 `, operands = ``
-Data collected. Status = 0, addressing method = 0, register = -1, data = 22
+Data collected. Status = 0, addressing method = 0, register = 0, data = 22
 Checked end of command. status = 0
 Validated addressing methods. status = 27
 Word line will occupy: 2 + 1 + 1
@@ -389,7 +389,7 @@ Approached operands - #55
 Operand searched. status = 0, op1 start = `#55
 `, end = `
 `, operands = ``
-Data collected. Status = 0, addressing method = 0, register = -1, data = 55
+Data collected. Status = 0, addressing method = 0, register = 0, data = 55
 Checked end of command. status = 0
 Validated addressing methods. status = 26
 Word line will occupy: 2 + 1 + 0
@@ -407,7 +407,7 @@ Operand searched. status = 0, op1 start = `#-6, r10,
 `, end = `, r10,
 `, operands = ` r10,
 `
-Data collected. Status = 0, addressing method = 0, register = -1, data = -6
+Data collected. Status = 0, addressing method = 0, register = 0, data = -6
 Operand searched. status = 0, op2 start = `r10,
 `, end = `,
 `, operands = `
@@ -430,7 +430,7 @@ Operand searched. status = 0, op1 start = `#-6, r10    ,
 `, end = `, r10    ,
 `, operands = ` r10    ,
 `
-Data collected. Status = 0, addressing method = 0, register = -1, data = -6
+Data collected. Status = 0, addressing method = 0, register = 0, data = -6
 Operand searched. status = 0, op2 start = `r10    ,
 `, end = `    ,
 `, operands = `
@@ -453,7 +453,7 @@ Operand searched. status = 0, op1 start = `#-6, r10    hey!
 `, end = `, r10    hey!
 `, operands = ` r10    hey!
 `
-Data collected. Status = 0, addressing method = 0, register = -1, data = -6
+Data collected. Status = 0, addressing method = 0, register = 0, data = -6
 Operand searched. status = 11, op2 start = `r10    hey!
 `, end = `    hey!
 `, operands = `hey!
@@ -468,7 +468,7 @@ Passed - 1
 
 
 Found label ? 0, opword is 
-Recognized command ? status = 21, opcode = -1, funct = -1
+Recognized command ? status = 22, opcode = -1, funct = -1
 Validated addressing methods. status = 0
 Word line will occupy: 2 + 0 + 0
 Passed - 1
@@ -477,7 +477,7 @@ Passed - 1
 
 
 Found label ? 0, opword is 
-Recognized command ? status = 21, opcode = -1, funct = -1
+Recognized command ? status = 22, opcode = -1, funct = -1
 Validated addressing methods. status = 0
 Word line will occupy: 2 + 0 + 0
 Passed - 1
