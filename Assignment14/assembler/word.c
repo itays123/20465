@@ -20,9 +20,9 @@ word *new_opdata_word(funct ft, reg src_reg, addressing_method src_adrs,
 {
     word *result = new_word(OPDATA, Absolute);
     FUNCT_OF(result) = ft;
-    SRC_REG(result) = src_reg;
+    SRC_REG(result) = src_reg == NON_REG ? r0 : src_reg;
     SRC_ADRS(result) = src_adrs;
-    DEST_REG(result) = dest_reg;
+    DEST_REG(result) = dest_reg == NON_REG ? r0 : dest_reg;
     DEST_ADRS(result) = dest_adrs;
     return result;
 }

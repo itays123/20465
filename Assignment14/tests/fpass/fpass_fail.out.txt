@@ -42,6 +42,7 @@ input.am:48 - Error: Extraneous text after command end
 input.am:49 - Error: Extraneous text after command end
 input.am:50 - Error: Invalid addressing method for first operand
 input.am:51 - Error: Invalid addressing method for second operand
+input.am:52 - Error: Invalid addressing method for first operand
 input.am:54 - Error: Required operand for instruction
 input.am:55 - Error: Illegal comma afer instruction
 input.am:56 - Error: Missing comma between operands

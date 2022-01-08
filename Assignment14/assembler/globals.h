@@ -35,7 +35,7 @@ typedef enum registers {
     r13,
     r14,
     r15,
-    NON_REG = 0
+    NON_REG = -1
 } reg;
 
 typedef enum addressing_methods {
@@ -89,7 +89,7 @@ typedef enum functs {
     BNE_FUNCT = 11,
     JSR_FUNCT = 12,
 
-    NONE_FUNCT = -1
+    NONE_FUNCT = 0
 } funct;
 
 typedef enum ARE {

@@ -61,7 +61,10 @@ static void mock_spass_fill_words(char *line, word **code_image, int *ic)
     length = LENGTH(opcode);
 
     if (length <= 2) /* Word is filled, nothing to do */
+    {
+        *ic = *ic + length;
         return;
+    }
     
     /* Length is greater than two. Opdata word exists */
     opdata = code_image[i++];

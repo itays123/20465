@@ -235,7 +235,8 @@ reg str_to_reg(char *start, char *end)
     struct reg_lookup_element *row;
 
     /* Save a lot of worst-case runs with this check */
-    if (end - start != REGISTER_NAME_LENGTH)
+    int length = end - start;
+    if (length < REGISTER_NAME_MIN_LENGTH || length > REGISTER_NAME_MAX_LENGTH)
         return NON_REG; 
 
     for (row = reg_lookup_table; *(row->name); row++)
