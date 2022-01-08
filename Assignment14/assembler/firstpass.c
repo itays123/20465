@@ -3,9 +3,6 @@
 #include "charsequence.h" /* For every method in the module */
 #include "symbols.h" /* For add_symbol, add_extern_symbol */
 
-#define EXECUTE(status, func) \
-    if ((status = func) != PASS) \
-        return status;
 #define CREATE_DATA_WORD_IF_POSSIBLE(code_image, i, length, data) \
     if (length == 1) \
         code_image[i++] = new_data_word(data); \

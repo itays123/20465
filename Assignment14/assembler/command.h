@@ -6,6 +6,9 @@
 #define MIN_OPERATION_LENGTH 3
 #define MAX_OPERATION_LENGTH 4
 
+#define EXECUTE(status, func) \
+    if ((status = func) != PASS) \
+        return status;
 /***************** Type definitions *******************/
 
 typedef enum input_statuses {
