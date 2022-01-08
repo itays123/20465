@@ -1,9 +1,12 @@
-endm
 
-m1
-m1
+  inc r6
+  mov r3, W
+  inc r6
+  mov r3, W
 
-endm
-m2
-m1m1m1m1m2
-m1
+
+  rts
+  jmp Line
+  rts
+  inc r6
+  mov r3, W

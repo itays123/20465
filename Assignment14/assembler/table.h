@@ -20,7 +20,7 @@ typedef struct symbol_attributes {
 
 typedef struct macro_attributes {
     unsigned int lines;
-    fpos_t *position;
+    fpos_t position;
 } macro_attr;
 
 typedef union row_data_union {
