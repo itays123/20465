@@ -6,6 +6,11 @@
 #define EXECUTE(status, func) \
     if ((status = func) != PASS) \
         return status;
+#define CREATE_DATA_WORD_IF_POSSIBLE(code_image, i, length, data) \
+    if (length == 1) \
+        code_image[i++] = new_data_word(data); \
+    else \
+        i+=length;
 
 /* Process a single line. Return an input status */
 static input_status fpass_process_line(char *, word **, int *, int *, int *, table *);
@@ -144,4 +149,67 @@ static input_status process_instruction(char *opstart, char *opend, int *data_im
     }
 
     return UNREC_INSTRUCTION;
+}
+
+static input_status process_operation(char *opstart, char *opend, word **code_image, int *ic)
+{
+    input_status status, notfound_status;
+    opcode oc;
+    funct ft;
+    reg reg1 = NON_REG, reg2 = NON_REG;
+    addressing_method addr1 = NONE, addr2 = NONE;
+    int data1, data2, i, length1 = 0, length2 = 0, opcount, length;
+    char *str, *op1_start, *op1_end, *op2_start, *op2_end;
+
+    EXECUTE(status, str_to_opcode_funct(opstart, opend, &oc, &ft))
+    opcount = num_of_operands(oc);
+
+    if (opcount == 0)
+    {
+        EXECUTE(status, end_of_command(opend))
+        code_image[(*ic) - IC_INIT_VALUE] = new_opcode_word(oc, 1); /* Length is 1 - only the opcode word */
+        (*ic)++;
+        return PASS;
+    }
+
+    /* Check illegal commas */
+    str = next_nonwhite(opend);
+    if (*str == ',')
+        return ILLEGAL_COMMA_AFTER_OPERATION;
+    
+    /* At least one operand must be found */
+    notfound_status = opcount > 1 ? MISSING_OPERAND_REQUIRED_TWO : MISSING_OPERAND_REQUIRED_ONE;
+    EXECUTE(status, find_operand(&str, &op1_start, &op1_end, notfound_status))
+    EXECUTE(status, get_operand_data(op1_start, op1_end, &addr1, &reg1, &data1))
+    length1 = words_by_addr(addr1);
+
+    if (opcount > 1)
+    {
+        EXECUTE(status, find_operand(&str, &op2_start, &op2_end, notfound_status))
+        EXECUTE(status, get_operand_data(op2_start, op2_end, &addr2, &reg2, &data2))
+        EXECUTE(status, end_of_command(op2_end))
+        length2 = words_by_addr(addr2);
+    }
+    else 
+        EXECUTE(status, end_of_command(op1_end))
+    
+    EXECUTE(status, check_addressing_methods(oc, addr1, addr2))
+
+    /* Finished checks. Create words */
+    i = (*ic) - IC_INIT_VALUE; /* Next available index in code image */
+    length = 2 + length1 + length2; /* Opcode word + opdata word + length of args */
+    code_image[i++] = new_opcode_word(oc, length);
+
+    /* Create second word. If one operand, it will be referred as the dest operand */
+    if (opcount > 1)
+        code_image[i++] = new_opdata_word(ft, reg1, addr1, reg2, addr2);
+    else
+        code_image[i++] = new_opdata_word(ft, NON_REG, IMMEDIATE /* 0 */, reg1, addr1);
+    
+    /* Create immediate data word if possible */
+    CREATE_DATA_WORD_IF_POSSIBLE(code_image, i, length1, data1);
+    CREATE_DATA_WORD_IF_POSSIBLE(code_image, i, length2, data2);
+
+    *ic = *ic + length;
+    return PASS;
 }
