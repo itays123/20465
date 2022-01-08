@@ -9,6 +9,9 @@
 #define HEXBITS_IN_WORD BITS_IN_WORD / BITS_IN_HEXBIT
 #define MAX_CODE_IMAGE_SIZE 8192 /* Assumption - change if needed */
 
+#define ASSEMBLY_POSTFIX ".as"
+#define ASSEMBLY_POST_MACRO_POSTFIX ".am"
+
 typedef enum { FALSE = 0, TRUE = 1 } boolean;
 
 /**************** WORD TYPE DEFINITONS ***********************/

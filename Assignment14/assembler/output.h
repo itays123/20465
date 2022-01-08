@@ -3,8 +3,6 @@
 #include "globals.h"
 #include "word.h"
 #include "table.h"
-#define ASSEMBLY_POSTFIX ".as"
-#define ASSEMBLY_POST_MACRO_POSTFIX ".am"
 #define ENTRY_POSTFIX ".ent"
 #define EXTERN_POSTFIX ".ext"
 #define OBJECT_POSTFIX ".ob"
