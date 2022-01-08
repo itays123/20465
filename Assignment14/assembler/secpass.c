@@ -96,10 +96,10 @@ static input_status spass_process_operation(char *operands, word **code_image, i
 
     /* Collect operands and addressing methods */
     opdata = code_image[i++]; /* There must be an opdata word */
-    find_operand(&operands, op1_start, op1_end, PASS);
+    find_operand(&operands, &op1_start, &op1_end, PASS);
     if (opcount > 1)
     {
-        find_operand(&operands, op2_start, op2_end, PASS);
+        find_operand(&operands, &op2_start, &op2_end, PASS);
         addr1 = SRC_ADRS(opdata);
         addr2 = DEST_ADRS(opdata);
     }
