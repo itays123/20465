@@ -67,14 +67,14 @@ static int mpass_process_line(FILE *source, char *line, table *macros, FILE *out
 static int mpass_process_definition(FILE *source, char *line, table *macros, 
     char *keystart, char *keyend)
 {
-    fpos_t *current_position;
+    fpos_t current_position;
     row_data macro_data;
     unsigned int linespan = 0;
     char *opstart, *opend;
 
     /* When calling, the line of the definition has been read from the source. 
     Its position now points to the first line of the macro */
-    fgetpos(source, current_position);
+    fgetpos(source, &current_position);
 
     /* Go through every line and count lines until endm */
     do
@@ -86,7 +86,7 @@ static int mpass_process_definition(FILE *source, char *line, table *macros,
     } while (!str_equal(opstart, opend, "endm"));
 
     /* Add macro definition. We assume there are no two macros with the same name */
-    macro_data.macro.position = current_position;
+    macro_data.macro.position = &current_position;
     macro_data.macro.lines = linespan;
     add_item(macros, keystart, keyend, macro_data);
     return 0;
@@ -94,9 +94,9 @@ static int mpass_process_definition(FILE *source, char *line, table *macros,
 
 static int mpass_process_reference(FILE *source, char *line, table macro, FILE *out)
 {
-    fpos_t *temp;
+    fpos_t temp;
     int i;
-    fgetpos(source, temp);
+    fgetpos(source, &temp);
     fsetpos(source, POSITION(macro));
 
     /* Read specified lines from source, and put in out file */
@@ -106,6 +106,6 @@ static int mpass_process_reference(FILE *source, char *line, table macro, FILE *
         fputs(line, out);
     }
     
-    fsetpos(source, temp); /* Restore position for next read */
+    fsetpos(source, &temp); /* Restore position for next read */
     return 0;
 }
