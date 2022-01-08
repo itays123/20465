@@ -15,7 +15,7 @@ static input_status fpass_process_line(char *, word **, int *, int *, int *, tab
 boolean first_pass(FILE *src, char *filename, 
     word **code_image, int *ic, int *data_image, int *dc, table *symbols_table)
 {
-    boolean is_success = TRUE;
+    boolean is_success = TRUE, first_output = TRUE;
     int line_num;
     char line[MAX_LINE_LENGTH];
     input_status status;
@@ -26,6 +26,11 @@ boolean first_pass(FILE *src, char *filename,
             is_success = FALSE;
         if (status != PASS) /* Error or warning. Notify user */
         {
+            /* Add new line if needed */
+            if (first_output)
+                first_output = FALSE;
+            else
+                puts("");
             printf("%s%s:%d - %s", filename, ASSEMBLY_POST_MACRO_POSTFIX, line_num, get_error(status));
             status = PASS; /* Restore state */
         }
