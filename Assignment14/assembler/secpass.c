@@ -123,7 +123,7 @@ static input_status spass_process_operation(char *operands, word **code_image, i
 
     if (REQUIRES_SYMBOL(addr2))
     {
-        POINT_SYMBOL_START_END(addr1, op2_start, op2_end, symb_start, symb_end, index_start, index_end);
+        POINT_SYMBOL_START_END(addr2, op2_start, op2_end, symb_start, symb_end, index_start, index_end);
         EXECUTE(status, process_operand_symbol_reference(symb_start, symb_end, code_image, &i, 
             symbols, externals, SYMBOL_NOT_FOUND_SECOND_OP));
     }
