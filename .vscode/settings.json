@@ -3,7 +3,8 @@
         "stdio.h": "c",
         "ctype.h": "c",
         "charsequence.h": "c",
-        "command.h": "c"
+        "command.h": "c",
+        "table.h": "c"
     },
     "cmake.configureOnOpen": false
 }

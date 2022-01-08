@@ -3,6 +3,8 @@
 #include "globals.h"
 #include <stdio.h>
 
-/********************** Macro table type definitions *********************/
+/* Goes through the source file. 
+If encountered a macro definition, save its position and use it when encountered macro references */
+boolean macro_pass(FILE *, FILE *);
 
 #endif
