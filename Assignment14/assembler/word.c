@@ -49,11 +49,6 @@ void get_bits(hexbits bits, word *source)
     opcode op;
     addressing_method src_adrs, dest_adrs;
     reg dest_reg;
-    if (source == NULL)
-    {
-        bits[0] = bits[1] = bits[2] = bits[3] = bits[4] = 0;
-        return;
-    }
     bits[0] = ARE_OF(source);
 
     switch (TYPEOF(source))
