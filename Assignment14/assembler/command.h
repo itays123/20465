@@ -7,12 +7,15 @@
 #define MIN_OPERATION_LENGTH 3
 #define MAX_OPERATION_LENGTH 4
 
+/* Useful macros, to share between the passes */
 #define EXECUTE(status, func) \
     if ((status = func) != PASS) \
         return status;
 #define PASS_IF_EMPTY_OR_COMMENT(first_nonwhite) \
     if (!(*(first_nonwhite)) || *(first_nonwhite) == ';') \
         return PASS;
+#define ERROR_FORMAT "%s%s:%d - %s"
+
 /***************** Type definitions *******************/
 
 typedef enum input_statuses {

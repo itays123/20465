@@ -2,12 +2,6 @@
 #define _WORD
 #include "globals.h"
 
-typedef enum word_types {
-    OPCODE,
-    OPDATA,
-    INTDATA
-} word_type;
-
 /* For increased code readability */
 #define INT_ATTR(word) ((word)->integer)
 #define OPDATA_ATTR(word) ((word)->opdata)
@@ -21,6 +15,15 @@ typedef enum word_types {
 #define DEST_REG(word) OPDATA_ATTR(word).dest_reg
 #define DEST_ADRS(word) OPDATA_ATTR(word).dest_adrs
 #define INTEGER_DATA(word) INT_ATTR(word).data
+
+#define BASE_OP_LENGTH 2 /* opcode + opdata */
+
+typedef enum word_types {
+    OPCODE,
+    OPDATA,
+    INTDATA
+} word_type;
+
 
 struct opdata_word {
     unsigned int ARE: 3;

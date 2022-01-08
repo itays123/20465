@@ -32,7 +32,7 @@ boolean first_pass(FILE *src, char *filename,
                 first_output = FALSE;
             else
                 puts("");
-            printf("%s%s:%d - %s", filename, ASSEMBLY_POST_MACRO_POSTFIX, line_num, get_error(status));
+            printf(ERROR_FORMAT, filename, ASSEMBLY_POST_MACRO_POSTFIX, line_num, get_error(status));
             status = PASS; /* Restore state */
         }
     }
@@ -201,7 +201,7 @@ static input_status process_operation(char *opstart, char *opend, word **code_im
 
     /* Finished checks. Create words */
     i = (*ic) - IC_INIT_VALUE; /* Next available index in code image */
-    length = 2 + length1 + length2; /* Opcode word + opdata word + length of args */
+    length = BASE_OP_LENGTH + length1 + length2; /* Opcode word + opdata word + length of args */
     code_image[i++] = new_opcode_word(oc, length);
 
     /* Create second word. If one operand, it will be referred as the dest operand */
