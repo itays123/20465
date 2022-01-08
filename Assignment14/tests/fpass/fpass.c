@@ -20,7 +20,7 @@ int main()
 
     if (!is_success)
     {
-        free_word_arr(code_image, icf);
+        free_word_arr(code_image, ic);
         free_table(&symbols);
         return 0;
     }
@@ -31,7 +31,7 @@ int main()
     relocate_data_symbols(&symbols, icf);
 
     while (fgets(line, MAX_LINE_LENGTH, stdin) != NULL)
-        mock_spass_fill_words(line, code_image, ic);
+        mock_spass_fill_words(line, code_image, &ic);
     
     write_files("output", code_image, icf, data_image, dc, symbols, NULL);
     free_word_arr(code_image, icf);
@@ -48,6 +48,8 @@ static void mock_spass_fill_words(char *line, word **code_image, int *ic)
 
     /* Find label & opword */
     label_start_maybe = next_nonwhite(line);
+    if (!(*label_start_maybe) || *label_start_maybe == ';')
+        return;
     label_end_maybe = next_white_or_colon(label_start_maybe);
     find_opword(label_start_maybe, label_end_maybe, &opstart, &opend);
 

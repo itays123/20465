@@ -9,6 +9,9 @@
 #define EXECUTE(status, func) \
     if ((status = func) != PASS) \
         return status;
+#define PASS_IF_EMPTY_OR_COMMENT(first_nonwhite) \
+    if (!(*(first_nonwhite)) || *(first_nonwhite) == ';') \
+        return PASS;
 /***************** Type definitions *******************/
 
 typedef enum input_statuses {

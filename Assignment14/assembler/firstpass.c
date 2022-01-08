@@ -61,6 +61,7 @@ static input_status fpass_process_line(char *line, word **code_image, int *ic,
 
     /* Find label & opword */
     label_start_maybe = next_nonwhite(line);
+    PASS_IF_EMPTY_OR_COMMENT(label_start_maybe)
     label_end_maybe = next_white_or_colon(label_start_maybe);
     label_exists = find_opword(label_start_maybe, label_end_maybe, &opstart, &opend);
 
@@ -122,7 +123,7 @@ static input_status process_instruction(char *opstart, char *opend, int *data_im
         }
         if (*argend == ',')
             return EXPECTED_NUMBER_AFTER_COMMA;
-        EXECUTE(status, end_of_command(*argend))
+        EXECUTE(status, end_of_command(argend))
         return PASS;
     }
     
