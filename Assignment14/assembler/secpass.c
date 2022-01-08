@@ -24,7 +24,7 @@ boolean second_pass(FILE *source, char *filename, word **code_image,
 {
     int ic = IC_INIT_VALUE, line_num;
     input_status status;
-    boolean is_success; /* No need for print flag in this pass - no warnings. If not successful, printed before */
+    boolean is_success = TRUE; /* No need for print flag in this pass - no warnings. If not successful, printed before */
     char line[MAX_LINE_LENGTH];
     for (line_num = 1; fgets(line, MAX_LINE_LENGTH, source) != NULL; line_num++)
     {
@@ -38,6 +38,7 @@ boolean second_pass(FILE *source, char *filename, word **code_image,
             status = PASS;
         }
     }
+    return is_success;
 }
 
 /* Get a operands string, the code image, and the current instruction counter, as well as the symbols and externals tables.
