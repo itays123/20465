@@ -14,8 +14,18 @@ Assumptions:
 #define POSITION(node) MACRO_ATTR(node).position
 #define LINES(node) MACRO_ATTR(node).lines
 
+/* Read a single line from the file, and break from the function if too long.
+According to the instructions, if a line is too long the program must notify about that,
+and the macro pass is the first time we read from the file */
+#define BREAK_IF_TOO_LONG(line, file) \
+    if (!(*next('\n', line)) && (*line != '\n') && !feof(file)) \
+        return FALSE; 
+#define RUN_BREAK_IF_ERROR(func) \
+    if (!(func)) \
+        return FALSE;
+
 /* Process a single line of the macro file. Write result to out file.
-Return EOF if end of file, 0 otherwise,
+Return EOF if end of file, FALSE if line too long, TRUE otherwise,
 Assuming all macro definitions have an end */
 static int mpass_process_line(FILE *, char *, table *, FILE *);
 
@@ -23,8 +33,11 @@ boolean macro_pass(FILE *source, FILE *out)
 {
     table macros_table = NULL;
     char line[MAX_LINE_LENGTH];
-    while (mpass_process_line(source, line, &macros_table, out) != EOF);
-    return TRUE;       
+    int result = TRUE;
+    while (result != EOF && result)
+        result = mpass_process_line(source, line, &macros_table, out);
+    /* Found a line too long, or end of file */
+    return result == EOF;       
 }
 
 /* Count lines until encountered endm not including endm. 
@@ -32,7 +45,8 @@ Save the position of the first line, as well as the line count and the key, in t
 Assumptions:
 - There are no multiple macro definitions
 - There are no nested macro definitions
-- Macro definition must end */
+- Macro definition must end
+Return FALSE if encountered a too long line, TRUE otherwise */
 static int mpass_process_definition(FILE *, table *, char *, char *);
 
 /* Use the saved definition of the macro to write it in the output file 
@@ -46,6 +60,7 @@ static int mpass_process_line(FILE *source, char *line, table *macros, FILE *out
     table existing_definition;
     if (fgets(line, MAX_LINE_LENGTH, source) == NULL)
         return EOF;
+    BREAK_IF_TOO_LONG(line, source)
     
     opstart = next_nonwhite(line);
     opend = next_white(opstart);
@@ -54,21 +69,24 @@ static int mpass_process_line(FILE *source, char *line, table *macros, FILE *out
     {
         keystart = next_nonwhite(opend);
         keyend = next_white(keystart);
-        mpass_process_definition(source, macros, keystart, keyend); /* Assumption: Macro definition WILL end */
+        RUN_BREAK_IF_ERROR(
+            mpass_process_definition(source, macros, keystart, keyend)
+        ) /* Assumption: Macro definition WILL end */
     }
 
-    else if ((existing_definition = find_item(macros, opstart, opend)) != NULL)
+    else if ((existing_definition = find_item(macros, opstart, opend)) != NULL) 
         mpass_process_reference(source, line, existing_definition, out);
     
     else /* Not a macro definition nor a macro reference */
         fputs(line, out);
-    return 0;
+    return TRUE;
 }
 
 static int mpass_process_definition(FILE *source, table *macros, 
     char *keystart, char *keyend)
 {
-    char line[MAX_LINE_LENGTH]; /* We would like to preserve the memory of the line before to prevent memory leaks */
+    /* We would like to preserve the memory of the line before (with the macro name) to prevent memory leaks */
+    static char line[MAX_LINE_LENGTH];
     fpos_t current_position;
     row_data macro_data;
     unsigned int linespan = 0;
@@ -82,6 +100,7 @@ static int mpass_process_definition(FILE *source, table *macros,
     do
     {
         fgets(line, MAX_LINE_LENGTH, source); /* Macro definition must end, so no need to check eof */
+        BREAK_IF_TOO_LONG(line, source)
         linespan++;
         opstart = next_nonwhite(line);
         opend = next_white(opstart);
@@ -95,7 +114,7 @@ static int mpass_process_definition(FILE *source, table *macros,
     macro_data.macro.lines = linespan;
     add_item(macros, keystart, keyend, macro_data);
 
-    return 0;
+    return TRUE;
 }
 
 static int mpass_process_reference(FILE *source, char *line, table macro, FILE *out)
