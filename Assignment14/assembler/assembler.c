@@ -40,7 +40,7 @@ int main(int argc, char **argv)
         return 0;
     }
     
-    for (int i = 1; i < argc; i++) /* No need to process the first argument */
+    for (i = 1; i < argc; i++) /* No need to process the first argument */
     {
         printf("\n\nProcessing file: %s%s\n", argv[i], ASSEMBLY_POSTFIX);
         success = process_file(argv[i]);
