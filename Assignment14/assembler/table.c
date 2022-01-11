@@ -1,8 +1,8 @@
 /* Table.c - deal with dynamic tables */
 #include "table.h"
 #include "utils.h"
-#include "string.h" /* For strcmp, strlen, strcpy */
-#include "stdlib.h" /* For free */
+#include <string.h> /* For strcmp, strlen, strcpy */
+#include <stdlib.h> /* For free */
 
 table find_last_row_before(table *tab, char *keystart, char *keyend)
 {

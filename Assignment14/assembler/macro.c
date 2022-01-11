@@ -19,7 +19,10 @@ According to the instructions, if a line is too long the program must notify abo
 and the macro pass is the first time we read from the file */
 #define BREAK_IF_TOO_LONG(line, file) \
     if (!(*next('\n', line)) && (*line != '\n') && !feof(file)) \
-        return FALSE; 
+    { \
+        printf("\nFatal: cannot process line with more than %d characters", MAX_LINE_LENGTH); \
+        return FALSE; \
+    }
 #define RUN_BREAK_IF_ERROR(func) \
     if (!(func)) \
         return FALSE;
