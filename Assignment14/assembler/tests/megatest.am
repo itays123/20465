@@ -13,6 +13,7 @@ mov r5, Numbers1
 mov r5, r3
 mov Zeros, Numbers1
 mov #2, r10
+mov r10, externLab
 mov #4, r12
 mov Numbers1[r10], Zeros
 
