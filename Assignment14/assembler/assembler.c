@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     /* Notify error if no file is specified */
     if (argc == 1)
     {
-        printf("Usage: %s [...files]", argv[0]);
+        printf("Usage: %s [...files]\n", argv[0]);
         return 0;
     }
     
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
     {
         printf("\n\nProcessing file: %s%s\n", argv[i], ASSEMBLY_POSTFIX);
         success = process_file(argv[i]);
-        printf("\nFile processing %s", success ? "finished successfully." : "failed.");
+        printf("\nFile processing %s\n\n", success ? "finished successfully." : "failed.");
     }
 
     return 0;
