@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Jan  5 08:04:53 2022
+# Make data base, printed on Fri Jan 14 06:51:43 2022
 
 # Variables
 
@@ -73,7 +73,7 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/ubuntu:@/tmp/.ICE-unix/1456,unix/ubuntu:/tmp/.ICE-unix/1456
+SESSION_MANAGER = local/ubuntu:@/tmp/.ICE-unix/1447,unix/ubuntu:/tmp/.ICE-unix/1447
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -93,7 +93,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 9887
+GIO_LAUNCHED_DESKTOP_FILE_PID = 5824
 # automatic
 %F = $(notdir $%)
 # environment
@@ -107,7 +107,7 @@ PWD = /home/user/Desktop/20465
 # environment
 XDG_SEAT = seat0
 # environment
-SSH_AGENT_PID = 1609
+SSH_AGENT_PID = 1635
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -147,7 +147,7 @@ SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-2b7acf72-4c81-4f23-84b5-a0a3d5a230a7.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-03408028-6686-4083-8846-23e1e2ff6059.sock
 # environment
 XDG_SESSION_ID = 1
 # environment
@@ -213,7 +213,7 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 9887
+VSCODE_PID = 5824
 # variable set hash-table stats:
 # Load=102/1024=10%, Rehash=0, Collisions=15/124=12%
 
@@ -284,6 +284,6 @@ GNUmakefile:
 make: *** No rule to make target 'all'.  Stop.
  
 # Load=17/8192=0%, Rehash=0, Collisions=1/20=5%
-# Finished Make data base on Wed Jan  5 08:04:53 2022
+# Finished Make data base on Fri Jan 14 06:51:43 2022
 
  
