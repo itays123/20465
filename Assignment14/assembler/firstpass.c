@@ -36,6 +36,8 @@ boolean first_pass(FILE *src, char *filename,
             status = PASS; /* Restore state */
         }
     }
+    if (!first_output && is_success)
+        puts(""); /* Put a new line after warnings */
     return is_success;
 }
 
