@@ -15,6 +15,8 @@ illegal_symb: jmp symb
 r10: add #-6, r10
 add: add #-6, r10
 Add: add #-6, r10
+macro: add #-6, r10
+endm: add #-6, r10
 jmp symb]r10[
 jmp symb[r16]
 add #34, #22

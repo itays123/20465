@@ -169,7 +169,9 @@ input_status validate_symbol_name(char *start, char *end)
         return SYMBOL_NAMED_LIKE_REGISTER;
     
     /* Check name of operation */
-    if (str_to_opcode_funct(start, end, &op, &ft) != UNREC_OPERATION)
+    if (str_to_opcode_funct(start, end, &op, &ft) != UNREC_OPERATION
+        || str_equal(start, end, "macro")
+        || str_equal(start, end, "endm"))
         return SYMBOL_NAMED_LIKE_OPERATION;
     
     return PASS;
