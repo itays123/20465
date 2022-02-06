@@ -10,20 +10,6 @@
 #include "output.h"
 #include <stdio.h>
 
-/* For increased code readability */
-#define END_FILE_PROCESS(code_img, ic, symbols, externals, file, result) \
-    free_word_arr(code_img, ic); \
-    free_table(&symbols); \
-    free_table(&externals); \
-    fclose(file); \
-    return result; 
-#define RUN_TERMINATE_IF_FAIL(func, code_img, ic, symbols, externals, file) \
-    if (!(func)) \
-    {\
-        END_FILE_PROCESS(code_img, ic, symbols, externals, file, FALSE) \
-    }
-    
-
 /* Process a single assembly file, given its name.
 Return TRUE if processed successfully, FALSE otherwise */
 static boolean process_file(char *);\
@@ -50,6 +36,25 @@ int main(int argc, char **argv)
     return 0;
 }
 
+/* For increased code readability */
+#define END_FILE_PROCESS(code_img, ic, symbols, externals, file, result) \
+    free_word_arr(code_img, ic); \
+    free_table(&symbols); \
+    free_table(&externals); \
+    fclose(file); \
+    return result; 
+#define RUN_TERMINATE_IF_FAIL(func, code_img, ic, symbols, externals, file) \
+    if (!(func)) \
+    {\
+        END_FILE_PROCESS(code_img, ic, symbols, externals, file, FALSE) \
+    }
+#define OPEN_SOURCE_FILE(fp, filename, postfix) \
+    if (!fopen_check(fp, filename, postfix, "r")) \
+    { \
+        printf("Error: Cannot open %s%s, file doesn't exist", filename, postfix); \
+        return FALSE; \
+    }
+
 static boolean process_file(char *filename)
 {
     int ic = IC_INIT_VALUE, dc = 0;
@@ -60,7 +65,7 @@ static boolean process_file(char *filename)
     boolean success;
 
     /* Macro pass */
-    source = fopen_safe(filename, ASSEMBLY_POSTFIX, "r");
+    OPEN_SOURCE_FILE(&source, filename, ASSEMBLY_POSTFIX);
     macro_out = fopen_safe(filename, ASSEMBLY_POST_MACRO_POSTFIX, "w");
     success = macro_pass(source, macro_out);
     fclose(source);
@@ -69,7 +74,7 @@ static boolean process_file(char *filename)
         return FALSE;
     
     /* First and second pass */
-    source = fopen_safe(filename, ASSEMBLY_POST_MACRO_POSTFIX, "r");
+    OPEN_SOURCE_FILE(&source, filename, ASSEMBLY_POST_MACRO_POSTFIX);
     RUN_TERMINATE_IF_FAIL(
         first_pass(source, filename, code_img, &ic, data_img, &dc, &symbols),
         code_img, ic, symbols, externals, source

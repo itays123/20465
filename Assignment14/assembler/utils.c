@@ -41,14 +41,21 @@ char *strcpy_safe(char *start, char *end)
     return result;
 }
 
-FILE *fopen_safe(char *filename, char *postfix, char *permissions)
+boolean fopen_check(FILE **out, char *filename, char *postfix, char *permissions)
 {
     char *full_filename = strcat_safe(filename, postfix);
-    FILE *target = fopen(full_filename, permissions);
+    *out = fopen(full_filename, permissions);
     free(full_filename);
-    if (target == NULL)
+    return *out != NULL;
+}
+
+FILE *fopen_safe(char *filename, char *postfix, char *permissions)
+{
+    FILE *target;
+    boolean open_success = fopen_check(&target, filename, postfix, permissions);
+    if (!open_success)
     {
-        printf("Fatal: Opening file %s failed", full_filename);
+        printf("Fatal: Opening file %s%s failed", filename, postfix);
         exit(1);
     }
     return target;

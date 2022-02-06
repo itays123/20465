@@ -24,6 +24,11 @@ char *strcat_safe(char *, char *);
 location in memory. Return pointer to memory*/
 char *strcpy_safe(char *, char *);
 
+/* Opens a file with a name, postfix and permissions specified,
+assigns it to the pointer to FILE * given,
+and returns TRUE if opened sucessfully, false otherwise */
+boolean fopen_check(FILE **, char *, char *, char *);
+
 /* Opens a file with a name,postfix and permissions specified safely */
 FILE *fopen_safe(char *, char *, char *);
 
